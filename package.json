@@ -23,6 +23,6 @@
   },
   "private": true,
   "overrides": {
-     "react-devtools-core": "~4.25.0"
+    "react-devtools-core": "~4.25.0"
   }
 }
