@@ -10,10 +10,10 @@ import {
   KeyboardAvoidingView,
   Keyboard,
   TouchableWithoutFeedback,
-  Dimensions,
 } from "react-native";
-import * as Font from "expo-font";
-import { AppLoading } from "expo";
+import { useFonts } from "expo-font";
+// import * as Font from "expo-font";
+// import { AppLoading } from "expo";
 
 const initialState = {
   login: "",
@@ -23,35 +23,34 @@ const initialState = {
 
 // const loadApplication = async () => {
 //   await Font.loadAsync({
+//     "Roboto-Regular": require("./assets/fonts/Roboto-Regular.ttf"),
+//     "Roboto-Medium": require("./assets/fonts/Roboto-Medium.ttf"),
+//     "Roboto-Bold": require("./assets/fonts/Roboto-Bold.ttf"),
+//     "SFP-Light": require("./assets/fonts/SFProDisplay-Light.ttf"),
 //     "SFP-Regular": require("./assets/fonts/SFProDisplay-Regular.ttf"),
 //   });
 // };
 
 export default function App() {
   const [isShowKeyboard, setIsShowKeyboard] = useState(false);
-  const [state, setstate] = useState(initialState);
-  const [iasReady, setIasReady] = useState(false);
-
-  const [dimensions, setdimensions] = useState(
-    Dimensions.get("window").width - 20 * 2
-  );
-
-  useEffect(() => {
-    const onChange = () => {
-      const width = Dimensions.get("window").width - 20 * 2;
-
-      setdimensions(width);
-    };
-    Dimensions.addEventListener("change", onChange);
-    return () => {
-      // Dimensions.removeEventListener("change", onChange);
-    };
-  }, []);
+  const [state, setState] = useState(initialState);
+  // const [iasReady, setIasReady] = useState(false);
+  const [fontsLoaded] = useFonts({
+    "Roboto-Regular": require("./assets/fonts/Roboto-Regular.ttf"),
+    "Roboto-Medium": require("./assets/fonts/Roboto-Medium.ttf"),
+    "Roboto-Bold": require("./assets/fonts/Roboto-Bold.ttf"),
+    "SFP-Light": require("./assets/fonts/SFProDisplay-Light.ttf"),
+    "SFP-Regular": require("./assets/fonts/SFProDisplay-Regular.ttf"),
+  });
+  if (!fontsLoaded) {
+    return null;
+  }
 
   const keyboardHide = () => {
     setIsShowKeyboard(false);
-    Keyboard.dismiss();
-    setstate(initialState);
+    Keyboard.dismiss(); //hides the keyboard
+    setState(initialState); //set values
+    // console.log(state);
   };
 
   // if (!iasReady) {
@@ -71,69 +70,62 @@ export default function App() {
           style={styles.bgImage}
           source={require("./assets/images/bg_image.jpg")}>
           <KeyboardAvoidingView
-            behavior={Platform.OS == "ios" ? "padding" : "height"}>
-            <View style={styles.wrapper}>
-              <Text style={styles.headerTitle}>Registration</Text>
-              <View
-                style={{
-                  ...styles.form,
-                  marginBottom: isShowKeyboard ? 20 : 150,
-                  width: dimensions,
-                }}>
-                <View style={{ marginTop: 32 }}>
-                  <TextInput
-                    style={styles.input}
-                    placeholder='Login'
-                    placeholderTextColor='BDBDBD'
-                    onFocus={() => setIsShowKeyboard(true)}
-                    value={state.login}
-                    onChangeText={(value) =>
-                      setstate((prevState) => ({ ...prevState, login: value }))
-                    }
-                  />
-                </View>
-                <View style={{ marginTop: 16 }}>
-                  <TextInput
-                    style={styles.input}
-                    placeholder='Email'
-                    placeholderTextColor='BDBDBD'
-                    onFocus={() => setIsShowKeyboard(true)}
-                    value={state.email}
-                    onChangeText={(value) =>
-                      setstate((prevState) => ({ ...prevState, email: value }))
-                    }
-                    // autoComplete={email}
-                  />
-                </View>
-
-                <View style={{ marginTop: 16 }}>
-                  <TextInput
-                    style={styles.input}
-                    placeholder='Password'
-                    placeholderTextColor='BDBDBD'
-                    secureTextEntry={true}
-                    onFocus={() => setIsShowKeyboard(true)}
-                    value={state.password}
-                    onChangeText={(value) =>
-                      setstate((prevState) => ({
-                        ...prevState,
-                        password: value,
-                      }))
-                    }
-                  />
-                </View>
-
-                <TouchableOpacity
-                  activeOpacity={0.8}
-                  style={styles.btn}
-                  onPress={keyboardHide}>
-                  <Text style={styles.btnTitle}>Sign in</Text>
+            behavior={Platform.OS === "ios" ? "padding" : "height"}>
+            <View
+              style={{
+                ...styles.form,
+                marginBottom: isShowKeyboard ? 0 : 0,
+              }}>
+              <View style={styles.userImage}>
+                <TouchableOpacity style={styles.btnAddUserImage}>
+                  <Text style={styles.textPlus}>+</Text>
                 </TouchableOpacity>
-
-                <Text style={styles.signInText}>
-                  Don't have an account? Sign in
-                </Text>
               </View>
+              <Text style={styles.formTitle}>Registration</Text>
+              <TextInput
+                style={{ ...styles.input, marginTop: 32 }}
+                placeholder='Login'
+                placeholderTextColor='BDBDBD'
+                onFocus={() => setIsShowKeyboard(true)}
+                value={state.login}
+                onChangeText={(value) =>
+                  setState((prevState) => ({ ...prevState, login: value }))
+                }
+              />
+              <TextInput
+                style={styles.input}
+                placeholder='Email'
+                placeholderTextColor='BDBDBD'
+                onFocus={() => setIsShowKeyboard(true)}
+                value={state.email}
+                onChangeText={(value) =>
+                  setState((prevState) => ({ ...prevState, email: value }))
+                }
+              />
+              <TextInput
+                style={styles.input}
+                placeholder='Password'
+                placeholderTextColor='BDBDBD'
+                maxLength={16}
+                secureTextEntry={true}
+                onFocus={() => setIsShowKeyboard(true)}
+                value={state.password}
+                onChangeText={(value) =>
+                  setState((prevState) => ({
+                    ...prevState,
+                    password: value,
+                  }))
+                }
+              />
+              <TouchableOpacity
+                activeOpacity={0.8}
+                style={styles.btn}
+                onPress={keyboardHide}>
+                <Text style={styles.btnTitle}>Sign in</Text>
+              </TouchableOpacity>
+              <Text style={styles.signInText}>
+                Don't have an account? Sign in
+              </Text>
             </View>
           </KeyboardAvoidingView>
         </ImageBackground>
@@ -142,74 +134,103 @@ export default function App() {
   );
 }
 
+const colors = {
+  blue: "#1B4371",
+  orange: "#FF6C00",
+  background: "#F6F6F6",
+  white: "#fff",
+  black: "#212121",
+  placeholderTextColor: "#BDBDBD",
+  borderInput: "#E8E8E8",
+};
+
 const styles = StyleSheet.create({
   container: {
     flex: 1,
+    backgroundColor: colors.white,
   },
   bgImage: {
     flex: 1,
     resizeMode: "cover",
     justifyContent: "flex-end",
-    alignItems: "center",
   },
-  wrapper: {
-    backgroundColor: "#fff",
-    paddingTop: 92,
-    paddingBottom: 45,
+  form: {
+    position: "relative",
+    backgroundColor: colors.white,
     borderTopLeftRadius: 25,
     borderTopRightRadius: 25,
+    paddingBottom: 45,
   },
-  header: {
-    textAlign: "center",
-    marginBottom: 120,
+  userImage: {
+    position: "absolute",
+    top: -60,
+    right: 150,
+    width: 120,
+    height: 120,
+    borderRadius: 16,
+    backgroundColor: colors.background,
   },
-  headerTitle: {
+  btnAddUserImage: {
+    position: "absolute",
+    bottom: 14,
+    right: -12,
+    borderWidth: 1,
+    borderColor: colors.orange,
+    backgroundColor: colors.white,
+    borderRadius: 12.5,
+    width: 25,
+    height: 25,
+    alignItems: "center",
+  },
+  textPlus: {
+    fontSize: 18,
+    color: colors.orange,
+  },
+  formTitle: {
+    marginTop: 92,
     textAlign: "center",
     fontSize: 30,
-    color: "#212121",
+    color: colors.black,
     alignItems: "center",
+    fontFamily: "Roboto-Medium",
   },
   input: {
     borderWidth: 1,
-    borderColor: "#E8E8E8",
+    borderColor: colors.borderInput,
     height: 50,
     padding: 16,
     borderRadius: 8,
-    // color: "#BDBDBD",
-    backgroundColor: "#F6F6F6",
-  },
-  form: {
+    backgroundColor: colors.background,
+    marginTop: 16,
     marginHorizontal: 16,
   },
   btn: {
     borderRadius: 100,
-    borderWidth: 1,
     marginTop: 43,
-    paddingTop: 16,
-    paddingBottom: 16,
-    paddingLeft: 32,
-    paddingRight: 32,
+    padding: 16,
     justifyContent: "center",
+    marginHorizontal: 16,
     alignItems: "center",
-    marginHorizontal: 20,
-    ...Platform.select({
-      ios: {
-        backgroundColor: "transparent",
-        borderColor: "#f0f8ff",
-      },
-      android: {
-        backgroundColor: "#FF6C00",
-        borderColor: "transparent",
-      },
-    }),
+    backgroundColor: colors.orange,
+    // platform definition, example
+    // backgroundColor: Platform.OS === "ios" ? "#F6F555" : "#FF6C00",
+    // ...Platform.select({
+    //   ios: {
+    //     backgroundColor: "#F6F555",
+    //   },
+    //   android: {
+    //     backgroundColor: "#FF6C00",
+    //   },
+    // }),
   },
   btnTitle: {
-    color: Platform.OS === "ios" ? "#FF6C00" : "#f0f8ff",
+    color: colors.white,
     fontSize: 16,
   },
   signInText: {
+    fontSize: 16,
+    color: colors.blue,
     textAlign: "center",
-    color: "#1B4371",
     marginTop: 16,
   },
 });
