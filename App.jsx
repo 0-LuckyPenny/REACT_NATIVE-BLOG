@@ -212,16 +212,6 @@ const styles = StyleSheet.create({
     marginHorizontal: 16,
     alignItems: "center",
     backgroundColor: colors.orange,
-    // platform definition, example
-    // backgroundColor: Platform.OS === "ios" ? "#F6F555" : "#FF6C00",
-    // ...Platform.select({
-    //   ios: {
-    //     backgroundColor: "#F6F555",
-    //   },
-    //   android: {
-    //     backgroundColor: "#FF6C00",
-    //   },
-    // }),
   },
   btnTitle: {
     color: colors.white,
