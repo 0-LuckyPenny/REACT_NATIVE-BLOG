@@ -70,11 +70,11 @@ export default function App() {
           style={styles.bgImage}
           source={require("./assets/images/bg_image.jpg")}>
           <KeyboardAvoidingView
-            behavior={Platform.OS === "ios" ? "padding" : "height"}>
+            behavior={Platform.OS === "ios" ? "padding" : "padding"}>
             <View
               style={{
                 ...styles.form,
-                marginBottom: isShowKeyboard ? 0 : 0,
+                marginBottom: isShowKeyboard ? -180 : 0,
               }}>
               <View style={styles.userImage}>
                 <TouchableOpacity style={styles.btnAddUserImage}>
