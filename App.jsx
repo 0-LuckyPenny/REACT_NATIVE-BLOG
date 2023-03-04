@@ -10,10 +10,10 @@ import {
   KeyboardAvoidingView,
   Keyboard,
   TouchableWithoutFeedback,
+  Dimensions,
 } from "react-native";
 import { useFonts } from "expo-font";
-// import * as Font from "expo-font";
-// import { AppLoading } from "expo";
+import { colors } from "./helpers/colors";
 
 const initialState = {
   login: "",
@@ -21,20 +21,10 @@ const initialState = {
   password: "",
 };
 
-// const loadApplication = async () => {
-//   await Font.loadAsync({
-//     "Roboto-Regular": require("./assets/fonts/Roboto-Regular.ttf"),
-//     "Roboto-Medium": require("./assets/fonts/Roboto-Medium.ttf"),
-//     "Roboto-Bold": require("./assets/fonts/Roboto-Bold.ttf"),
-//     "SFP-Light": require("./assets/fonts/SFProDisplay-Light.ttf"),
-//     "SFP-Regular": require("./assets/fonts/SFProDisplay-Regular.ttf"),
-//   });
-// };
-
 export default function App() {
   const [isShowKeyboard, setIsShowKeyboard] = useState(false);
   const [state, setState] = useState(initialState);
-  // const [iasReady, setIasReady] = useState(false);
+
   const [fontsLoaded] = useFonts({
     "Roboto-Regular": require("./assets/fonts/Roboto-Regular.ttf"),
     "Roboto-Medium": require("./assets/fonts/Roboto-Medium.ttf"),
@@ -53,16 +43,6 @@ export default function App() {
     // console.log(state);
   };
 
-  // if (!iasReady) {
-  //   return (
-  //     <AppLoading
-  //       startAsync={loadApplication}
-  //       onFinish={() => setIasReady(true)}
-  //       onError={console.warn}
-  //     />
-  //   );
-  // }
-
   return (
     <TouchableWithoutFeedback onPress={keyboardHide}>
       <View style={styles.container}>
@@ -70,11 +50,11 @@ export default function App() {
           style={styles.bgImage}
           source={require("./assets/images/bg_image.jpg")}>
           <KeyboardAvoidingView
-            behavior={Platform.OS === "ios" ? "padding" : "padding"}>
+            behavior={Platform.OS === "ios" ? "padding" : "height"}
+            keyboardVerticalOffset={-100}>
             <View
               style={{
                 ...styles.form,
-                marginBottom: isShowKeyboard ? -180 : 0,
               }}>
               <View style={styles.userImage}>
                 <TouchableOpacity style={styles.btnAddUserImage}>
@@ -134,16 +114,6 @@ export default function App() {
   );
 }
 
-const colors = {
-  blue: "#1B4371",
-  orange: "#FF6C00",
-  background: "#F6F6F6",
-  white: "#fff",
-  black: "#212121",
-  placeholderTextColor: "#BDBDBD",
-  borderInput: "#E8E8E8",
-};
-
 const styles = StyleSheet.create({
   container: {
     flex: 1,
@@ -153,6 +123,8 @@ const styles = StyleSheet.create({
     flex: 1,
     resizeMode: "cover",
     justifyContent: "flex-end",
+    width: Dimensions.get("window").width,
+    height: Dimensions.get("window").height,
   },
   form: {
     position: "relative",
