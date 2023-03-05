@@ -1,11 +1,9 @@
 import React, { useState, useEffect } from "react";
+import { AntDesign } from "@expo/vector-icons";
 import {
   StyleSheet,
-  Text,
   View,
   ImageBackground,
-  TextInput,
-  TouchableOpacity,
   Platform,
   KeyboardAvoidingView,
   Keyboard,
@@ -14,17 +12,10 @@ import {
 } from "react-native";
 import { useFonts } from "expo-font";
 import { colors } from "./helpers/colors";
-
-const initialState = {
-  login: "",
-  email: "",
-  password: "",
-};
+import RegistrationScreen from "./Screens/RegistrationScreen";
+import LoginScreen from "./Screens/LoginScreen";
 
 export default function App() {
-  const [isShowKeyboard, setIsShowKeyboard] = useState(false);
-  const [state, setState] = useState(initialState);
-
   const [fontsLoaded] = useFonts({
     "Roboto-Regular": require("./assets/fonts/Roboto-Regular.ttf"),
     "Roboto-Medium": require("./assets/fonts/Roboto-Medium.ttf"),
@@ -36,15 +27,8 @@ export default function App() {
     return null;
   }
 
-  const keyboardHide = () => {
-    setIsShowKeyboard(false);
-    Keyboard.dismiss(); //hides the keyboard
-    setState(initialState); //set values
-    // console.log(state);
-  };
-
   return (
-    <TouchableWithoutFeedback onPress={keyboardHide}>
+    <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
       <View style={styles.container}>
         <ImageBackground
           style={styles.bgImage}
@@ -52,61 +36,9 @@ export default function App() {
           <KeyboardAvoidingView
             behavior={Platform.OS === "ios" ? "padding" : "height"}
             keyboardVerticalOffset={-100}>
-            <View
-              style={{
-                ...styles.form,
-              }}>
-              <View style={styles.userImage}>
-                <TouchableOpacity style={styles.btnAddUserImage}>
-                  <Text style={styles.textPlus}>+</Text>
-                </TouchableOpacity>
-              </View>
-              <Text style={styles.formTitle}>Registration</Text>
-              <TextInput
-                style={{ ...styles.input, marginTop: 32 }}
-                placeholder='Login'
-                placeholderTextColor='BDBDBD'
-                onFocus={() => setIsShowKeyboard(true)}
-                value={state.login}
-                onChangeText={(value) =>
-                  setState((prevState) => ({ ...prevState, login: value }))
-                }
-              />
-              <TextInput
-                style={styles.input}
-                placeholder='Email'
-                placeholderTextColor='BDBDBD'
-                onFocus={() => setIsShowKeyboard(true)}
-                value={state.email}
-                onChangeText={(value) =>
-                  setState((prevState) => ({ ...prevState, email: value }))
-                }
-              />
-              <TextInput
-                style={styles.input}
-                placeholder='Password'
-                placeholderTextColor='BDBDBD'
-                maxLength={16}
-                secureTextEntry={true}
-                onFocus={() => setIsShowKeyboard(true)}
-                value={state.password}
-                onChangeText={(value) =>
-                  setState((prevState) => ({
-                    ...prevState,
-                    password: value,
-                  }))
-                }
-              />
-              <TouchableOpacity
-                activeOpacity={0.8}
-                style={styles.btn}
-                onPress={keyboardHide}>
-                <Text style={styles.btnTitle}>Sign in</Text>
-              </TouchableOpacity>
-              <Text style={styles.signInText}>
-                Don't have an account? Sign in
-              </Text>
-            </View>
+            {/* <RegistrationScreen /> */}
+
+            <LoginScreen />
           </KeyboardAvoidingView>
         </ImageBackground>
       </View>
@@ -125,74 +57,5 @@ const styles = StyleSheet.create({
     justifyContent: "flex-end",
     width: Dimensions.get("window").width,
     height: Dimensions.get("window").height,
-  },
-  form: {
-    position: "relative",
-    backgroundColor: colors.white,
-    borderTopLeftRadius: 25,
-    borderTopRightRadius: 25,
-    paddingBottom: 45,
-  },
-  userImage: {
-    position: "absolute",
-    top: -60,
-    right: 150,
-    width: 120,
-    height: 120,
-    borderRadius: 16,
-    backgroundColor: colors.background,
-  },
-  btnAddUserImage: {
-    position: "absolute",
-    bottom: 14,
-    right: -12,
-    borderWidth: 1,
-    borderColor: colors.orange,
-    backgroundColor: colors.white,
-    borderRadius: 12.5,
-    width: 25,
-    height: 25,
-    alignItems: "center",
-  },
-  textPlus: {
-    fontSize: 18,
-    color: colors.orange,
-  },
-  formTitle: {
-    marginTop: 92,
-    textAlign: "center",
-    fontSize: 30,
-    color: colors.black,
-    alignItems: "center",
-    fontFamily: "Roboto-Medium",
-  },
-  input: {
-    borderWidth: 1,
-    borderColor: colors.borderInput,
-    height: 50,
-    padding: 16,
-    borderRadius: 8,
-    backgroundColor: colors.background,
-    marginTop: 16,
-    marginHorizontal: 16,
-  },
-  btn: {
-    borderRadius: 100,
-    marginTop: 43,
-    padding: 16,
-    justifyContent: "center",
-    marginHorizontal: 16,
-    alignItems: "center",
-    backgroundColor: colors.orange,
-  },
-  btnTitle: {
-    color: colors.white,
-    fontSize: 16,
-  },
-  signInText: {
-    fontSize: 16,
-    color: colors.blue,
-    textAlign: "center",
-    marginTop: 16,
   },
 });
