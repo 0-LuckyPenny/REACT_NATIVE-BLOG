@@ -1,5 +1,4 @@
 import React, { useState, useEffect } from "react";
-import { AntDesign } from "@expo/vector-icons";
 import {
   StyleSheet,
   View,
@@ -36,9 +35,9 @@ export default function App() {
           <KeyboardAvoidingView
             behavior={Platform.OS === "ios" ? "padding" : "height"}
             keyboardVerticalOffset={-100}>
-            {/* <RegistrationScreen /> */}
+            <RegistrationScreen />
 
-            <LoginScreen />
+            {/* <LoginScreen /> */}
           </KeyboardAvoidingView>
         </ImageBackground>
       </View>

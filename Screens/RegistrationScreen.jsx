@@ -39,7 +39,7 @@ export default function RegistrationScreen() {
       <TextInput
         style={{ ...styles.input, marginTop: 32 }}
         placeholder='Login'
-        placeholderTextColor='BDBDBD'
+        placeholderTextColor={colors.placeholderTextColor}
         onFocus={() => setIsShowKeyboard(true)}
         value={state.login}
         onChangeText={(value) =>
@@ -49,7 +49,7 @@ export default function RegistrationScreen() {
       <TextInput
         style={styles.input}
         placeholder='Email'
-        placeholderTextColor='BDBDBD'
+        placeholderTextColor={colors.placeholderTextColor}
         onFocus={() => setIsShowKeyboard(true)}
         value={state.email}
         onChangeText={(value) =>
@@ -59,7 +59,7 @@ export default function RegistrationScreen() {
       <TextInput
         style={styles.input}
         placeholder='Password'
-        placeholderTextColor='BDBDBD'
+        placeholderTextColor={colors.placeholderTextColor}
         maxLength={16}
         secureTextEntry={true}
         onFocus={() => setIsShowKeyboard(true)}
