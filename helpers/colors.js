@@ -4,6 +4,6 @@ export const colors = {
   background: "#F6F6F6",
   white: "#fff",
   black: "#212121",
-  placeholderTextColor: "#BDBDBD",
-  borderInput: "#E8E8E8",
+  textColor: "#BDBDBD",
+  borderColor: "#E8E8E8",
 };

@@ -44,7 +44,7 @@ export default function LoginScreen({ navigation }) {
               <TextInput
                 style={{ ...styles.input, marginTop: 32 }}
                 placeholder='Email'
-                placeholderTextColor={colors.placeholderTextColor}
+                placeholderTextColor={colors.textColor}
                 onFocus={() => setIsShowKeyboard(true)}
                 value={state.email}
                 onChangeText={(value) =>
@@ -54,7 +54,7 @@ export default function LoginScreen({ navigation }) {
               <TextInput
                 style={styles.input}
                 placeholder='Password'
-                placeholderTextColor={colors.placeholderTextColor}
+                placeholderTextColor={colors.textColor}
                 maxLength={16}
                 secureTextEntry={true}
                 onFocus={() => setIsShowKeyboard(true)}
@@ -114,7 +114,7 @@ const styles = StyleSheet.create({
   },
   input: {
     borderWidth: 1,
-    borderColor: colors.borderInput,
+    borderColor: colors.borderColor,
     height: 50,
     padding: 16,
     borderRadius: 8,
