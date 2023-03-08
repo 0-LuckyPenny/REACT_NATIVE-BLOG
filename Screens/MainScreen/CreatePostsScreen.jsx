@@ -30,8 +30,9 @@ export default function CreatePostsScreen() {
       <Text style={styles.subTitle}>Upload photo</Text>
       <View style={styles.formContainer}>
         <TextInput
-          style={styles.input}
+          style={{ ...styles.input, fontFamily: "Roboto-Medium" }}
           placeholder='Name...'
+          placeholderTextColor={colors.textColor}
           // value={state.namePlace}
           // onChangeText={(value) =>
           //   setState((prevState) => ({ ...prevState, namePlace: value }))
@@ -47,8 +48,9 @@ export default function CreatePostsScreen() {
             style={styles.placeIcon}
           />
           <TextInput
-            style={{ ...styles.input, position: "relative" }}
+            style={{ position: "relative", ...styles.input }}
             placeholder='Location...'
+            placeholderTextColor={colors.textColor}
             // value={state.place}
             // onChangeText={(value) =>
             //   setState((prevState) => ({ ...prevState, place: value }))
@@ -119,17 +121,16 @@ const styles = StyleSheet.create({
     paddingTop: 16,
     paddingBottom: 15,
     borderBottomWidth: 1,
+    fontFamily: "Roboto-Regular",
     borderBottomColor: colors.textColor,
-    placeholderTextColor: colors.textColor,
     fontSize: 16,
-    fontFamily: "Roboto-Medium",
     color: colors.black,
   },
   placeIcon: {
     position: "absolute",
-    top: 0,
-    left: 0,
-    bottom: 0,
+    // top: 0,
+    // left: 0,
+    // bottom: 0,
     // marginRight: 4,
   },
   button: {

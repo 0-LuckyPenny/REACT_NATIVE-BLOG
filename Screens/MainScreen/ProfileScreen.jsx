@@ -1,5 +1,8 @@
 import React, { useState } from "react";
 import { AntDesign } from "@expo/vector-icons";
+import { FontAwesome } from "@expo/vector-icons";
+import { SimpleLineIcons } from "@expo/vector-icons";
+import { Ionicons } from "@expo/vector-icons";
 import {
   StyleSheet,
   Text,
@@ -9,36 +12,73 @@ import {
   Keyboard,
   Dimensions,
   ImageBackground,
+  Image,
   Platform,
   KeyboardAvoidingView,
   TouchableWithoutFeedback,
 } from "react-native";
 import { colors } from "../../helpers/colors";
 
-export default function ProfileScreen({ navigation }) {
-  // const [isShowKeyboard, setIsShowKeyboard] = useState(false);
-  // const [state, setState] = useState(initialState);
-
-  // const keyboardHide = () => {
-  //   setIsShowKeyboard(false);
-  //   Keyboard.dismiss(); //hides the keyboard
-  //   setState(initialState); //set values
-  //   console.log(state);
-  // };
-
+export default function ProfileScreen() {
   return (
     <View style={styles.container}>
       <ImageBackground
         style={styles.bgImage}
         source={require("../../assets/images/bg_image.jpg")}>
-        <View style={styles.form}>
-          <View style={styles.userImage}>
-            <TouchableOpacity style={styles.btnAddUserImage}>
-              <AntDesign name='pluscircleo' size={24} color={colors.orange} />
+        <KeyboardAvoidingView
+          behavior={Platform.OS === "ios" ? "padding" : "height"}
+          keyboardVerticalOffset={-100}>
+          <View style={styles.profContainer}>
+            <TouchableOpacity style={styles.exitBtn}>
+              <Ionicons
+                name='exit-outline'
+                size={24}
+                color={colors.textColor}
+              />
             </TouchableOpacity>
+
+            <View style={styles.userImage}>
+              <ImageBackground
+                sourse={require("../../assets/images/imageProf.jpg")}
+              />
+              <TouchableOpacity style={styles.btnAddUserImage}>
+                <AntDesign name='pluscircleo' size={24} color={colors.orange} />
+              </TouchableOpacity>
+            </View>
+
+            <Text style={styles.title}>Natali Romanova</Text>
+
+            <View style={styles.post}>
+              <View style={styles.imagePost}>
+                <ImageBackground
+                  sourse={require("../../assets/images/imagePost2.jpg")}
+                />
+              </View>
+              <Text style={styles.namePost}>Les</Text>
+
+              <View style={{ flexDirection: "row", marginTop: 8 }}>
+                <View style={styles.commentCont}>
+                  <FontAwesome name='comment' size={24} color={colors.orange} />
+                  <Text style={styles.commentQuant}>8</Text>
+                </View>
+
+                <View style={styles.likesCont}>
+                  <AntDesign name='like2' size={24} color={colors.orange} />
+                  <Text style={styles.likesQuant}>153</Text>
+                </View>
+
+                <View style={styles.locationCont}>
+                  <SimpleLineIcons
+                    name='location-pin'
+                    size={24}
+                    color={colors.textColor}
+                  />
+                  <Text style={styles.locationName}>Ukraine</Text>
+                </View>
+              </View>
+            </View>
           </View>
-          <Text style={styles.title}>Natali</Text>
-        </View>
+        </KeyboardAvoidingView>
       </ImageBackground>
     </View>
   );
@@ -52,16 +92,23 @@ const styles = StyleSheet.create({
   bgImage: {
     flex: 1,
     resizeMode: "cover",
-    // justifyContent: "flex-end",
-    // width: Dimensions.get("window").width,
-    // height: Dimensions.get("window").height,
+    width: Dimensions.get("window").width,
+    height: Dimensions.get("window").height,
   },
-  form: {
+  profContainer: {
     position: "relative",
+    // marginHorizontal: 16,
+    marginTop: 103,
     backgroundColor: colors.white,
     borderTopLeftRadius: 25,
     borderTopRightRadius: 25,
-    paddingBottom: 45,
+    width: "100%",
+    height: "100%",
+  },
+  exitBtn: {
+    marginTop: 22,
+    alignItems: "flex-end",
+    marginHorizontal: 16,
   },
   userImage: {
     position: "absolute",
@@ -78,41 +125,58 @@ const styles = StyleSheet.create({
     right: -12.5,
     maxWidth: 25,
   },
-  formTitle: {
-    marginTop: 92,
+  title: {
+    marginTop: 46,
     textAlign: "center",
     fontSize: 30,
     color: colors.black,
     alignItems: "center",
     fontFamily: "Roboto-Medium",
   },
-  input: {
-    borderWidth: 1,
-    borderColor: colors.borderColor,
-    height: 50,
-    padding: 16,
+  post: {
+    marginTop: 32,
+    marginHorizontal: 16,
+    color: colors.black,
+  },
+  imagePost: {
+    height: 240,
     borderRadius: 8,
-    backgroundColor: colors.background,
-    marginTop: 16,
-    marginHorizontal: 16,
+    width: 200,
   },
-  btn: {
-    borderRadius: 100,
-    marginTop: 43,
-    padding: 16,
-    justifyContent: "center",
-    marginHorizontal: 16,
+  namePost: {
+    fontSize: 16,
+    fontFamily: "Roboto-Medium",
+    marginTop: 8,
+  },
+  commentCont: {
+    flexDirection: "row",
     alignItems: "center",
-    backgroundColor: colors.orange,
   },
-  btnTitle: {
-    color: colors.white,
+  commentBtn: {},
+  commentQuant: {
+    marginLeft: 8,
     fontSize: 16,
   },
-  btnRedirect: {
+  likesCont: {
+    marginLeft: 24,
+    flexDirection: "row",
+    alignItems: "center",
+  },
+  likesBtn: {},
+  likesQuant: {
+    marginLeft: 6,
     fontSize: 16,
-    color: colors.blue,
-    textAlign: "center",
-    marginTop: 16,
+  },
+
+  locationCont: {
+    flexDirection: "row",
+    alignItems: "center",
+  },
+  locationBtn: {},
+  locationName: {
+    marginLeft: 4,
+    fontSize: 16,
+
+    textDecorationLine: "underline",
   },
 });

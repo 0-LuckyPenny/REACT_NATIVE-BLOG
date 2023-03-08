@@ -8,12 +8,14 @@ import ProfileScreen from "./ProfileScreen";
 import CreatePostsScreen from "./CreatePostsScreen";
 import { colors } from "../../helpers/colors";
 import PostsScreen from "./PostsScreen";
+import CommentsScreen from "./CommentsScreen";
 
 const MainTab = createBottomTabNavigator();
 
 export default function Home() {
   return (
     <MainTab.Navigator
+      initialRouteName='Posts'
       screenOptions={{
         tabBarShowLabel: false,
       }}
@@ -40,6 +42,10 @@ export default function Home() {
         name='Posts'
         component={PostsScreen}
         options={{
+          headerTitleStyle: {
+            alignItems: "center",
+            backgroundColor: "tomato",
+          },
           tabBarIcon: ({ focused, color, size }) => (
             <AntDesign name='appstore-o' size={size} color={color} />
           ),
@@ -79,6 +85,22 @@ export default function Home() {
         options={{
           tabBarIcon: ({ focused, color, size }) => (
             <Feather name='user' size={size} color={color} />
+          ),
+        }}
+      />
+      <MainTab.Screen
+        name='Comments'
+        component={CommentsScreen}
+        options={{
+          headerLeft: () => (
+            <TouchableOpacity onPress={() => {}}>
+              <Ionicons
+                name='ios-arrow-back'
+                size={24}
+                color='black'
+                style={{ marginLeft: 16 }}
+              />
+            </TouchableOpacity>
           ),
         }}
       />
