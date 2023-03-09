@@ -1,12 +1,9 @@
 import React from "react";
-import { Ionicons } from "@expo/vector-icons";
+import { Ionicons, Feather, AntDesign } from "@expo/vector-icons";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
-import { View, Text, StyleSheet, TouchableOpacity } from "react-native";
-import { Feather } from "@expo/vector-icons";
-import { AntDesign } from "@expo/vector-icons";
+import { TouchableOpacity } from "react-native";
 import ProfileScreen from "./ProfileScreen";
 import CreatePostsScreen from "./CreatePostsScreen";
-import { colors } from "../../helpers/colors";
 import PostsScreen from "./PostsScreen";
 import CommentsScreen from "./CommentsScreen";
 
@@ -107,11 +104,3 @@ export default function Home() {
     </MainTab.Navigator>
   );
 }
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    justifyContent: "center",
-    alignItems: "center",
-  },
-});

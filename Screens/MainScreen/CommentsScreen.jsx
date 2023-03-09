@@ -7,22 +7,26 @@ export default function CommentsScreen() {
     <View style={styles.container}>
       <View style={styles.postContainer}>
         <ImageBackground
+          // resizeMode={"cover"}
           style={styles.postImage}
-          source={require("../../assets/images/user.jpg")}
+          source={require("../../assets/images/comentImg.jpg")}
         />
       </View>
       <View style={styles.commentContainer}>
         <View style={styles.imageContainer}>
           <ImageBackground
             style={styles.imageProfile}
-            source={require("../../assets/images/user.jpg")}
+            source={require("../../assets/images/avaComent.jpg")}
           />
         </View>
-        <Text style={styles.commentText}>
-          Really love your most recent photo. Ive been trying to capture the
-          same thing for a few months and would love some tips!
-        </Text>
-        <Text style={styles.data}>09 июня, 2020 | 08:40</Text>
+
+        <View style={styles.textContainer}>
+          <Text style={styles.commentText}>
+            Really love your most recent photo. Ive been trying to capture the
+            same thing for a few months and would love some tips!
+          </Text>
+          <Text style={styles.data}>09 июня, 2020 | 08:40</Text>
+        </View>
       </View>
     </View>
   );
@@ -31,7 +35,6 @@ export default function CommentsScreen() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    justifyContent: "flex-start",
     backgroundColor: colors.white,
   },
   postContainer: {
@@ -39,27 +42,42 @@ const styles = StyleSheet.create({
     marginTop: 32,
   },
   postImage: {
-    position: "relative",
-    width: 60,
-    height: 60,
-    borderRadius: 16,
+    height: 240,
+    width: "100%",
+    overflow: "hidden",
+    borderRadius: 8,
   },
   commentContainer: {
-    position: "absolute",
-    top: 16,
-    left: 60,
-    marginLeft: 8,
+    flexDirection: "row",
     color: colors.black,
+    marginTop: 32,
+    marginHorizontal: 16,
   },
   imageContainer: {},
-  imageProfile: {},
-
+  imageProfile: {
+    borderRadius: 14,
+    height: 28,
+    width: 28,
+  },
+  textContainer: {
+    marginLeft: 16,
+    padding: 16,
+    backgroundColor: colors.background,
+    fontFamily: "Roboto-Regular",
+    borderBottomLeftRadius: 6,
+    borderBottomRightRadius: 6,
+    borderTopRightRadius: 6,
+    borderTopLeftRadius: 6,
+  },
   commentText: {
-    fontFamily: "Roboto-Bold",
     fontSize: 13,
+    color: colors.black,
+    lineHeight: 18,
   },
   data: {
-    fontFamily: "Roboto-Regular",
-    fontSize: 11,
+    fontSize: 10,
+    marginTop: 8,
+    color: colors.textColor,
+    textAlign: "right",
   },
 });

@@ -1,8 +1,10 @@
-import React, { useState } from "react";
-import { AntDesign } from "@expo/vector-icons";
-import { FontAwesome } from "@expo/vector-icons";
-import { SimpleLineIcons } from "@expo/vector-icons";
-import { Ionicons } from "@expo/vector-icons";
+import React from "react";
+import {
+  FontAwesome,
+  Ionicons,
+  SimpleLineIcons,
+  AntDesign,
+} from "@expo/vector-icons";
 import {
   StyleSheet,
   Text,
@@ -12,7 +14,6 @@ import {
   Keyboard,
   Dimensions,
   ImageBackground,
-  Image,
   Platform,
   KeyboardAvoidingView,
   TouchableWithoutFeedback,
@@ -171,6 +172,7 @@ const styles = StyleSheet.create({
   locationCont: {
     flexDirection: "row",
     alignItems: "center",
+    marginLeft: 80,
   },
   locationBtn: {},
   locationName: {
