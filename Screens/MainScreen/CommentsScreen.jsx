@@ -1,12 +1,12 @@
 import React from "react";
-import { View, Text, StyleSheet, ImageBackground } from "react-native";
+import { View, Text, StyleSheet, ImageBackground, Image } from "react-native";
 import { colors } from "../../helpers/colors";
 
 export default function CommentsScreen() {
   return (
     <View style={styles.container}>
       <View style={styles.postContainer}>
-        <ImageBackground
+        <Image
           // resizeMode={"cover"}
           style={styles.postImage}
           source={require("../../assets/images/comentImg.jpg")}
@@ -14,7 +14,7 @@ export default function CommentsScreen() {
       </View>
       <View style={styles.commentContainer}>
         <View style={styles.imageContainer}>
-          <ImageBackground
+          <Image
             style={styles.imageProfile}
             source={require("../../assets/images/avaComent.jpg")}
           />
@@ -44,7 +44,6 @@ const styles = StyleSheet.create({
   postImage: {
     height: 240,
     width: "100%",
-    overflow: "hidden",
     borderRadius: 8,
   },
   commentContainer: {

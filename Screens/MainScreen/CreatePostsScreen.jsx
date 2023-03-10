@@ -1,44 +1,90 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
+import { Fontisto, SimpleLineIcons } from "@expo/vector-icons";
+import { Camera } from "expo-camera";
+import * as MediaLibrary from "expo-media-library";
+import * as Location from "expo-location";
 import {
   View,
   Text,
   StyleSheet,
-  ImageBackground,
+  Image,
   TextInput,
+  TouchableOpacity,
 } from "react-native";
-import { Fontisto } from "@expo/vector-icons";
-import { SimpleLineIcons } from "@expo/vector-icons";
 import { colors } from "../../helpers/colors";
-import { TouchableOpacity } from "react-native-gesture-handler";
 
-export default function CreatePostsScreen() {
+const initialState = {
+  photo: "",
+  name: "",
+  location: "",
+};
+
+export default function CreatePostsScreen({ navigation }) {
+  const [state, setState] = useState(initialState);
+  const [cameraRef, setCameraRef] = useState(null);
+  // const [hasPermission, setHasPermission] = useState(null);
+
+  // useEffect(() => {
+  //   (async () => {
+  //     const { status } = await Camera.requestCameraPermissionsAsync();
+  //     await MediaLibrary.requestPermissionsAsync();
+
+  //     setHasPermission(status === "granted");
+  //   })();
+  // }, []);
+
+  // if (hasPermission === null) {
+  //   return <View />;
+  // }
+  // if (hasPermission === false) {
+  //   return <Text>No access to camera</Text>;
+  // }
+
+  const takePhoto = async () => {
+    const { uri } = await cameraRef.takePictureAsync();
+    const location = await Location.getCurrentPositionAsync();
+    await MediaLibrary.createAssetAsync(uri);
+    setState((prevState) => ({ ...prevState, photo: uri }));
+  };
+
+  const sendPhoto = () => {
+    navigation.navigate("Posts", state);
+    setState(initialState);
+  };
+
   return (
     <View style={styles.container}>
-      <ImageBackground
-        style={styles.postImage}
-        // source={require("../../assets/images/postImg.jpg")}
-      >
-        <View style={styles.circleCont}>
+      <Camera
+        style={styles.camera}
+        ref={(ref) => {
+          setCameraRef(ref);
+        }}>
+        {state.photo && (
+          <View style={styles.photoContainer}>
+            <Image source={state.photo} style={styles.photo} />
+          </View>
+        )}
+        <TouchableOpacity style={styles.button} onPress={takePhoto}>
           <Fontisto
             name='camera'
             size={24}
             color={colors.textColor}
             style={styles.cameraIcon}
           />
-        </View>
-      </ImageBackground>
+        </TouchableOpacity>
+      </Camera>
+
       <Text style={styles.subTitle}>Upload photo</Text>
+
       <View style={styles.formContainer}>
         <TextInput
-          style={{ ...styles.input, fontFamily: "Roboto-Medium" }}
+          style={{ ...styles.input }}
           placeholder='Name...'
           placeholderTextColor={colors.textColor}
-          // value={state.namePlace}
-          // onChangeText={(value) =>
-          //   setState((prevState) => ({ ...prevState, namePlace: value }))
-          // }
-          // onFocus={() => setisShowKeyboard(true)}
-          // onSubmitEditing={keyboardHide}
+          value={state.name}
+          onChangeText={(value) =>
+            setState((prevState) => ({ ...prevState, name: value }))
+          }
         />
         <View style={{ marginTop: 16 }}>
           <SimpleLineIcons
@@ -51,22 +97,14 @@ export default function CreatePostsScreen() {
             style={{ position: "relative", ...styles.input }}
             placeholder='Location...'
             placeholderTextColor={colors.textColor}
-            // value={state.place}
-            // onChangeText={(value) =>
-            //   setState((prevState) => ({ ...prevState, place: value }))
-            // }
-            // secureTextEntry={true}
-            // onFocus={() => setisShowKeyboard(true)}
-            // onSubmitEditing={
-            //   (keyboardHide,
-            //   () => {
-            //     navigation.navigate("Home");
-            //   })
-            // }
-          ></TextInput>
+            value={state.location}
+            onChangeText={(value) =>
+              setState((prevState) => ({ ...prevState, location: value }))
+            }
+          />
         </View>
 
-        <TouchableOpacity style={styles.button}>
+        <TouchableOpacity style={styles.button} onPress={sendPhoto}>
           <Text style={styles.buttonText}>Publish</Text>
         </TouchableOpacity>
       </View>
@@ -80,31 +118,23 @@ const styles = StyleSheet.create({
     backgroundColor: colors.white,
     color: colors.textColor,
   },
-  postImage: {
-    position: "relative",
+  camera: {
+    height: 240,
+    width: "100%",
     justifyContent: "center",
     alignItems: "center",
-    height: 240,
     borderRadius: 8,
     backgroundColor: colors.background,
     borderWidth: 1,
     borderColor: colors.borderColor,
     marginHorizontal: 16,
   },
-  circleCont: {
-    position: "absolute",
-    justifyContent: "center",
-    alignItems: "center",
+  button: {
     width: 60,
     height: 60,
-    backgroundColor: colors.white,
     borderRadius: 30,
-  },
-  cameraIcon: {
-    position: "absolute",
-    color: colors.black,
-    fontFamily: "Roboto-Bold",
-    fontSize: 13,
+    justifyContent: "center",
+    alignItems: "center",
   },
   subTitle: {
     color: colors.textColor,
@@ -128,10 +158,10 @@ const styles = StyleSheet.create({
   },
   placeIcon: {
     position: "absolute",
-    // top: 0,
-    // left: 0,
-    // bottom: 0,
-    // marginRight: 4,
+    top: 0,
+    left: 0,
+    bottom: 0,
+    marginRight: 4,
   },
   button: {
     borderRadius: 100,
@@ -147,4 +177,10 @@ const styles = StyleSheet.create({
     color: colors.textColor,
     fontFamily: "Roboto-Regular",
   },
+  // photoContainer: {
+  //   width: 150,
+  //   height: 150,
+  //   borderColor: "#111",
+  //   borderWidth: 1,
+  // },
 });

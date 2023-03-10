@@ -14,6 +14,7 @@ import {
   Keyboard,
   Dimensions,
   ImageBackground,
+  Image,
   Platform,
   KeyboardAvoidingView,
   TouchableWithoutFeedback,
@@ -50,11 +51,10 @@ export default function ProfileScreen() {
             <Text style={styles.title}>Natali Romanova</Text>
 
             <View style={styles.post}>
-              <View style={styles.imagePost}>
-                <ImageBackground
-                  sourse={require("../../assets/images/imagePost2.jpg")}
-                />
-              </View>
+              <Image
+                style={styles.postImg}
+                sourse={require("../../assets/images/imagePost3.jpg")}
+              />
               <Text style={styles.namePost}>Les</Text>
 
               <View style={{ flexDirection: "row", marginTop: 8 }}>
@@ -139,10 +139,10 @@ const styles = StyleSheet.create({
     marginHorizontal: 16,
     color: colors.black,
   },
-  imagePost: {
+  postImg: {
     height: 240,
+    width: "100%",
     borderRadius: 8,
-    width: 200,
   },
   namePost: {
     fontSize: 16,
@@ -174,11 +174,9 @@ const styles = StyleSheet.create({
     alignItems: "center",
     marginLeft: 80,
   },
-  locationBtn: {},
   locationName: {
     marginLeft: 4,
     fontSize: 16,
-
     textDecorationLine: "underline",
   },
 });
