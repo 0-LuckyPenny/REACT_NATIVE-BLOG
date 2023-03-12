@@ -22,27 +22,16 @@ const initialState = {
 export default function CreatePostsScreen({ navigation }) {
   const [state, setState] = useState(initialState);
   const [cameraRef, setCameraRef] = useState(null);
-  // const [hasPermission, setHasPermission] = useState(null);
-
-  // useEffect(() => {
-  //   (async () => {
-  //     const { status } = await Camera.requestCameraPermissionsAsync();
-  //     await MediaLibrary.requestPermissionsAsync();
-
-  //     setHasPermission(status === "granted");
-  //   })();
-  // }, []);
-
-  // if (hasPermission === null) {
-  //   return <View />;
-  // }
-  // if (hasPermission === false) {
-  //   return <Text>No access to camera</Text>;
-  // }
 
   const takePhoto = async () => {
     const { uri } = await cameraRef.takePictureAsync();
     const location = await Location.getCurrentPositionAsync();
+    const coords = {
+        latitude: location.coords.latitude,
+        longitude: location.coords.longitude,
+      };
+      setState((prevState) => ({ ...prevState, coords}));
+
     await MediaLibrary.createAssetAsync(uri);
     setState((prevState) => ({ ...prevState, photo: uri }));
   };
@@ -127,7 +116,9 @@ const styles = StyleSheet.create({
     backgroundColor: colors.background,
     borderWidth: 1,
     borderColor: colors.borderColor,
-    marginHorizontal: 16,
+    // marginHorizontal: 16,
+    marginRight: 16,
+    marginLeft: 16,
   },
   button: {
     width: 60,

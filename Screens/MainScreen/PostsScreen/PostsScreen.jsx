@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { View, Text, StyleSheet, Image, FlatList } from "react-native";
 import { FontAwesome, SimpleLineIcons } from "@expo/vector-icons";
-import { colors } from "../../helpers/colors";
+import { colors } from "../../../helpers/colors";
 
 export default function PostsScreen({ route }) {
   const [posts, setPosts] = useState([]);
@@ -18,7 +18,7 @@ export default function PostsScreen({ route }) {
       <View style={styles.profileContainer}>
         <Image
           style={styles.userImage}
-          source={require("../../assets/images/user.jpg")}
+          source={require("../../../assets/images/user.jpg")}
         />
         <View style={styles.userData}>
           <Text style={styles.userName}>Natali Romanova</Text>
@@ -28,7 +28,7 @@ export default function PostsScreen({ route }) {
 
       <FlatList
         data={posts}
-        keyExtractor={(itemm, index) => index.toString()}
+        keyExtractor={(item, index) => index.toString()}
         renderItem={({ item }) => (
           <View style={styles.post}>
             <Image sourse={{ uri: item.photo }} style={styles.postImg} />

@@ -4,8 +4,8 @@ import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import { TouchableOpacity } from "react-native";
 import ProfileScreen from "./ProfileScreen";
 import CreatePostsScreen from "./CreatePostsScreen";
-import PostsScreen from "./PostsScreen";
-import CommentsScreen from "./CommentsScreen";
+import PostsScreen from "./PostsScreen/PostsScreen";
+import CommentsScreen from "./PostsScreen/CommentsScreen";
 
 const MainTab = createBottomTabNavigator();
 
