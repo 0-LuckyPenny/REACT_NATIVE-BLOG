@@ -1,6 +1,6 @@
 import React from "react";
 import { View, Text, StyleSheet, ImageBackground, Image } from "react-native";
-import { colors } from "../../../helpers/colors";
+import { colors } from "../../helpers/colors";
 
 export default function CommentsScreen() {
   return (
@@ -9,14 +9,14 @@ export default function CommentsScreen() {
         <Image
           // resizeMode={"cover"}
           style={styles.postImage}
-          source={require("../../../assets/images/comentImg.jpg")}
+          source={require("../../assets/images/comentImg.jpg")}
         />
       </View>
       <View style={styles.commentContainer}>
         <View style={styles.imageContainer}>
           <Image
             style={styles.imageProfile}
-            source={require("../../../assets/images/avaComent.jpg")}
+            source={require("../../assets/images/avaComent.jpg")}
           />
         </View>
 

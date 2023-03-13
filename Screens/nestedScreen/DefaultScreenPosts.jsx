@@ -1,24 +1,25 @@
-import React, { useEffect, useState } from "react";
-import { View, Text, StyleSheet, Image, FlatList } from "react-native";
-import { FontAwesome, SimpleLineIcons } from "@expo/vector-icons";
-import { colors } from "../../../helpers/colors";
+import React, { useEffect, useState } from "react"
+import { View, Text, StyleSheet, Image, FlatList, Button } from "react-native"
+import { FontAwesome, SimpleLineIcons } from "@expo/vector-icons"
 
-export default function PostsScreen({ route }) {
-  const [posts, setPosts] = useState([]);
+import { colors } from "../../helpers/colors"
+
+export default function DefaultScreenPosts({ route, navigation }) {
+  const [posts, setPosts] = useState([])
 
   useEffect(() => {
     if (route.params) {
-      setPosts((prevState) => [...prevState, route.params]);
+      setPosts((prevState) => [...prevState, route.params])
     }
-  }, [route.params]);
-  console.log(posts);
+  }, [route.params])
+  console.log(posts)
 
   return (
     <View style={styles.container}>
       <View style={styles.profileContainer}>
         <Image
           style={styles.userImage}
-          source={require("../../../assets/images/user.jpg")}
+          source={require("../../assets/images/user.jpg")}
         />
         <View style={styles.userData}>
           <Text style={styles.userName}>Natali Romanova</Text>
@@ -39,18 +40,23 @@ export default function PostsScreen({ route }) {
                 flexDirection: "row",
                 marginTop: 8,
                 justifyContent: "space-between",
-              }}>
+              }}
+            >
               <View style={styles.commentCont}>
-                <FontAwesome name='comment' size={24} color={colors.orange} />
+                <Button onPress={() => navigation.navigate("Comments")}>
+                  <FontAwesome name="comment" size={24} color={colors.orange} />
+                </Button>
                 <Text style={styles.commentQuant}>8</Text>
               </View>
 
               <View style={styles.locationCont}>
-                <SimpleLineIcons
-                  name='location-pin'
-                  size={24}
-                  color={colors.textColor}
-                />
+                <Button onPress={() => navigation.navigate("MapScreen")}>
+                  <SimpleLineIcons
+                    name="location-pin"
+                    size={24}
+                    color={colors.textColor}
+                  />
+                </Button>
                 <Text style={styles.locationName}>{item.location}</Text>
               </View>
             </View>
@@ -58,7 +64,7 @@ export default function PostsScreen({ route }) {
         )}
       />
     </View>
-  );
+  )
 }
 
 const styles = StyleSheet.create({
@@ -128,4 +134,4 @@ const styles = StyleSheet.create({
     color: colors.black,
     textDecorationLine: "underline",
   },
-});
+})

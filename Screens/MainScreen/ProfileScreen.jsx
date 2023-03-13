@@ -9,15 +9,12 @@ import {
   StyleSheet,
   Text,
   View,
-  TextInput,
   TouchableOpacity,
-  Keyboard,
   Dimensions,
   ImageBackground,
   Image,
   Platform,
   KeyboardAvoidingView,
-  TouchableWithoutFeedback,
 } from "react-native";
 import { colors } from "../../helpers/colors";
 
