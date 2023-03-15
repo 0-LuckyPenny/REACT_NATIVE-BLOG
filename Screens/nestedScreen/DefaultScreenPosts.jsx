@@ -1,18 +1,16 @@
-import React, { useEffect, useState } from "react"
-import { View, Text, StyleSheet, Image, FlatList, Button } from "react-native"
-import { FontAwesome, SimpleLineIcons } from "@expo/vector-icons"
-
-import { colors } from "../../helpers/colors"
+import React, { useEffect, useState } from "react";
+import { View, Text, StyleSheet, Image, FlatList } from "react-native";
+import { colors } from "../../helpers/colors";
+import Posts from "../../components/Post";
 
 export default function DefaultScreenPosts({ route, navigation }) {
-  const [posts, setPosts] = useState([])
+  const [posts, setPosts] = useState([]);
 
   useEffect(() => {
     if (route.params) {
-      setPosts((prevState) => [...prevState, route.params])
+      setPosts((prevState) => [...prevState, route.params]);
     }
-  }, [route.params])
-  console.log(posts)
+  }, [route.params]);
 
   return (
     <View style={styles.container}>
@@ -31,46 +29,23 @@ export default function DefaultScreenPosts({ route, navigation }) {
         data={posts}
         keyExtractor={(item, index) => index.toString()}
         renderItem={({ item }) => (
-          <View style={styles.post}>
-            <Image sourse={{ uri: item.photo }} style={styles.postImg} />
-            <Text style={styles.namePost}>{item.name}</Text>
-
-            <View
-              style={{
-                flexDirection: "row",
-                marginTop: 8,
-                justifyContent: "space-between",
-              }}
-            >
-              <View style={styles.commentCont}>
-                <Button onPress={() => navigation.navigate("Comments")}>
-                  <FontAwesome name="comment" size={24} color={colors.orange} />
-                </Button>
-                <Text style={styles.commentQuant}>8</Text>
-              </View>
-
-              <View style={styles.locationCont}>
-                <Button onPress={() => navigation.navigate("MapScreen")}>
-                  <SimpleLineIcons
-                    name="location-pin"
-                    size={24}
-                    color={colors.textColor}
-                  />
-                </Button>
-                <Text style={styles.locationName}>{item.location}</Text>
-              </View>
-            </View>
-          </View>
+          <Posts
+            photo={item.photo}
+            name={item.name}
+            comments={10}
+            location={item.location}
+            toComment={() => navigation.navigate("Comments", { item })}
+            toMap={() => navigation.navigate("MapScreen", { item })}
+          />
         )}
       />
     </View>
-  )
+  );
 }
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    justifyContent: "flex-start",
     backgroundColor: colors.white,
   },
   profileContainer: {
@@ -98,40 +73,4 @@ const styles = StyleSheet.create({
     fontFamily: "Roboto-Regular",
     fontSize: 11,
   },
-  post: {
-    marginTop: 32,
-    marginHorizontal: 16,
-    justifyContent: "center",
-    alignItems: "center",
-  },
-  postImg: {
-    height: 240,
-    width: "100%",
-    borderRadius: 8,
-  },
-  namePost: {
-    fontSize: 16,
-    fontFamily: "Roboto-Medium",
-    marginTop: 8,
-    color: colors.black,
-  },
-  commentCont: {
-    flexDirection: "row",
-    alignItems: "center",
-  },
-  commentBtn: {},
-  commentQuant: {
-    marginLeft: 8,
-    fontSize: 16,
-  },
-  locationCont: {
-    flexDirection: "row",
-    alignItems: "center",
-  },
-  locationName: {
-    marginLeft: 4,
-    fontSize: 16,
-    color: colors.black,
-    textDecorationLine: "underline",
-  },
-})
+});

@@ -1,99 +1,155 @@
-import React, { useState, useEffect } from "react"
-import { Fontisto, SimpleLineIcons } from "@expo/vector-icons"
-import { Camera } from "expo-camera"
-import { Input } from "react-native-elements"
-import * as Location from "expo-location"
-import { View, Text, StyleSheet, Image, TouchableOpacity } from "react-native"
-import { colors } from "../../helpers/colors"
+import React, { useState, useEffect } from "react";
+import { SimpleLineIcons } from "@expo/vector-icons";
+import { Input } from "react-native-elements";
+import * as Location from "expo-location";
+import {
+  View,
+  Text,
+  StyleSheet,
+  Image,
+  TouchableOpacity,
+  TouchableWithoutFeedback,
+  Keyboard,
+} from "react-native";
+import { colors } from "../../helpers/colors";
+import PhotoCamera from "../../components/PhotoCamera";
 
 const initialState = {
-  photo: "",
+  photo: null,
   name: "",
   location: "",
-}
+  coords: null,
+};
 
 export default function CreatePostsScreen({ navigation }) {
-  const [state, setState] = useState(initialState)
-  const [cameraRef, setCameraRef] = useState(null)
+  const [state, setState] = useState(initialState);
+  const [cameraRef, setCameraRef] = useState(null);
+
+  useEffect(() => {
+    (async () => {
+      //запит на дозвіл використання геолокації
+      let { status } = await Location.requestForegroundPermissionsAsync();
+      if (status !== "granted") {
+        setErrorMsg("Permission to access location was denied");
+        return;
+      }
+    })();
+  }, []);
 
   const takePhoto = async () => {
-    const { uri } = await cameraRef.takePictureAsync()
-    setState((prevState) => ({ ...prevState, photo: uri }))
-
-    const location = await Location.getCurrentPositionAsync()
+    const { uri } = await cameraRef.takePictureAsync();
+    const location = await Location.getCurrentPositionAsync();
     const coords = {
       latitude: location.coords.latitude,
       longitude: location.coords.longitude,
-    }
-    setState((prevState) => ({ ...prevState, coords }))
-  }
+    };
+    setState((prevState) => ({
+      ...prevState,
+      photo: uri,
+      coords,
+    }));
+  };
 
   const sendPhoto = () => {
-    navigation.navigate("DefaultScreenPosts", state)
-    setState(initialState)
-  }
+    navigation.navigate("DefaultScreen", state);
+    setState(initialState);
+  };
 
   return (
-    <View style={styles.container}>
-      <Camera style={styles.camera} ref={setCameraRef}>
-        <TouchableOpacity style={styles.button} onPress={takePhoto}>
-          <Fontisto
-            name="camera"
-            size={24}
-            color={colors.textColor}
-            style={styles.cameraIcon}
-          />
-        </TouchableOpacity>
-      </Camera>
-
-      {state.photo && (
+    <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
+      <View style={styles.container}>
         <View style={styles.photoContainer}>
-          <Image source={state.photo} style={styles.photo} />
-        </View>
-      )}
-
-      <Text style={styles.subTitle}>Upload photo</Text>
-
-      <View style={styles.formContainer}>
-        <Input
-          style={styles.input}
-          placeholder="Name..."
-          placeholderTextColor={colors.textColor}
-          value={state.name}
-          onChangeText={(value) =>
-            setState((prevState) => ({ ...prevState, name: value }))
-          }
-        />
-        <Input
-          leftIcon={
-            <SimpleLineIcons
-              name="location-pin"
-              size={24}
-              color={colors.textColor}
-              style={{ marginRight: 4 }}
+          {state.photo ? (
+            <Image
+              style={styles.photo}
+              onPress={Keyboard.dismiss}
+              source={{ uri: state.photo }}
             />
-          }
-          style={styles.input}
-          placeholder="Location..."
-          placeholderTextColor={colors.textColor}
-          value={state.location}
-          onChangeText={(value) =>
-            setState((prevState) => ({ ...prevState, location: value }))
-          }
-        />
+          ) : (
+            <PhotoCamera newPhoto={takePhoto} camera={setCameraRef} />
+          )}
+        </View>
 
-        <TouchableOpacity style={styles.button} onPress={sendPhoto}>
-          <Text style={styles.buttonText}>Publish</Text>
+        <TouchableOpacity>
+          {state.photo ? (
+            <View>
+              <Text
+                onPress={() => {
+                  setState((prevState) => ({
+                    ...prevState,
+                    photo: null,
+                  }));
+                }}
+                style={styles.subTitle}
+              >
+                Change photo
+              </Text>
+            </View>
+          ) : (
+            <View>
+              <Text onPress={() => {}} style={styles.subTitle}>
+                Upload photo
+              </Text>
+            </View>
+          )}
         </TouchableOpacity>
+
+        <View style={styles.form}>
+          <Input
+            style={styles.input}
+            placeholder="Name..."
+            placeholderTextColor={colors.textColor}
+            value={state.name}
+            onChangeText={(value) =>
+              setState((prevState) => ({ ...prevState, name: value }))
+            }
+          />
+          <Input
+            leftIcon={
+              <SimpleLineIcons
+                name="location-pin"
+                size={24}
+                color={colors.textColor}
+                style={{ marginRight: 4 }}
+              />
+            }
+            style={styles.input}
+            placeholder="Location..."
+            placeholderTextColor={colors.textColor}
+            value={state.location}
+            onChangeText={(value) =>
+              setState((prevState) => ({ ...prevState, location: value }))
+            }
+          />
+
+          <TouchableOpacity style={styles.button} onPress={sendPhoto}>
+            <Text style={styles.buttonText}>Publish</Text>
+          </TouchableOpacity>
+        </View>
       </View>
-    </View>
-  )
+    </TouchableWithoutFeedback>
+  );
 }
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: colors.white,
+  },
+  photoContainer: {
+    height: 240,
+    backgroundColor: "#F6F6F6",
+    borderColor: "#E8E8E8",
+    borderWidth: 1,
+    borderRadius: 8,
+    justifyContent: "center",
+    alignItems: "center",
+  },
+  photo: {
+    position: "absolute",
+    width: "100%",
+    height: "100%",
+    borderRadius: 8,
   },
   camera: {
     height: 240,
@@ -114,14 +170,21 @@ const styles = StyleSheet.create({
     backgroundColor: colors.white,
     opacity: 0.3,
   },
-  cameraIcon: {},
+  cameraIcon: {
+    width: 60,
+    height: 60,
+    borderRadius: 50,
+    backgroundColor: "#fff",
+    justifyContent: "center",
+    alignItems: "center",
+  },
   subTitle: {
     color: colors.textColor,
     fontSize: 16,
     marginHorizontal: 16,
     marginTop: 8,
   },
-  formContainer: {
+  form: {
     marginHorizontal: 16,
     marginTop: 16,
   },
@@ -149,10 +212,4 @@ const styles = StyleSheet.create({
     color: colors.textColor,
     fontFamily: "Roboto-Regular",
   },
-  // photoContainer: {
-  //   width: 150,
-  //   height: 150,
-  //   borderColor: "#111",
-  //   borderWidth: 1,
-  // },
-})
+});

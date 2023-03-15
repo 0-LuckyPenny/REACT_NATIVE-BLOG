@@ -1,19 +1,19 @@
-import React from "react"
-import { createStackNavigator } from "@react-navigation/stack"
-import { createBottomTabNavigator } from "@react-navigation/bottom-tabs"
-import { TouchableOpacity } from "react-native"
+import React from "react";
+import { createStackNavigator } from "@react-navigation/stack";
+import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
+import { TouchableOpacity } from "react-native";
 
-import { Ionicons, Feather, AntDesign } from "@expo/vector-icons"
-import { colors } from "./helpers/colors"
+import { Ionicons, Feather, AntDesign } from "@expo/vector-icons";
+import { colors } from "./helpers/colors";
 
-import RegistrationScreen from "./Screens/Auth/RegistrationScreen"
-import LoginScreen from "./Screens/Auth/LoginScreen"
-import ProfileScreen from "./Screens/MainScreen/ProfileScreen"
-import CreatePostsScreen from "./Screens/MainScreen/CreatePostsScreen"
-import PostsScreen from "./Screens/MainScreen/PostsScreen"
+import RegistrationScreen from "./Screens/Auth/RegistrationScreen";
+import LoginScreen from "./Screens/Auth/LoginScreen";
+import ProfileScreen from "./Screens/MainScreen/ProfileScreen";
+import CreatePostsScreen from "./Screens/MainScreen/CreatePostsScreen";
+import PostsScreen from "./Screens/MainScreen/PostsScreen";
 
-const AuthStack = createStackNavigator()
-const MainTab = createBottomTabNavigator()
+const AuthStack = createStackNavigator();
+const MainTab = createBottomTabNavigator();
 
 export const useRoute = (isAuth) => {
   if (!isAuth) {
@@ -30,7 +30,7 @@ export const useRoute = (isAuth) => {
           component={RegistrationScreen}
         />
       </AuthStack.Navigator>
-    )
+    );
   }
   return (
     <MainTab.Navigator
@@ -44,8 +44,8 @@ export const useRoute = (isAuth) => {
         component={PostsScreen}
         options={{
           title: "Posts",
+          headerTitleAlign: "center",
           headerTitleStyle: {
-            textAlign: "center",
             fontFamily: "Roboto-Medium",
             fontSize: 17,
             lineHeight: 22,
@@ -71,8 +71,8 @@ export const useRoute = (isAuth) => {
         component={CreatePostsScreen}
         options={{
           title: "Create post",
+          headerTitleAlign: "center",
           headerTitleStyle: {
-            textAlign: "center",
             fontFamily: "Roboto-Medium",
             fontSize: 17,
             lineHeight: 22,
@@ -104,5 +104,5 @@ export const useRoute = (isAuth) => {
         }}
       />
     </MainTab.Navigator>
-  )
-}
+  );
+};

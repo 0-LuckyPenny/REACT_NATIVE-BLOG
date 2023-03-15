@@ -1,6 +1,14 @@
 import React from "react";
-import { View, Text, StyleSheet, ImageBackground, Image } from "react-native";
+import {
+  View,
+  Text,
+  StyleSheet,
+  Image,
+  TextInput,
+  TouchableOpacity,
+} from "react-native";
 import { colors } from "../../helpers/colors";
+import { AntDesign } from "@expo/vector-icons";
 
 export default function CommentsScreen() {
   return (
@@ -26,6 +34,19 @@ export default function CommentsScreen() {
             same thing for a few months and would love some tips!
           </Text>
           <Text style={styles.data}>09 июня, 2020 | 08:40</Text>
+        </View>
+
+        <View style={styles.inputContainer}>
+          <TextInput
+            style={styles.input}
+            inputMode={"text"}
+            placeholder={"Коментувати..."}
+            placeholderTextColor={"#BDBDBD"}
+            cursorColor={"#FF6C00"}
+          />
+          <TouchableOpacity style={styles.sendBTN} activeOpacity={0.6}>
+            <AntDesign name="arrowup" size={24} color="#fff" />
+          </TouchableOpacity>
         </View>
       </View>
     </View>
@@ -78,5 +99,30 @@ const styles = StyleSheet.create({
     marginTop: 8,
     color: colors.textColor,
     textAlign: "right",
+  },
+  inputContainer: {
+    marginHorizontal: 16,
+    marginBottom: 16,
+  },
+  input: {
+    paddingLeft: 16,
+    height: 50,
+    borderRadius: 100,
+    borderWidth: 1,
+    backgroundColor: "#F6F6F6",
+    borderColor: "#E8E8E8",
+    fontFamily: "Inter-500",
+    fontSize: 16,
+  },
+  sendBTN: {
+    position: "absolute",
+    top: 8,
+    end: 8,
+    alignItems: "center",
+    justifyContent: "center",
+    width: 34,
+    height: 34,
+    backgroundColor: "#FF6C00",
+    borderRadius: 50,
   },
 });

@@ -19,6 +19,7 @@ const initialState = {
   login: "",
   email: "",
   password: "",
+  avatar: "",
 };
 
 export default function RegistrationScreen({ navigation }) {
@@ -37,15 +38,17 @@ export default function RegistrationScreen({ navigation }) {
       <View style={styles.container}>
         <ImageBackground
           style={styles.bgImage}
-          source={require("../../assets/images/bg_image.jpg")}>
+          source={require("../../assets/images/bg_image.jpg")}
+        >
           <KeyboardAvoidingView
             behavior={Platform.OS === "ios" ? "padding" : "height"}
-            keyboardVerticalOffset={-100}>
+            keyboardVerticalOffset={-100}
+          >
             <View style={styles.form}>
               <View style={styles.userImage}>
                 <TouchableOpacity style={styles.btnAddUserImage}>
                   <AntDesign
-                    name='pluscircleo'
+                    name="pluscircleo"
                     size={24}
                     color={colors.orange}
                   />
@@ -54,7 +57,7 @@ export default function RegistrationScreen({ navigation }) {
               <Text style={styles.formTitle}>Sign in</Text>
               <TextInput
                 style={{ ...styles.input, marginTop: 32 }}
-                placeholder='Login'
+                placeholder="Login"
                 placeholderTextColor={colors.textColor}
                 onFocus={() => setIsShowKeyboard(true)}
                 value={state.login}
@@ -64,7 +67,7 @@ export default function RegistrationScreen({ navigation }) {
               />
               <TextInput
                 style={styles.input}
-                placeholder='Email'
+                placeholder="Email"
                 placeholderTextColor={colors.textColor}
                 onFocus={() => setIsShowKeyboard(true)}
                 value={state.email}
@@ -74,7 +77,7 @@ export default function RegistrationScreen({ navigation }) {
               />
               <TextInput
                 style={styles.input}
-                placeholder='Password'
+                placeholder="Password"
                 placeholderTextColor={colors.textColor}
                 maxLength={16}
                 secureTextEntry={true}
@@ -90,7 +93,8 @@ export default function RegistrationScreen({ navigation }) {
               <TouchableOpacity
                 activeOpacity={0.8}
                 style={styles.btn}
-                onPress={keyboardHide}>
+                onPress={keyboardHide}
+              >
                 <Text style={styles.btnTitle}>Sign in</Text>
               </TouchableOpacity>
               <TouchableOpacity onPress={() => navigation.navigate("Login")}>
