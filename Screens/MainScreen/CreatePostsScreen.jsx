@@ -96,7 +96,7 @@ export default function CreatePostsScreen({ navigation }) {
 
         <View style={styles.form}>
           <Input
-            style={styles.input}
+            style={{ ...styles.input, fontFamily: "Roboto-Medium" }}
             placeholder="Name..."
             placeholderTextColor={colors.textColor}
             value={state.name}
@@ -113,7 +113,7 @@ export default function CreatePostsScreen({ navigation }) {
                 style={{ marginRight: 4 }}
               />
             }
-            style={styles.input}
+            style={{ ...styles.input, fontFamily: "Roboto-Regular" }}
             placeholder="Location..."
             placeholderTextColor={colors.textColor}
             value={state.location}
@@ -122,8 +122,21 @@ export default function CreatePostsScreen({ navigation }) {
             }
           />
 
-          <TouchableOpacity style={styles.button} onPress={sendPhoto}>
-            <Text style={styles.buttonText}>Publish</Text>
+          <TouchableOpacity
+            style={{
+              ...styles.button,
+              backgroundColor: state.photo ? colors.orange : colors.background,
+            }}
+            onPress={sendPhoto}
+          >
+            <Text
+              style={{
+                ...styles.buttonText,
+                color: state.photo ? colors.white : colors.textColor,
+              }}
+            >
+              Publish
+            </Text>
           </TouchableOpacity>
         </View>
       </View>
@@ -137,9 +150,10 @@ const styles = StyleSheet.create({
     backgroundColor: colors.white,
   },
   photoContainer: {
+    marginHorizontal: 16,
     height: 240,
-    backgroundColor: "#F6F6F6",
-    borderColor: "#E8E8E8",
+    backgroundColor: colors.background,
+    borderColor: colors.borderColor,
     borderWidth: 1,
     borderRadius: 8,
     justifyContent: "center",
@@ -150,33 +164,6 @@ const styles = StyleSheet.create({
     width: "100%",
     height: "100%",
     borderRadius: 8,
-  },
-  camera: {
-    height: 240,
-    width: 360,
-    justifyContent: "center",
-    alignItems: "center",
-    borderRadius: 8,
-    borderWidth: 1,
-    borderColor: colors.borderColor,
-    marginHorizontal: 16,
-  },
-  button: {
-    width: 60,
-    height: 60,
-    borderRadius: "50%",
-    justifyContent: "center",
-    alignItems: "center",
-    backgroundColor: colors.white,
-    opacity: 0.3,
-  },
-  cameraIcon: {
-    width: 60,
-    height: 60,
-    borderRadius: 50,
-    backgroundColor: "#fff",
-    justifyContent: "center",
-    alignItems: "center",
   },
   subTitle: {
     color: colors.textColor,
@@ -193,9 +180,8 @@ const styles = StyleSheet.create({
     paddingTop: 16,
     paddingLeft: 0,
     paddingBottom: 15,
-    fontFamily: "Roboto-Regular",
-    borderBottomColor: colors.textColor,
     fontSize: 16,
+    borderBottomColor: colors.textColor,
     color: colors.black,
   },
   button: {
@@ -205,11 +191,9 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     alignItems: "center",
     color: colors.black,
-    backgroundColor: colors.background,
   },
   buttonText: {
-    fontSize: 16,
-    color: colors.textColor,
     fontFamily: "Roboto-Regular",
+    fontSize: 16,
   },
 });

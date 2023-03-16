@@ -47,11 +47,7 @@ export default function RegistrationScreen({ navigation }) {
             <View style={styles.form}>
               <View style={styles.userImage}>
                 <TouchableOpacity style={styles.btnAddUserImage}>
-                  <AntDesign
-                    name="pluscircleo"
-                    size={24}
-                    color={colors.orange}
-                  />
+                  <AntDesign name="plus" size={13} color={colors.orange} />
                 </TouchableOpacity>
               </View>
               <Text style={styles.formTitle}>Sign in</Text>
@@ -140,9 +136,17 @@ const styles = StyleSheet.create({
   },
   btnAddUserImage: {
     position: "absolute",
+    // transform: [{ rotate: "-45deg" }],
     bottom: 14,
     right: -12.5,
-    maxWidth: 25,
+    width: 25,
+    height: 25,
+    alignItems: "center",
+    justifyContent: "center",
+    borderRadius: 12.5,
+    borderWidth: 1,
+    borderColor: colors.orange,
+    backgroundColor: colors.white,
   },
   formTitle: {
     marginTop: 92,

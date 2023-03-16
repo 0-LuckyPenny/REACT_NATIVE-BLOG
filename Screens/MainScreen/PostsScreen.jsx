@@ -9,7 +9,18 @@ const NestedScreen = createStackNavigator();
 
 export default function PostsScreen() {
   return (
-    <NestedScreen.Navigator>
+    <NestedScreen.Navigator
+      screenOptions={{
+        tabBarShowLabel: false,
+        headerTitleAlign: "center",
+        headerTitleStyle: {
+          fontFamily: "Roboto-Medium",
+          fontSize: 17,
+          lineHeight: 22,
+          color: colors.black,
+        },
+      }}
+    >
       <NestedScreen.Screen
         options={{ headerShown: false }}
         name="DefaultScreen"
@@ -19,29 +30,28 @@ export default function PostsScreen() {
         name="Comments"
         component={CommentsScreen}
         options={({ navigation }) => ({
-          headerTitleAlign: "center",
           headerLeft: () => (
             <Ionicons
               onPress={() => navigation.goBack()}
-              name="ios-arrow-back"
+              name="arrow-back"
               size={24}
-              color={colors.textColor}
+              color={colors.iconColor}
               style={{ marginLeft: 16 }}
             />
           ),
         })}
       />
       <NestedScreen.Screen
-        name="MapScreen"
+        name="Map"
         component={MapScreen}
         options={({ navigation }) => ({
-          headerTitleAlign: "center",
           headerLeft: () => (
-            <AntDesign
+            <Ionicons
               onPress={() => navigation.goBack()}
-              name="arrowleft"
+              name="arrow-back"
               size={24}
-              color={colors.textColor}
+              color={colors.iconColor}
+              style={{ marginLeft: 16 }}
             />
           ),
         })}

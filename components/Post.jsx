@@ -2,7 +2,7 @@ import { View, Text, StyleSheet, Image, TouchableOpacity } from "react-native";
 import { FontAwesome, SimpleLineIcons, AntDesign } from "@expo/vector-icons";
 import { colors } from "../helpers/colors";
 
-export default function Posts({
+export default function Post({
   photo,
   name,
   comments,
@@ -11,10 +11,9 @@ export default function Posts({
   toMap,
   toComment,
 }) {
-  console.log(photo);
   return (
     <View style={styles.post}>
-      <Image sourse={{ uri: photo }} style={styles.postImg} />
+      <Image source={{ uri: photo }} style={styles.postImg} />
       <Text style={styles.postName}>{name}</Text>
 
       <View style={styles.description}>

@@ -1,10 +1,5 @@
-import React from "react";
-import {
-  FontAwesome,
-  Ionicons,
-  SimpleLineIcons,
-  AntDesign,
-} from "@expo/vector-icons";
+import React, { useEffect, useState } from "react";
+import { Ionicons, AntDesign } from "@expo/vector-icons";
 import {
   StyleSheet,
   Text,
@@ -15,66 +10,65 @@ import {
   Image,
   Platform,
   KeyboardAvoidingView,
+  FlatList,
 } from "react-native";
 import { colors } from "../../helpers/colors";
+import Post from "../../components/Post";
 
-export default function ProfileScreen() {
+export default function ProfileScreen({ route, navigation }) {
+  const [posts, setPosts] = useState([]);
+
+  useEffect(() => {
+    if (route.params) {
+      setPosts((prevState) => [...prevState, route.params]);
+    }
+  }, [route.params]);
+
   return (
     <View style={styles.container}>
       <ImageBackground
         style={styles.bgImage}
-        source={require("../../assets/images/bg_image.jpg")}>
+        source={require("../../assets/images/bg_image.jpg")}
+      >
         <KeyboardAvoidingView
           behavior={Platform.OS === "ios" ? "padding" : "height"}
-          keyboardVerticalOffset={-100}>
-          <View style={styles.profContainer}>
-            <TouchableOpacity style={styles.exitBtn}>
-              <Ionicons
-                name='exit-outline'
-                size={24}
-                color={colors.textColor}
-              />
-            </TouchableOpacity>
-
-            <View style={styles.userImage}>
-              <ImageBackground
-                sourse={require("../../assets/images/imageProf.jpg")}
+          keyboardVerticalOffset={-100}
+        >
+          <View style={styles.profileContainer}>
+            <Ionicons
+              name="exit-outline"
+              size={24}
+              color={colors.textColor}
+              style={styles.logoutIcon}
+              onPress={() => {}}
+            />
+            <View style={styles.avatarBox}>
+              <Image
+                style={styles.userImage}
+                source={require("../../assets/images/imageProf.jpg")}
               />
               <TouchableOpacity style={styles.btnAddUserImage}>
-                <AntDesign name='pluscircleo' size={24} color={colors.orange} />
+                <AntDesign name="plus" size={13} color={colors.textColor} />
               </TouchableOpacity>
             </View>
 
-            <Text style={styles.title}>Natali Romanova</Text>
+            <Text style={styles.title}>Babkin Ruslan</Text>
 
-            <View style={styles.post}>
-              <Image
-                style={styles.postImg}
-                sourse={require("../../assets/images/imagePost3.jpg")}
-              />
-              <Text style={styles.namePost}>Les</Text>
-
-              <View style={{ flexDirection: "row", marginTop: 8 }}>
-                <View style={styles.commentCont}>
-                  <FontAwesome name='comment' size={24} color={colors.orange} />
-                  <Text style={styles.commentQuant}>8</Text>
-                </View>
-
-                <View style={styles.likesCont}>
-                  <AntDesign name='like2' size={24} color={colors.orange} />
-                  <Text style={styles.likesQuant}>153</Text>
-                </View>
-
-                <View style={styles.locationCont}>
-                  <SimpleLineIcons
-                    name='location-pin'
-                    size={24}
-                    color={colors.textColor}
-                  />
-                  <Text style={styles.locationName}>Ukraine</Text>
-                </View>
-              </View>
-            </View>
+            <FlatList
+              data={posts}
+              keyExtractor={(item, index) => index.toString()}
+              renderItem={({ item }) => (
+                <Post
+                  photo={item.photo}
+                  name={item.name}
+                  comments={10}
+                  likes={item.likes}
+                  location={item.location}
+                  toComment={() => navigation.navigate("Comments", { item })}
+                  toMap={() => navigation.navigate("Map", { item })}
+                />
+              )}
+            />
           </View>
         </KeyboardAvoidingView>
       </ImageBackground>
@@ -93,9 +87,9 @@ const styles = StyleSheet.create({
     width: Dimensions.get("window").width,
     height: Dimensions.get("window").height,
   },
-  profContainer: {
+  profileContainer: {
     position: "relative",
-    // marginHorizontal: 16,
+    alignItems: "flex-end",
     marginTop: 103,
     backgroundColor: colors.white,
     borderTopLeftRadius: 25,
@@ -103,77 +97,41 @@ const styles = StyleSheet.create({
     width: "100%",
     height: "100%",
   },
-  exitBtn: {
+  logoutIcon: {
     marginTop: 22,
-    alignItems: "flex-end",
     marginHorizontal: 16,
   },
-  userImage: {
+  avatarBox: {
     position: "absolute",
-    top: -60,
-    right: Dimensions.get("window").width / 2 - 60,
     width: 120,
     height: 120,
+    top: -60,
+    right: Dimensions.get("window").width / 2 - 60,
+  },
+  userImage: {
     borderRadius: 16,
     backgroundColor: colors.background,
   },
   btnAddUserImage: {
     position: "absolute",
+    transform: [{ rotate: "-45deg" }],
     bottom: 14,
     right: -12.5,
-    maxWidth: 25,
+    width: 25,
+    height: 25,
+    alignItems: "center",
+    justifyContent: "center",
+    borderRadius: 12.5,
+    borderWidth: 1,
+    borderColor: colors.borderColor,
+    backgroundColor: colors.white,
   },
   title: {
     marginTop: 46,
-    textAlign: "center",
     fontSize: 30,
     color: colors.black,
-    alignItems: "center",
     fontFamily: "Roboto-Medium",
-  },
-  post: {
-    marginTop: 32,
-    marginHorizontal: 16,
-    color: colors.black,
-  },
-  postImg: {
-    height: 240,
-    width: "100%",
-    borderRadius: 8,
-  },
-  namePost: {
-    fontSize: 16,
-    fontFamily: "Roboto-Medium",
-    marginTop: 8,
-  },
-  commentCont: {
-    flexDirection: "row",
-    alignItems: "center",
-  },
-  commentBtn: {},
-  commentQuant: {
-    marginLeft: 8,
-    fontSize: 16,
-  },
-  likesCont: {
-    marginLeft: 24,
-    flexDirection: "row",
-    alignItems: "center",
-  },
-  likesBtn: {},
-  likesQuant: {
-    marginLeft: 6,
-    fontSize: 16,
-  },
-
-  locationCont: {
-    flexDirection: "row",
-    alignItems: "center",
-    marginLeft: 80,
-  },
-  locationName: {
-    marginLeft: 4,
-    fontSize: 16,
-    textDecorationLine: "underline",
+    lineHeight: 35,
+    alignSelf: "center",
   },
 });

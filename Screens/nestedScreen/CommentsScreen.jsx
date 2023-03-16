@@ -6,49 +6,39 @@ import {
   Image,
   TextInput,
   TouchableOpacity,
+  ScrollView,
 } from "react-native";
 import { colors } from "../../helpers/colors";
 import { AntDesign } from "@expo/vector-icons";
+import Comment from "../../components/Comment";
 
-export default function CommentsScreen() {
+export default function CommentsScreen({ route }) {
   return (
     <View style={styles.container}>
-      <View style={styles.postContainer}>
-        <Image
-          // resizeMode={"cover"}
-          style={styles.postImage}
-          source={require("../../assets/images/comentImg.jpg")}
-        />
-      </View>
-      <View style={styles.commentContainer}>
-        <View style={styles.imageContainer}>
+      <ScrollView>
+        <View style={styles.commentList}>
           <Image
-            style={styles.imageProfile}
-            source={require("../../assets/images/avaComent.jpg")}
+            style={styles.postImage}
+            source={{ uri: route.params.item.photo }}
           />
-        </View>
-
-        <View style={styles.textContainer}>
-          <Text style={styles.commentText}>
-            Really love your most recent photo. Ive been trying to capture the
-            same thing for a few months and would love some tips!
-          </Text>
-          <Text style={styles.data}>09 июня, 2020 | 08:40</Text>
-        </View>
-
-        <View style={styles.inputContainer}>
-          <TextInput
-            style={styles.input}
-            inputMode={"text"}
-            placeholder={"Коментувати..."}
-            placeholderTextColor={"#BDBDBD"}
-            cursorColor={"#FF6C00"}
+          <Comment
+            userAva={require("../../assets/images/avaComent.jpg")}
+            comment={5454}
+            date={55454}
           />
-          <TouchableOpacity style={styles.sendBTN} activeOpacity={0.6}>
-            <AntDesign name="arrowup" size={24} color="#fff" />
-          </TouchableOpacity>
+
+          <View style={styles.inputBox}>
+            <TextInput
+              style={styles.input}
+              placeholder={"Comment..."}
+              placeholderTextColor={colors.textColor}
+            />
+            <TouchableOpacity style={styles.sendBtn} activeOpacity={0.6}>
+              <AntDesign name="arrowup" size={24} color={colors.white} />
+            </TouchableOpacity>
+          </View>
         </View>
-      </View>
+      </ScrollView>
     </View>
   );
 }
@@ -58,63 +48,30 @@ const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: colors.white,
   },
-  postContainer: {
+  commentList: {
     marginHorizontal: 16,
-    marginTop: 32,
   },
   postImage: {
+    marginVertical: 32,
     height: 240,
     width: "100%",
     borderRadius: 8,
   },
-  commentContainer: {
-    flexDirection: "row",
-    color: colors.black,
-    marginTop: 32,
-    marginHorizontal: 16,
-  },
-  imageContainer: {},
-  imageProfile: {
-    borderRadius: 14,
-    height: 28,
-    width: 28,
-  },
-  textContainer: {
-    marginLeft: 16,
-    padding: 16,
-    backgroundColor: colors.background,
-    fontFamily: "Roboto-Regular",
-    borderBottomLeftRadius: 6,
-    borderBottomRightRadius: 6,
-    borderTopRightRadius: 6,
-    borderTopLeftRadius: 6,
-  },
-  commentText: {
-    fontSize: 13,
-    color: colors.black,
-    lineHeight: 18,
-  },
-  data: {
-    fontSize: 10,
-    marginTop: 8,
-    color: colors.textColor,
-    textAlign: "right",
-  },
-  inputContainer: {
-    marginHorizontal: 16,
+  inputBox: {
     marginBottom: 16,
   },
   input: {
     paddingLeft: 16,
+    paddingVertical: 16,
     height: 50,
     borderRadius: 100,
     borderWidth: 1,
-    backgroundColor: "#F6F6F6",
-    borderColor: "#E8E8E8",
-    fontFamily: "Inter-500",
+    backgroundColor: colors.background,
+    borderColor: colors.borderColor,
+    fontFamily: "Roboto-Medium",
     fontSize: 16,
   },
-  sendBTN: {
+  sendBtn: {
     position: "absolute",
     top: 8,
     end: 8,
@@ -122,7 +79,7 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     width: 34,
     height: 34,
-    backgroundColor: "#FF6C00",
+    backgroundColor: colors.orange,
     borderRadius: 50,
   },
 });

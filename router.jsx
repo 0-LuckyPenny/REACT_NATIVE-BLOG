@@ -1,7 +1,6 @@
 import React from "react";
 import { createStackNavigator } from "@react-navigation/stack";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
-import { TouchableOpacity } from "react-native";
 
 import { Ionicons, Feather, AntDesign } from "@expo/vector-icons";
 import { colors } from "./helpers/colors";
@@ -37,6 +36,13 @@ export const useRoute = (isAuth) => {
       initialRouteName="Posts"
       screenOptions={{
         tabBarShowLabel: false,
+        headerTitleAlign: "center",
+        headerTitleStyle: {
+          fontFamily: "Roboto-Medium",
+          fontSize: 17,
+          lineHeight: 22,
+          color: colors.black,
+        },
       }}
     >
       <MainTab.Screen
@@ -44,54 +50,38 @@ export const useRoute = (isAuth) => {
         component={PostsScreen}
         options={{
           title: "Posts",
-          headerTitleAlign: "center",
-          headerTitleStyle: {
-            fontFamily: "Roboto-Medium",
-            fontSize: 17,
-            lineHeight: 22,
-            color: colors.black,
-          },
           tabBarIcon: ({ focused, color, size }) => (
-            <AntDesign name="appstore-o" size={24} color={colors.black} />
+            <AntDesign name="appstore-o" size={24} color={colors.iconColor} />
           ),
           headerRight: () => (
-            <TouchableOpacity onPress={() => {}}>
-              <Ionicons
-                name="exit-outline"
-                size={24}
-                style={{ marginRight: 16 }}
-                color={colors.textColor}
-              />
-            </TouchableOpacity>
+            <Ionicons
+              onPress={() => {}}
+              name="exit-outline"
+              size={24}
+              style={{ marginRight: 16 }}
+              color={colors.textColor}
+            />
           ),
         }}
       />
       <MainTab.Screen
         name="Create"
         component={CreatePostsScreen}
-        options={{
+        options={({ navigation }) => ({
           title: "Create post",
-          headerTitleAlign: "center",
-          headerTitleStyle: {
-            fontFamily: "Roboto-Medium",
-            fontSize: 17,
-            lineHeight: 22,
-            color: colors.black,
-          },
           tabBarIcon: ({ focused, color, size }) => (
-            <AntDesign name="pluscircleo" size={40} color={colors.orange} />
+            <AntDesign name="plus" size={24} color={colors.iconColor} />
           ),
           headerLeft: () => (
-            <TouchableOpacity onPress={() => {}}>
-              <Ionicons
-                name="ios-arrow-back"
-                size={24}
-                color={colors.black}
-                style={{ marginLeft: 16 }}
-              />
-            </TouchableOpacity>
+            <Ionicons
+              onPress={() => navigation.navigate("Posts")}
+              name="arrow-back"
+              size={24}
+              color={colors.iconColor}
+              style={{ marginLeft: 16 }}
+            />
           ),
-        }}
+        })}
       />
       <MainTab.Screen
         name="Profile"
@@ -99,7 +89,7 @@ export const useRoute = (isAuth) => {
         options={{
           headerShown: false,
           tabBarIcon: ({ focused, color, size }) => (
-            <Feather name="user" size={24} color={colors.black} />
+            <Feather name="user" size={24} color={colors.iconColor} />
           ),
         }}
       />

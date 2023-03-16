@@ -7,4 +7,5 @@ export const colors = {
   textColor: "#BDBDBD",
   borderColor: "#E8E8E8",
   bgWithOpacity: "#ffffff4d",
+  iconColor: "#212121cc",
 };

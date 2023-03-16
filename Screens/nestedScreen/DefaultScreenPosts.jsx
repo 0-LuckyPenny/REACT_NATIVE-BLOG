@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { View, Text, StyleSheet, Image, FlatList } from "react-native";
 import { colors } from "../../helpers/colors";
-import Posts from "../../components/Post";
+import Post from "../../components/Post";
 
 export default function DefaultScreenPosts({ route, navigation }) {
   const [posts, setPosts] = useState([]);
@@ -29,13 +29,13 @@ export default function DefaultScreenPosts({ route, navigation }) {
         data={posts}
         keyExtractor={(item, index) => index.toString()}
         renderItem={({ item }) => (
-          <Posts
+          <Post
             photo={item.photo}
             name={item.name}
             comments={10}
             location={item.location}
             toComment={() => navigation.navigate("Comments", { item })}
-            toMap={() => navigation.navigate("MapScreen", { item })}
+            toMap={() => navigation.navigate("Map", { item })}
           />
         )}
       />
