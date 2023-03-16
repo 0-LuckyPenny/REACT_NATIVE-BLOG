@@ -30,7 +30,7 @@ export default function RegistrationScreen({ navigation }) {
     setIsShowKeyboard(false);
     Keyboard.dismiss(); //hides the keyboard
     setState(initialState); //set values
-    console.log(state);
+    navigation.navigate("Posts");
   };
 
   return (
