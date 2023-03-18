@@ -69,6 +69,7 @@ export const useRoute = (isAuth) => {
         component={CreatePostsScreen}
         options={({ navigation }) => ({
           title: "Create post",
+          tabBarStyle: { display: "none" },
           tabBarIcon: ({ focused, color, size }) => (
             <AntDesign name="plus" size={24} color={colors.iconColor} />
           ),

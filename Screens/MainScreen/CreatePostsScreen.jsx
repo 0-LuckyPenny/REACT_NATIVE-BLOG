@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { SimpleLineIcons } from "@expo/vector-icons";
+import { SimpleLineIcons, AntDesign } from "@expo/vector-icons";
 import { Input } from "react-native-elements";
 import * as Location from "expo-location";
 import {
@@ -52,6 +52,10 @@ export default function CreatePostsScreen({ navigation }) {
 
   const sendPhoto = () => {
     navigation.navigate("DefaultScreen", state);
+    setState(initialState);
+  };
+
+  const clearForm = () => {
     setState(initialState);
   };
 
@@ -139,6 +143,9 @@ export default function CreatePostsScreen({ navigation }) {
             </Text>
           </TouchableOpacity>
         </View>
+        <TouchableOpacity style={styles.deleteBtn} onPress={clearForm}>
+          <AntDesign name="delete" size={24} color={colors.textColor} />
+        </TouchableOpacity>
       </View>
     </TouchableWithoutFeedback>
   );
@@ -152,17 +159,13 @@ const styles = StyleSheet.create({
   photoContainer: {
     marginHorizontal: 16,
     height: 240,
-    backgroundColor: colors.background,
-    borderColor: colors.borderColor,
-    borderWidth: 1,
-    borderRadius: 8,
-    justifyContent: "center",
-    alignItems: "center",
   },
   photo: {
-    position: "absolute",
     width: "100%",
     height: "100%",
+    borderColor: colors.borderColor,
+    backgroundColor: colors.background,
+    borderWidth: 1,
     borderRadius: 8,
   },
   subTitle: {
@@ -195,5 +198,15 @@ const styles = StyleSheet.create({
   buttonText: {
     fontFamily: "Roboto-Regular",
     fontSize: 16,
+  },
+  deleteBtn: {
+    alignSelf: "center",
+    width: 70,
+    height: 40,
+    borderRadius: 20,
+    backgroundColor: colors.background,
+    justifyContent: "center",
+    alignItems: "center",
+    marginTop: 100,
   },
 });
