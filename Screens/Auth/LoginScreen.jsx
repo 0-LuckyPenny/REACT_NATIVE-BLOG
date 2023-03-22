@@ -13,6 +13,8 @@ import {
   Dimensions,
 } from "react-native";
 import { colors } from "../../helpers/colors";
+import { useDispatch } from "react-redux";
+import { authSignInUser } from "../../redux/auth/authOperations";
 
 const initialState = {
   email: "",
@@ -23,15 +25,22 @@ export default function LoginScreen({ navigation }) {
   const [isShowKeyboard, setIsShowKeyboard] = useState(false);
   const [state, setState] = useState(initialState);
 
+  const dispatch = useDispatch();
+
   const keyboardHide = () => {
     setIsShowKeyboard(false);
     Keyboard.dismiss(); //hides the keyboard
+  };
+
+  const handleSubmit = () => {
+    dispatch(authSignInUser(state));
     setState(initialState); //set values
-    navigation.navigate("Posts");
+    keyboardHide();
+    // navigation.navigate("Posts");
   };
 
   return (
-    <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
+    <TouchableWithoutFeedback onPress={keyboardHide}>
       <View style={styles.container}>
         <ImageBackground
           style={styles.bgImage}
@@ -71,11 +80,12 @@ export default function LoginScreen({ navigation }) {
               <TouchableOpacity
                 activeOpacity={0.8}
                 style={styles.btn}
-                onPress={keyboardHide}
+                onPress={handleSubmit}
               >
                 <Text style={styles.btnTitle}>Log in</Text>
               </TouchableOpacity>
-              <TouchableOpacity onPress={() => navigation.navigate("Register")}>
+              <TouchableOpacity>
+                {/* <TouchableOpacity onPress={() => navigation.navigate("Register")}> */}
                 <Text style={styles.btnRedirect}>
                   Don't have an account? Sign in
                 </Text>
