@@ -1,5 +1,5 @@
-import React, { useEffect, useState } from "react";
-import { Ionicons, AntDesign } from "@expo/vector-icons";
+import React, { useEffect, useState } from 'react'
+import { Ionicons, AntDesign } from '@expo/vector-icons'
 import {
   StyleSheet,
   Text,
@@ -11,44 +11,47 @@ import {
   Platform,
   KeyboardAvoidingView,
   FlatList,
-} from "react-native";
-import { colors } from "../../helpers/colors";
-import Post from "../../components/Post";
+} from 'react-native'
+import { colors } from '../../helpers/colors'
+import Post from '../../components/Post'
+import { useDispatch } from 'react-redux'
+import { authSignOutUser } from '../../redux/auth/authOperations'
 
 export default function ProfileScreen({ route, navigation }) {
-  const [posts, setPosts] = useState([]);
+  const [posts, setPosts] = useState([])
+  const dispatch = useDispatch()
 
   useEffect(() => {
     if (route.params) {
-      setPosts((prevState) => [...prevState, route.params]);
+      setPosts(prevState => [...prevState, route.params])
     }
-  }, [route.params]);
+  }, [route.params])
 
   return (
     <View style={styles.container}>
       <ImageBackground
         style={styles.bgImage}
-        source={require("../../assets/images/bg_image.jpg")}
+        source={require('../../assets/images/bg_image.jpg')}
       >
         <KeyboardAvoidingView
-          behavior={Platform.OS === "ios" ? "padding" : "height"}
+          behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
           keyboardVerticalOffset={-100}
         >
           <View style={styles.profileContainer}>
             <Ionicons
-              name="exit-outline"
+              name='exit-outline'
               size={24}
               color={colors.textColor}
               style={styles.logoutIcon}
-              onPress={() => {}}
+              onPress={() => dispatch(authSignOutUser())}
             />
             <View style={styles.avatarBox}>
               <Image
                 style={styles.userImage}
-                source={require("../../assets/images/imageProf.jpg")}
+                source={require('../../assets/images/imageProf.jpg')}
               />
               <TouchableOpacity style={styles.btnAddUserImage}>
-                <AntDesign name="plus" size={13} color={colors.textColor} />
+                <AntDesign name='plus' size={13} color={colors.textColor} />
               </TouchableOpacity>
             </View>
 
@@ -64,8 +67,8 @@ export default function ProfileScreen({ route, navigation }) {
                   comments={10}
                   likes={item.likes}
                   location={item.location}
-                  toComment={() => navigation.navigate("Comments", { item })}
-                  toMap={() => navigation.navigate("Map", { item })}
+                  toComment={() => navigation.navigate('Comments', { item })}
+                  toMap={() => navigation.navigate('Map', { item })}
                 />
               )}
             />
@@ -73,7 +76,7 @@ export default function ProfileScreen({ route, navigation }) {
         </KeyboardAvoidingView>
       </ImageBackground>
     </View>
-  );
+  )
 }
 
 const styles = StyleSheet.create({
@@ -83,44 +86,44 @@ const styles = StyleSheet.create({
   },
   bgImage: {
     flex: 1,
-    resizeMode: "cover",
-    width: Dimensions.get("window").width,
-    height: Dimensions.get("window").height,
+    resizeMode: 'cover',
+    width: Dimensions.get('window').width,
+    height: Dimensions.get('window').height,
   },
   profileContainer: {
-    position: "relative",
-    alignItems: "flex-end",
+    position: 'relative',
+    alignItems: 'flex-end',
     marginTop: 103,
     backgroundColor: colors.white,
     borderTopLeftRadius: 25,
     borderTopRightRadius: 25,
-    width: "100%",
-    height: "100%",
+    width: '100%',
+    height: '100%',
   },
   logoutIcon: {
     marginTop: 22,
     marginHorizontal: 16,
   },
   avatarBox: {
-    position: "absolute",
+    position: 'absolute',
     width: 120,
     height: 120,
     top: -60,
-    right: Dimensions.get("window").width / 2 - 60,
+    right: Dimensions.get('window').width / 2 - 60,
   },
   userImage: {
     borderRadius: 16,
     backgroundColor: colors.background,
   },
   btnAddUserImage: {
-    position: "absolute",
-    transform: [{ rotate: "-45deg" }],
+    position: 'absolute',
+    transform: [{ rotate: '-45deg' }],
     bottom: 14,
     right: -12.5,
     width: 25,
     height: 25,
-    alignItems: "center",
-    justifyContent: "center",
+    alignItems: 'center',
+    justifyContent: 'center',
     borderRadius: 12.5,
     borderWidth: 1,
     borderColor: colors.borderColor,
@@ -130,8 +133,8 @@ const styles = StyleSheet.create({
     marginTop: 46,
     fontSize: 30,
     color: colors.black,
-    fontFamily: "Roboto-Medium",
+    fontFamily: 'Roboto-Medium',
     lineHeight: 35,
-    alignSelf: "center",
+    alignSelf: 'center',
   },
-});
+})
