@@ -1,4 +1,3 @@
-import React from 'react'
 import { useFonts } from 'expo-font'
 import { Provider } from 'react-redux'
 import { persistor, store } from './redux/store'

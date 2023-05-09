@@ -1,43 +1,45 @@
-import React from "react";
-import { View, StyleSheet, Dimensions } from "react-native";
-import { colors } from "../../helpers/colors";
-import MapView, { Marker } from "react-native-maps";
+import { View, StyleSheet, Dimensions } from 'react-native'
+import MapView, { Marker } from 'react-native-maps'
+import { colors } from '../../helpers/colors'
 
-export default function MapScreen() {
+export default function MapScreen({ route }) {
+  const { latitude, longitude } = route.params.location
+  const title = route.params.location
+
   return (
     <View style={styles.container}>
       <MapView
         style={styles.mapStyle}
         region={{
-          latitude: 37.78825,
-          longitude: -122.4324,
+          latitude,
+          longitude,
           latitudeDelta: 0.0922,
           longitudeDelta: 0.0421,
         }}
-        mapType="standard"
+        mapType='standard'
         minZoomLevel={15}
-        onMapReady={() => console.log("Map is ready")}
-        onRegionChange={() => console.log("Region change")}
+        onMapReady={() => console.log('Map is ready')}
+        onRegionChange={() => console.log('Region change')}
       >
         <Marker
-          title="I"
-          coordinate={{ latitude: 37.78825, longitude: -122.4324 }}
-          description="hi"
+          title={title}
+          coordinate={{ latitude, longitude }}
+          description='hi'
         />
       </MapView>
     </View>
-  );
+  )
 }
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: colors.white,
-    alignItems: "center",
-    justifyContent: "center",
+    alignItems: 'center',
+    justifyContent: 'center',
   },
   mapStyle: {
-    width: Dimensions.get("window").width,
-    height: Dimensions.get("window").height,
+    width: Dimensions.get('window').width,
+    height: Dimensions.get('window').height,
   },
-});
+})

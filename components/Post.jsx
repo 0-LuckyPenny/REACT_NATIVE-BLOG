@@ -1,10 +1,10 @@
-import { View, Text, StyleSheet, Image, TouchableOpacity } from "react-native";
-import { FontAwesome, SimpleLineIcons, AntDesign } from "@expo/vector-icons";
-import { colors } from "../helpers/colors";
+import { View, Text, StyleSheet, Image, TouchableOpacity } from 'react-native'
+import { FontAwesome, SimpleLineIcons, AntDesign } from '@expo/vector-icons'
+import { colors } from '../helpers/colors'
 
 export default function Post({
   photo,
-  name,
+  title,
   comments,
   location,
   likes,
@@ -14,19 +14,19 @@ export default function Post({
   return (
     <View style={styles.post}>
       <Image source={{ uri: photo }} style={styles.postImg} />
-      <Text style={styles.postName}>{name}</Text>
+      <Text style={styles.postName}>{title}</Text>
 
       <View style={styles.description}>
         <View style={styles.commentCont}>
           <TouchableOpacity onPress={toComment}>
-            <FontAwesome name="comment" size={24} color={colors.orange} />
+            <FontAwesome name='comment' size={24} color={colors.orange} />
           </TouchableOpacity>
           <Text style={styles.commentQuant}>{comments}</Text>
         </View>
 
         {likes && (
           <View style={styles.likes}>
-            <AntDesign name="like2" size={24} color={colors.orange} />
+            <AntDesign name='like2' size={24} color={colors.orange} />
             <Text style={{ marginLeft: 6 }}>{likes}</Text>
           </View>
         )}
@@ -34,7 +34,7 @@ export default function Post({
         <View style={styles.locationCont}>
           <TouchableOpacity onPress={toMap}>
             <SimpleLineIcons
-              name="location-pin"
+              name='location-pin'
               size={24}
               color={colors.textColor}
             />
@@ -43,7 +43,7 @@ export default function Post({
         </View>
       </View>
     </View>
-  );
+  )
 }
 
 const styles = StyleSheet.create({
@@ -58,36 +58,36 @@ const styles = StyleSheet.create({
   },
   postName: {
     fontSize: 16,
-    fontFamily: "Roboto-Medium",
+    fontFamily: 'Roboto-Medium',
     marginTop: 8,
     color: colors.black,
   },
   description: {
-    flexDirection: "row",
+    flexDirection: 'row',
     marginTop: 8,
-    justifyContent: "space-between",
+    justifyContent: 'space-between',
   },
   commentCont: {
-    flexDirection: "row",
-    alignItems: "center",
+    flexDirection: 'row',
+    alignItems: 'center',
   },
   commentQuant: {
     marginLeft: 8,
     fontSize: 16,
   },
   likes: {
-    flexDirection: "row",
-    alignItems: "center",
+    flexDirection: 'row',
+    alignItems: 'center',
     marginLeft: 24,
   },
   locationCont: {
-    flexDirection: "row",
-    alignItems: "center",
+    flexDirection: 'row',
+    alignItems: 'center',
   },
   locationName: {
     marginLeft: 4,
     fontSize: 16,
     color: colors.black,
-    textDecorationLine: "underline",
+    textDecorationLine: 'underline',
   },
-});
+})

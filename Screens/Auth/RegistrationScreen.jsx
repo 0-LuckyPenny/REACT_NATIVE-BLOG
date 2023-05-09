@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import { useState } from 'react'
 import { AntDesign } from '@expo/vector-icons'
 import {
   StyleSheet,

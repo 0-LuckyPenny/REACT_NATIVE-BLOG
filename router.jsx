@@ -1,18 +1,20 @@
-import React from 'react'
 import { createStackNavigator } from '@react-navigation/stack'
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs'
 import { Ionicons, Feather, AntDesign } from '@expo/vector-icons'
 import { colors } from './helpers/colors'
-import RegistrationScreen from './Screens/Auth/RegistrationScreen'
-import LoginScreen from './Screens/Auth/LoginScreen'
-import ProfileScreen from './Screens/MainScreen/ProfileScreen'
-import CreatePostsScreen from './Screens/MainScreen/CreatePostsScreen'
-import PostsScreen from './Screens/MainScreen/PostsScreen'
+import RegistrationScreen from './screens/Auth/RegistrationScreen'
+import LoginScreen from './screens/Auth/LoginScreen'
+import ProfileScreen from './screens/MainScreen/ProfileScreen'
+import CreatePostsScreen from './screens/MainScreen/CreatePostsScreen'
+import PostsScreen from './screens/MainScreen/PostsScreen'
+import { authSignOutUser } from './redux/auth/authOperations'
+import { useDispatch } from 'react-redux'
 
 const AuthStack = createStackNavigator()
 const MainTab = createBottomTabNavigator()
 
 export const useRoute = isAuth => {
+  const dispatch = useDispatch()
   if (!isAuth) {
     return (
       <AuthStack.Navigator initialRouteName='Register'>
@@ -53,7 +55,7 @@ export const useRoute = isAuth => {
           ),
           headerRight: () => (
             <Ionicons
-              onPress={() => {}}
+              onPress={() => dispatch(authSignOutUser())}
               name='exit-outline'
               size={24}
               style={{ marginRight: 16 }}

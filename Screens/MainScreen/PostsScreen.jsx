@@ -1,20 +1,19 @@
-import React from "react";
-import { AntDesign, Ionicons } from "@expo/vector-icons";
-import { createStackNavigator } from "@react-navigation/stack";
-import { colors } from "../../helpers/colors";
-import DefaultScreenPosts from "../nestedScreen/DefaultScreenPosts";
-import CommentsScreen from "../nestedScreen/CommentsScreen";
-import MapScreen from "../nestedScreen/MapScreen";
-const NestedScreen = createStackNavigator();
+import { AntDesign, Ionicons } from '@expo/vector-icons'
+import { createStackNavigator } from '@react-navigation/stack'
+import { colors } from '../../helpers/colors'
+import DefaultScreenPosts from '../nestedScreen/DefaultScreenPosts'
+import CommentsScreen from '../nestedScreen/CommentsScreen'
+import MapScreen from '../nestedScreen/MapScreen'
+const NestedScreen = createStackNavigator()
 
 export default function PostsScreen() {
   return (
     <NestedScreen.Navigator
       screenOptions={{
         tabBarShowLabel: false,
-        headerTitleAlign: "center",
+        headerTitleAlign: 'center',
         headerTitleStyle: {
-          fontFamily: "Roboto-Medium",
+          fontFamily: 'Roboto-Medium',
           fontSize: 17,
           lineHeight: 22,
           color: colors.black,
@@ -23,17 +22,17 @@ export default function PostsScreen() {
     >
       <NestedScreen.Screen
         options={{ headerShown: false }}
-        name="DefaultScreen"
+        name='DefaultScreen'
         component={DefaultScreenPosts}
       />
       <NestedScreen.Screen
-        name="Comments"
+        name='Comments'
         component={CommentsScreen}
         options={({ navigation }) => ({
           headerLeft: () => (
             <Ionicons
               onPress={() => navigation.goBack()}
-              name="arrow-back"
+              name='arrow-back'
               size={24}
               color={colors.iconColor}
               style={{ marginLeft: 16 }}
@@ -42,13 +41,13 @@ export default function PostsScreen() {
         })}
       />
       <NestedScreen.Screen
-        name="Map"
+        name='Map'
         component={MapScreen}
         options={({ navigation }) => ({
           headerLeft: () => (
             <Ionicons
               onPress={() => navigation.goBack()}
-              name="arrow-back"
+              name='arrow-back'
               size={24}
               color={colors.iconColor}
               style={{ marginLeft: 16 }}
@@ -57,5 +56,5 @@ export default function PostsScreen() {
         })}
       />
     </NestedScreen.Navigator>
-  );
+  )
 }

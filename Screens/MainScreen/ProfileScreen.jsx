@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react'
+import { useEffect, useState } from 'react'
 import { Ionicons, AntDesign } from '@expo/vector-icons'
 import {
   StyleSheet,
@@ -14,12 +14,14 @@ import {
 } from 'react-native'
 import { colors } from '../../helpers/colors'
 import Post from '../../components/Post'
-import { useDispatch } from 'react-redux'
+import { useDispatch, useSelector } from 'react-redux'
 import { authSignOutUser } from '../../redux/auth/authOperations'
 
 export default function ProfileScreen({ route, navigation }) {
   const [posts, setPosts] = useState([])
   const dispatch = useDispatch()
+
+  const { nickName, userEmail } = useSelector(state => state.auth)
 
   useEffect(() => {
     if (route.params) {
@@ -55,7 +57,7 @@ export default function ProfileScreen({ route, navigation }) {
               </TouchableOpacity>
             </View>
 
-            <Text style={styles.title}>Babkin Ruslan</Text>
+            <Text style={styles.title}>{nickName}</Text>
 
             <FlatList
               data={posts}
@@ -63,7 +65,7 @@ export default function ProfileScreen({ route, navigation }) {
               renderItem={({ item }) => (
                 <Post
                   photo={item.photo}
-                  name={item.name}
+                  title={item.title}
                   comments={10}
                   likes={item.likes}
                   location={item.location}
