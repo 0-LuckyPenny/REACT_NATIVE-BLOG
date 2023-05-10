@@ -5,7 +5,7 @@ import { colors } from '../helpers/colors'
 export default function Post({
   photo,
   title,
-  comments,
+  commentsValue,
   location,
   likes,
   toMap,
@@ -18,10 +18,10 @@ export default function Post({
 
       <View style={styles.description}>
         <View style={styles.commentCont}>
-          <TouchableOpacity onPress={toComment}>
+          <TouchableOpacity onPress={toComment} style={styles.descriptionItem}>
             <FontAwesome name='comment' size={24} color={colors.orange} />
+            <Text style={styles.commentQuant}>{commentsValue}</Text>
           </TouchableOpacity>
-          <Text style={styles.commentQuant}>{comments}</Text>
         </View>
 
         {likes && (
@@ -32,14 +32,14 @@ export default function Post({
         )}
 
         <View style={styles.locationCont}>
-          <TouchableOpacity onPress={toMap}>
+          <TouchableOpacity onPress={toMap} style={styles.descriptionItem}>
             <SimpleLineIcons
               name='location-pin'
               size={24}
               color={colors.textColor}
             />
+            <Text style={styles.locationName}>{location}</Text>
           </TouchableOpacity>
-          <Text style={styles.locationName}>{location}</Text>
         </View>
       </View>
     </View>
@@ -66,6 +66,9 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     marginTop: 8,
     justifyContent: 'space-between',
+  },
+  descriptionItem: {
+    flexDirection: 'row',
   },
   commentCont: {
     flexDirection: 'row',

@@ -1,9 +1,10 @@
 import { AntDesign, Ionicons } from '@expo/vector-icons'
 import { createStackNavigator } from '@react-navigation/stack'
 import { colors } from '../../helpers/colors'
-import DefaultScreenPosts from '../nestedScreen/DefaultScreenPosts'
-import CommentsScreen from '../nestedScreen/CommentsScreen'
-import MapScreen from '../nestedScreen/MapScreen'
+import DefaultScreenPosts from '../NestedScreen/DefaultScreenPosts'
+import CommentsScreen from '../NestedScreen/CommentsScreen'
+import MapScreen from '../NestedScreen/MapScreen'
+
 const NestedScreen = createStackNavigator()
 
 export default function PostsScreen() {

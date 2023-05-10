@@ -3,8 +3,9 @@ import MapView, { Marker } from 'react-native-maps'
 import { colors } from '../../helpers/colors'
 
 export default function MapScreen({ route }) {
-  const { latitude, longitude } = route.params.location
-  const title = route.params.location
+  const { latitude, longitude } = route.params.coords
+  const location = route.params.location
+  const title = route.params.title
 
   return (
     <View style={styles.container}>
@@ -13,8 +14,8 @@ export default function MapScreen({ route }) {
         region={{
           latitude,
           longitude,
-          latitudeDelta: 0.0922,
-          longitudeDelta: 0.0421,
+          latitudeDelta: 0.001,
+          longitudeDelta: 0.006,
         }}
         mapType='standard'
         minZoomLevel={15}
@@ -22,9 +23,9 @@ export default function MapScreen({ route }) {
         onRegionChange={() => console.log('Region change')}
       >
         <Marker
-          title={title}
           coordinate={{ latitude, longitude }}
-          description='hi'
+          title={location}
+          description={title}
         />
       </MapView>
     </View>

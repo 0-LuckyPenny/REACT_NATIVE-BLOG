@@ -2,10 +2,13 @@ import { useEffect, useState } from 'react'
 import { View, Text, StyleSheet, Image, FlatList } from 'react-native'
 import { colors } from '../../helpers/colors'
 import Post from '../../components/Post'
-import { collection, onSnapshot } from 'firebase/firestore'
-import { db } from '../../firebase/config'
+import { collection, getFirestore, onSnapshot } from 'firebase/firestore'
+// import { db } from '../../firebase/config'
 import { useSelector } from 'react-redux'
 import { likedPostsHandler } from '../../helpers/likedPostsHandler'
+import { app } from '../../firebase/config'
+
+const db = getFirestore(app)
 
 export default function DefaultScreenPosts({ route, navigation }) {
   const [initPosts, setInitPosts] = useState([])
@@ -41,17 +44,18 @@ export default function DefaultScreenPosts({ route, navigation }) {
 
       <FlatList
         data={updatedPosts}
-        keyExtractor={(item, index) => index.toString()}
+        keyExtractor={item => item.id}
         renderItem={({ item }) => (
           <Post
-            photo={item.photo}
             title={item.title}
-            comments={item.commentsValue}
+            photo={item.photo}
+            commentsValue={item.commentsValue}
             location={item.location}
-            toComment={() => navigation.navigate('Comments', { item })}
+            toComment={() => navigation.navigate('Comments', { data: item })}
             toMap={() =>
               navigation.navigate('Map', {
                 location: item.location,
+                coords: item.coords,
                 title: item.title,
               })
             }

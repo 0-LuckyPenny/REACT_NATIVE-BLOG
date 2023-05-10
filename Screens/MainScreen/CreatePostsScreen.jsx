@@ -15,11 +15,11 @@ import {
 import { colors } from '../../helpers/colors'
 import PhotoCamera from '../../components/PhotoCamera'
 import { useSelector } from 'react-redux'
-import { collection, addDoc } from 'firebase/firestore'
-import { db } from '../../firebase/config'
-import { getDownloadURL, getStorage, ref, uploadBytes } from 'firebase/storage'
+import { collection, addDoc, getFirestore } from 'firebase/firestore'
+import { app, storage } from '../../firebase/config.js'
+import { getDownloadURL, ref, uploadBytes } from 'firebase/storage'
 
-const storage = getStorage()
+const db = getFirestore(app)
 
 const initialState = {
   title: '',
@@ -66,14 +66,15 @@ export default function CreatePostsScreen({ navigation }) {
     setState(prevState => ({
       ...prevState,
       [input]: value,
+      id: nanoid(),
     }))
   }
 
   const uploadPhotoToServer = async () => {
-    const uniquePostId = nanoid()
-    const storageRef = ref(storage, `postsImages/${uniquePostId}.jpg`)
     const response = await fetch(takenPhoto)
     const uploadedFile = await response.blob()
+    const uniquePostId = nanoid()
+    const storageRef = ref(storage, `postsImages/${uniquePostId}.jpg`)
     await uploadBytes(storageRef, uploadedFile)
     const photoUrl = await getDownloadURL(
       ref(storage, `postsImages/${uniquePostId}.jpg`)
@@ -85,11 +86,11 @@ export default function CreatePostsScreen({ navigation }) {
   }
 
   const uploadPostToServer = async () => {
-    const createdPhoto = await uploadPhotoToServer()
+    const photoUrl = await uploadPhotoToServer()
     try {
       const docRef = await addDoc(collection(db, 'posts'), {
         ...state,
-        photo: createdPhoto,
+        photo: photoUrl,
         userId,
         nickName,
         userPhoto,
@@ -133,9 +134,7 @@ export default function CreatePostsScreen({ navigation }) {
               Change photo
             </Text>
           ) : (
-            <Text onPress={() => {}} style={styles.subTitle}>
-              Upload photo
-            </Text>
+            <Text style={styles.subTitle}>Upload photo</Text>
           )}
         </TouchableOpacity>
 
