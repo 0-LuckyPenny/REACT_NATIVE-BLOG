@@ -18,7 +18,6 @@ export default function MapScreen({ route }) {
           longitudeDelta: 0.006,
         }}
         mapType='standard'
-        minZoomLevel={15}
         onMapReady={() => console.log('Map is ready')}
         onRegionChange={() => console.log('Region change')}
       >

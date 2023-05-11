@@ -8,6 +8,7 @@ import {
 import { auth, storage } from '../../firebase/config'
 import { authSlice } from './authReducer'
 import { getDownloadURL, ref, uploadBytes } from 'firebase/storage'
+import defautPhoto from '../../assets/images/defaultAva.png'
 
 const { updateUserProfile, authStateChange, authSignOut } = authSlice.actions
 
@@ -33,8 +34,8 @@ export const authSignUpUser =
         password
       )
 
-      // const userAvatar = await uploadedUserImage(login, avatar)
-      await updateProfile(user, { displayName: login, photoURL: null })
+      const userAvatar = await uploadedUserImage(login, avatar)
+      await updateProfile(user, { displayName: login, photoURL: userAvatar })
       console.log(user)
 
       const { displayName, uid, photoURL } = await auth.currentUser

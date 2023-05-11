@@ -22,9 +22,9 @@ export default function PostsScreen() {
       }}
     >
       <NestedScreen.Screen
-        options={{ headerShown: false }}
         name='DefaultScreen'
         component={DefaultScreenPosts}
+        options={{ headerShown: false }}
       />
       <NestedScreen.Screen
         name='Comments'

@@ -1,12 +1,13 @@
 import { useState, useEffect } from 'react'
 import {
   View,
-  Text,
+  FlatList,
   StyleSheet,
   Image,
   TextInput,
   TouchableOpacity,
   ScrollView,
+  SafeAreaView,
 } from 'react-native'
 import { colors } from '../../helpers/colors'
 import { AntDesign } from '@expo/vector-icons'
@@ -19,22 +20,34 @@ import {
   Timestamp,
   updateDoc,
   doc,
+  getFirestore,
 } from 'firebase/firestore'
-import { db } from '../../firebase/config'
 import dayjs from 'dayjs'
+import { app } from '../../firebase/config'
+import { TouchableWithoutFeedback } from 'react-native'
+import { Keyboard } from 'react-native'
+
+const db = getFirestore(app)
 
 export default function CommentsScreen({ route }) {
   const [isShowKeyboard, setIsShowKeyboard] = useState(false)
   const [newComment, setNewComment] = useState('')
   const [allComments, setAllComments] = useState([])
   const [commentsNumber, setCommentsNumber] = useState(0)
-
+  const { id, photo } = route.params.data
   const { userId, nickName, userPhoto } = useSelector(state => state.auth)
-  const { id, photo } = route.params.item
 
-  const newCommentHandler = comment => {
-    setNewComment(comment)
-  }
+  useEffect(() => {
+    getAllComments()
+  }, [])
+
+  useEffect(() => {
+    setCommentsNumber(allComments.length)
+  }, [allComments])
+
+  useEffect(() => {
+    updateCommentsNumber()
+  }, [commentsNumber])
 
   const getAllComments = async () => {
     await onSnapshot(collection(db, 'posts', id, 'comments'), snapshot => {
@@ -46,25 +59,13 @@ export default function CommentsScreen({ route }) {
     dayjs(comment.createdAt).format('DD MMMM, YYYY | HH:mm')
   })
 
-  useEffect(() => {
-    getAllComments()
-  }, [])
-
-  useEffect(() => {
-    upd(allComments.length)
-  }, [allComments])
-
-  useEffect(() => {
-    updateCommentsNumber()
-  }, [commentsNumber])
-
   const addComment = async () => {
     try {
       const docRef = await addDoc(collection(db, 'posts', id, 'comments'), {
         newComment,
         createdAt: new Timestamp.now().toMillis(),
         userId: userId,
-        userPhoto: userPhoto.toString(),
+        userPhoto: userPhoto?.toString(),
         userNickName: nickName,
       })
       console.log('Document written with ID: ', docRef.id)
@@ -73,18 +74,9 @@ export default function CommentsScreen({ route }) {
     }
   }
 
-  const activeInputHandler = () => {
-    setIsShowKeyboard(true)
-  }
-
   const showKeyboardHandler = () => {
     setIsShowKeyboard(false)
     Keyboard.dismiss()
-  }
-
-  const upd = allComments => {
-    const test = allComments
-    setCommentsNumber(test)
   }
 
   const updateCommentsNumber = async () => {
@@ -98,52 +90,78 @@ export default function CommentsScreen({ route }) {
     await addComment()
     setNewComment('')
   }
-  return (
-    <View style={styles.container}>
-      <ScrollView>
-        <View style={styles.commentList}>
-          <Image
-            style={styles.postImage}
-            source={{ uri: route.params.item.photo }}
-          />
-          <Comment
-            userAva={require('../../assets/images/avaComent.jpg')}
-            comment={5454}
-            date={55454}
-          />
 
-          <View style={styles.inputBox}>
-            <TextInput
-              style={styles.input}
-              placeholder={'Comment...'}
-              placeholderTextColor={colors.textColor}
-            />
-            <TouchableOpacity style={styles.sendBtn} activeOpacity={0.6}>
-              <AntDesign name='arrowup' size={24} color={colors.white} />
-            </TouchableOpacity>
-          </View>
+  return (
+    <TouchableWithoutFeedback onPress={showKeyboardHandler}>
+      <SafeAreaView style={styles.container}>
+        <View style={styles.imageBox}>
+          <Image style={styles.image} source={{ uri: photo }} />
         </View>
-      </ScrollView>
-    </View>
+
+        <FlatList
+          data={allComments}
+          keyExtractor={item => item.id}
+          renderItem={({ item }) => (
+            <View style={styles.commentList}>
+              <Comment
+                isCurrenUser={item.userId === id ? true : false}
+                userNickName={item.userNickName}
+                userPhoto={{ uri: item.userPhoto }}
+                userComment={item.newComment}
+                currentDate={dayjs(item.createdAt).format(
+                  'DD MMMM, YYYY | HH:mm'
+                )}
+              />
+            </View>
+          )}
+        />
+
+        <View style={styles.inputBox}>
+          <TextInput
+            value={newComment}
+            style={styles.input}
+            placeholder={'Comment...'}
+            placeholderTextColor={colors.textColor}
+            onChangeText={value => setNewComment(value)}
+            onEndEditing={() => showKeyboardHandler()}
+            onFocus={() => setIsShowKeyboard(true)}
+          />
+          <TouchableOpacity
+            style={styles.sendBtn}
+            activeOpacity={0.6}
+            onPress={submitHandler}
+          >
+            <AntDesign name='arrowup' size={24} color={colors.white} />
+          </TouchableOpacity>
+        </View>
+      </SafeAreaView>
+    </TouchableWithoutFeedback>
   )
 }
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
+    height: '100%',
     backgroundColor: colors.white,
   },
   commentList: {
     marginHorizontal: 16,
+    paddingTop: 32,
   },
-  postImage: {
-    marginVertical: 32,
+  imageBox: {
+    paddingTop: 32,
+    alignItems: 'center',
+    marginHorizontal: 16,
+  },
+  image: {
     height: 240,
     width: '100%',
     borderRadius: 8,
   },
   inputBox: {
     marginBottom: 16,
+    marginHorizontal: 16,
   },
   input: {
     paddingLeft: 16,
