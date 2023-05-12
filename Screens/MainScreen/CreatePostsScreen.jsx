@@ -16,8 +16,8 @@ import { colors } from '../../helpers/colors'
 import PhotoCamera from '../../components/PhotoCamera'
 import { useSelector } from 'react-redux'
 import { collection, addDoc, getFirestore } from 'firebase/firestore'
-import { app, storage } from '../../firebase/config.js'
-import { getDownloadURL, ref, uploadBytes } from 'firebase/storage'
+import { app } from '../../firebase/config.js'
+import { uploadPhotoToServer } from '../../helpers/uploadPhotoToServer'
 
 const db = getFirestore(app)
 
@@ -70,23 +70,8 @@ export default function CreatePostsScreen({ navigation }) {
     }))
   }
 
-  const uploadPhotoToServer = async () => {
-    const response = await fetch(takenPhoto)
-    const uploadedFile = await response.blob()
-    const uniquePostId = nanoid()
-    const storageRef = ref(storage, `postsImages/${uniquePostId}.jpg`)
-    await uploadBytes(storageRef, uploadedFile)
-    const photoUrl = await getDownloadURL(
-      ref(storage, `postsImages/${uniquePostId}.jpg`)
-    )
-    setState(prevState => ({
-      ...prevState,
-    }))
-    return photoUrl
-  }
-
   const uploadPostToServer = async () => {
-    const photoUrl = await uploadPhotoToServer()
+    const photoUrl = await uploadPhotoToServer(takenPhoto, 'postsImages')
     try {
       const docRef = await addDoc(collection(db, 'posts'), {
         ...state,

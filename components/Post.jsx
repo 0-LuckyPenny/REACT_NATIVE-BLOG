@@ -19,8 +19,13 @@ export default function Post({
       <View style={styles.description}>
         <View style={styles.commentCont}>
           <TouchableOpacity onPress={toComment} style={styles.descriptionItem}>
-            <FontAwesome name='comment' size={24} color={colors.orange} />
-            <Text style={styles.commentQuant}>{commentsValue}</Text>
+            <FontAwesome
+              name='comment-o'
+              size={24}
+              color={commentsValue > 0 ? colors.orange : colors.textColor}
+              style={[commentsValue > 0 && { backgroundColor: colors.orange }]}
+            />
+            <Text style={styles.commentsValue}>{commentsValue}</Text>
           </TouchableOpacity>
         </View>
 
@@ -74,7 +79,7 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
   },
-  commentQuant: {
+  commentsValue: {
     marginLeft: 8,
     fontSize: 16,
   },

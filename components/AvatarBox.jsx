@@ -14,8 +14,7 @@ export const AvatarBox = ({
       {photoURL && (
         <Image style={styles.userImage} source={{ uri: photoURL }} />
       )}
-      <TouchableOpacity
-        activeOpacity={0.9}
+      <AntDesign
         style={[
           styles.btnAddDelUserPhoto,
           photoURL && { transform: [{ rotate: '-45deg' }] },
@@ -23,14 +22,10 @@ export const AvatarBox = ({
         onPress={() =>
           photoURL ? removeUserPhoto() : getUserPhoto(newUserPhoto)
         }
-      >
-        <AntDesign
-          style={styles.iconPlus}
-          name='pluscircleo'
-          size={25}
-          color={photoURL ? colors.textColor : colors.orange}
-        />
-      </TouchableOpacity>
+        name='pluscircleo'
+        size={25}
+        color={photoURL ? '#BDBDBD' : '#FF6C00'}
+      />
     </View>
   )
 }
@@ -42,18 +37,14 @@ const styles = StyleSheet.create({
     alignSelf: 'center',
     width: 120,
     height: 120,
-    borderRadius: 16,
-    backgroundColor: colors.background,
+    backgroundColor: '#F6F6F6',
+    borderRadius: 16.0,
   },
   btnAddDelUserPhoto: {
     position: 'absolute',
     bottom: 14,
     right: -12.5,
-    alignItems: 'center',
-    justifyContent: 'center',
+    borderRadius: 12.5,
     backgroundColor: colors.white,
-  },
-  iconPlus: {
-    color: colors.textColor,
   },
 })

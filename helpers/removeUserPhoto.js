@@ -6,7 +6,7 @@ export const removeUserPhoto = async () => {
     await updateProfile(auth.currentUser, {
       photoURL: '',
     })
-    console.log('photo removed')
+    console.log(auth.currentUser.photoURL - 'avatar removed')
   } catch (error) {
     console.log('error.message', error.message)
   }

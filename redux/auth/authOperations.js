@@ -4,25 +4,15 @@ import {
   createUserWithEmailAndPassword,
   signInWithEmailAndPassword,
   signOut,
+  getAuth,
 } from 'firebase/auth'
-import { auth, storage } from '../../firebase/config'
 import { authSlice } from './authReducer'
-import { getDownloadURL, ref, uploadBytes } from 'firebase/storage'
-import defautPhoto from '../../assets/images/defaultAva.png'
+import { app } from '../../firebase/config'
+import { uploadPhotoToServer } from '../../helpers/uploadPhotoToServer'
 
 const { updateUserProfile, authStateChange, authSignOut } = authSlice.actions
 
-const uploadedUserImage = async (login, avatar) => {
-  const storageRef = ref(storage, `usersAvatars/${login}${Date.now()}.jpg`)
-  const response = await fetch(avatar)
-  const uploadedFile = await response.blob()
-  await uploadBytes(storageRef, uploadedFile)
-
-  const photoUrl = await getDownloadURL(
-    ref(storage, `usersAvatars/${login}${Date.now()}.jpg`)
-  )
-  return photoUrl
-}
+const auth = getAuth(app)
 
 export const authSignUpUser =
   ({ avatar, login, email, password }) =>
@@ -34,9 +24,8 @@ export const authSignUpUser =
         password
       )
 
-      const userAvatar = await uploadedUserImage(login, avatar)
+      const userAvatar = await uploadPhotoToServer(avatar, 'usersAvatars')
       await updateProfile(user, { displayName: login, photoURL: userAvatar })
-      console.log(user)
 
       const { displayName, uid, photoURL } = await auth.currentUser
 
@@ -49,7 +38,6 @@ export const authSignUpUser =
       dispatch(updateUserProfile(currentUserData))
     } catch (error) {
       console.log(error)
-      console.log(error.message)
     }
   }
 
@@ -61,7 +49,6 @@ export const authSignInUser =
       console.log('loggedIn user', user)
     } catch (error) {
       console.log(error)
-      console.log(error.message)
     }
   }
 
@@ -86,6 +73,5 @@ export const authSignOutUser = () => async (dispatch, getState) => {
     dispatch(authSignOut())
   } catch (error) {
     console.log(error)
-    console.log(error.message)
   }
 }

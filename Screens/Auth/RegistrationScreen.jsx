@@ -1,5 +1,4 @@
 import { useState } from 'react'
-import { AntDesign } from '@expo/vector-icons'
 import {
   StyleSheet,
   Text,
@@ -16,6 +15,8 @@ import {
 import { colors } from '../../helpers/colors'
 import { useDispatch } from 'react-redux'
 import { authSignUpUser } from '../../redux/auth/authOperations'
+import { AvatarBox } from '../../components/AvatarBox'
+import { handleImagePicker } from '../../helpers/handleImagePicker'
 
 const initialState = {
   login: '',
@@ -29,6 +30,11 @@ export default function RegistrationScreen({ navigation }) {
   const [inputValue, setInputValue] = useState(initialState)
 
   const dispatch = useDispatch()
+
+  const getUserPhoto = async () => {
+    const result = await handleImagePicker()
+    setInputValue(prevState => ({ ...prevState, avatar: result }))
+  }
 
   const keyboardHide = () => {
     setIsShowKeyboard(false)
@@ -53,11 +59,10 @@ export default function RegistrationScreen({ navigation }) {
             keyboardVerticalOffset={-100}
           >
             <View style={styles.form}>
-              <View style={styles.userImage}>
-                <TouchableOpacity style={styles.btnAddUserImage}>
-                  <AntDesign name='plus' size={13} color={colors.orange} />
-                </TouchableOpacity>
-              </View>
+              <AvatarBox
+                getUserPhoto={getUserPhoto}
+                newUserPhoto={inputValue.avatar}
+              />
               <Text style={styles.formTitle}>Sign in</Text>
               <TextInput
                 style={{ ...styles.input, marginTop: 32 }}
@@ -136,29 +141,6 @@ const styles = StyleSheet.create({
     borderTopLeftRadius: 25,
     borderTopRightRadius: 25,
     paddingBottom: 45,
-  },
-  userImage: {
-    position: 'absolute',
-    top: -60,
-    right: Dimensions.get('window').width / 2 - 60,
-    width: 120,
-    height: 120,
-    borderRadius: 16,
-    backgroundColor: colors.background,
-  },
-  btnAddUserImage: {
-    position: 'absolute',
-    // transform: [{ rotate: "-45deg" }],
-    bottom: 14,
-    right: -12.5,
-    width: 25,
-    height: 25,
-    alignItems: 'center',
-    justifyContent: 'center',
-    borderRadius: 12.5,
-    borderWidth: 1,
-    borderColor: colors.orange,
-    backgroundColor: colors.white,
   },
   formTitle: {
     marginTop: 92,

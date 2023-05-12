@@ -65,7 +65,7 @@ export default function CommentsScreen({ route }) {
         newComment,
         createdAt: new Timestamp.now().toMillis(),
         userId: userId,
-        userPhoto: userPhoto?.toString(),
+        userPhoto,
         userNickName: nickName,
       })
       console.log('Document written with ID: ', docRef.id)

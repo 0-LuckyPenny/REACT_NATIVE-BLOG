@@ -12,7 +12,10 @@ export default function Comment({
     <View
       style={isCurrenUser ? styles.currentUserComment : styles.otherUserComment}
     >
-      <Image style={styles.commentUserPhoto} source={userPhoto} />
+      <View style={styles.userPhoto}>
+        {userPhoto && <Image source={userPhoto} />}
+      </View>
+
       <View
         style={
           isCurrenUser
@@ -29,42 +32,6 @@ export default function Comment({
 }
 
 const styles = StyleSheet.create({
-  // commentContainer: {
-  //   flexDirection: 'row',
-  //   marginBottom: 24,
-  //   color: colors.black,
-  // },
-  // userAva: {
-  //   borderRadius: 14,
-  //   height: 28,
-  //   width: 28,
-  // },
-  // textContainer: {
-  //   flex: 1,
-  //   padding: 16,
-  //   backgroundColor: colors.background,
-  //   fontFamily: 'Roboto-Regular',
-  //   marginLeft: 16,
-  //   borderBottomLeftRadius: 6,
-  //   borderBottomRightRadius: 6,
-  //   borderTopRightRadius: 6,
-  //   borderTopLeftRadius: 6,
-  // },
-  // comment: {
-  //   fontSize: 13,
-  //   color: colors.black,
-  //   lineHeight: 18,
-  // },
-  // date: {
-  //   fontSize: 10,
-  //   marginTop: 8,
-  //   color: colors.textColor,
-  //   textAlign: 'right',
-  // },
-  // currentUserNickName: {
-  //   fontWeight: 'bold',
-  //   marginBottom: 6,
-  // },
   currentUserComment: {
     flexDirection: 'row-reverse',
     flexWrap: 'nowrap',
@@ -83,7 +50,7 @@ const styles = StyleSheet.create({
   currentUserCommentDescr: {
     width: '100%',
     marginRight: 16,
-    backgroundColor: 'rgba(0, 0, 0, 0.1)',
+    backgroundColor: colors.bgWithOpacity,
     borderRadius: 10,
     borderTopRightRadius: 0,
     padding: 10,
@@ -91,7 +58,7 @@ const styles = StyleSheet.create({
   otherUserCommentDescr: {
     width: '100%',
     marginLeft: 16,
-    backgroundColor: 'rgba(0, 0, 0, 0.1)',
+    backgroundColor: colors.bgWithOpacity,
     borderRadius: 10,
     borderTopLeftRadius: 0,
     padding: 10,
@@ -103,10 +70,11 @@ const styles = StyleSheet.create({
   userComment: {
     marginBottom: 10,
   },
-  commentUserPhoto: {
+  userPhoto: {
     height: 40,
     width: 40,
     borderRadius: 50,
+    // backgroundColor: colors.background,
   },
   currentDate: {
     fontSize: 11,

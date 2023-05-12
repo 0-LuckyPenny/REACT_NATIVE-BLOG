@@ -1,13 +1,10 @@
 import { useEffect, useState } from 'react'
-import { Ionicons, AntDesign } from '@expo/vector-icons'
+import { Ionicons } from '@expo/vector-icons'
 import {
   StyleSheet,
   Text,
   View,
-  TouchableOpacity,
-  Dimensions,
   ImageBackground,
-  Image,
   Platform,
   KeyboardAvoidingView,
   FlatList,
@@ -19,14 +16,21 @@ import { authSignOutUser } from '../../redux/auth/authOperations'
 import { likedPostsHandler } from '../../helpers/likedPostsHandler'
 import { handleImagePicker } from '../../helpers/handleImagePicker.js'
 import { addUserPhoto } from '../../helpers/addUserPhoto'
-import { app, auth } from '../../firebase/config'
-import { getFirestore } from 'firebase/firestore'
-import { getStorage } from 'firebase/storage'
+import { app } from '../../firebase/config'
+import {
+  collection,
+  getFirestore,
+  onSnapshot,
+  query,
+  where,
+} from 'firebase/firestore'
 import { removeUserPhoto } from '../../helpers/removeUserPhoto'
 import { AvatarBox } from '../../components/AvatarBox'
+import { getAuth } from 'firebase/auth'
+import { uploadPhotoToServer } from '../../helpers/uploadPhotoToServer'
 
+const auth = getAuth(app)
 const db = getFirestore(app)
-const storage = getStorage()
 
 export default function ProfileScreen({ navigation }) {
   const [initPosts, setInitPosts] = useState([])
@@ -51,22 +55,10 @@ export default function ProfileScreen({ navigation }) {
     })
   }
 
-  const uploadedUserImage = async (login, avatar) => {
-    const storageRef = ref(storage, `usersAvatars/${login}.jpg`)
-    const response = await fetch(avatar)
-    const uploadedFile = await response.blob()
-    await uploadBytes(storageRef, uploadedFile)
-
-    const photoUrl = await getDownloadURL(
-      ref(storage, `usersAvatars/${login}.jpg`)
-    )
-    return photoUrl
-  }
-
   const getUserPhoto = async () => {
     const result = await handleImagePicker()
     setNewUserPhoto(result)
-    const photoForDownload = await uploadedUserImage(displayName, result)
+    const photoForDownload = await uploadPhotoToServer(result, 'usersAvatars')
     addUserPhoto(photoForDownload)
   }
 
@@ -95,7 +87,7 @@ export default function ProfileScreen({ navigation }) {
               removeUserPhoto={removeUserPhoto}
             />
 
-            <Text style={styles.title}>{nickName}</Text>
+            <Text style={styles.nickName}>{nickName}</Text>
             <FlatList
               data={updatedPosts}
               keyExtractor={item => item.id}
@@ -134,8 +126,6 @@ const styles = StyleSheet.create({
   bgImage: {
     flex: 1,
     resizeMode: 'cover',
-    width: Dimensions.get('window').width,
-    height: Dimensions.get('window').height,
   },
   profileContainer: {
     position: 'relative',
@@ -144,7 +134,6 @@ const styles = StyleSheet.create({
     backgroundColor: colors.white,
     borderTopLeftRadius: 25,
     borderTopRightRadius: 25,
-    backgroundColor: colors.background,
     width: '100%',
     height: '100%',
   },
@@ -152,26 +141,8 @@ const styles = StyleSheet.create({
     marginTop: 22,
     marginHorizontal: 16,
   },
-  userImage: {
-    borderRadius: 16,
-    backgroundColor: colors.background,
-  },
-  btnAddUserImage: {
-    position: 'absolute',
-    transform: [{ rotate: '-45deg' }],
-    bottom: 14,
-    right: -12.5,
-    width: 25,
-    height: 25,
-    alignItems: 'center',
-    justifyContent: 'center',
-    borderRadius: 12.5,
-    borderWidth: 1,
-    borderColor: colors.borderColor,
-    backgroundColor: colors.white,
-  },
-  title: {
-    marginTop: 46,
+  nickName: {
+    marginTop: 32,
     fontSize: 30,
     color: colors.black,
     fontFamily: 'Roboto-Medium',

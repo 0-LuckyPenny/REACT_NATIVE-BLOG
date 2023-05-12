@@ -3,7 +3,6 @@ import { View, Text, StyleSheet, Image, FlatList } from 'react-native'
 import { colors } from '../../helpers/colors'
 import Post from '../../components/Post'
 import { collection, getFirestore, onSnapshot } from 'firebase/firestore'
-// import { db } from '../../firebase/config'
 import { useSelector } from 'react-redux'
 import { likedPostsHandler } from '../../helpers/likedPostsHandler'
 import { app } from '../../firebase/config'
@@ -35,7 +34,10 @@ export default function DefaultScreenPosts({ route, navigation }) {
   return (
     <View style={styles.container}>
       <View style={styles.profileContainer}>
-        <Image style={styles.userImage} source={{ uri: userPhoto }} />
+        <View style={styles.userImageBox}>
+          {userPhoto && <Image source={{ uri: userPhoto }} />}
+        </View>
+
         <View style={styles.userData}>
           <Text style={styles.userName}>{nickName}</Text>
           <Text style={styles.userEmail}>{userEmail}</Text>
@@ -75,11 +77,13 @@ const styles = StyleSheet.create({
     marginHorizontal: 16,
     marginTop: 32,
   },
-  userImage: {
+  userImageBox: {
     position: 'relative',
     width: 60,
     height: 60,
     borderRadius: 16,
+    resizeMode: 'contain',
+    // backgroundColor: colors.background,
   },
   userData: {
     position: 'absolute',
