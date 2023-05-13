@@ -1,7 +1,6 @@
-import { getDownloadURL, getStorage, ref, uploadBytes } from 'firebase/storage'
+import { getDownloadURL, ref, uploadBytes } from 'firebase/storage'
 import { nanoid } from 'nanoid'
-
-const storage = getStorage()
+import { storage } from '../firebase/config'
 
 export const uploadPhotoToServer = async (photo, folderName) => {
   const uniqueId = nanoid()

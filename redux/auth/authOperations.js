@@ -4,15 +4,12 @@ import {
   createUserWithEmailAndPassword,
   signInWithEmailAndPassword,
   signOut,
-  getAuth,
 } from 'firebase/auth'
 import { authSlice } from './authReducer'
-import { app } from '../../firebase/config'
+import { auth } from '../../firebase/config'
 import { uploadPhotoToServer } from '../../helpers/uploadPhotoToServer'
 
 const { updateUserProfile, authStateChange, authSignOut } = authSlice.actions
-
-const auth = getAuth(app)
 
 export const authSignUpUser =
   ({ avatar, login, email, password }) =>
@@ -24,15 +21,21 @@ export const authSignUpUser =
         password
       )
 
-      const userAvatar = await uploadPhotoToServer(avatar, 'usersAvatars')
+      let userAvatar = null
+      try {
+        userAvatar = await uploadPhotoToServer(avatar, 'usersAvatars')
+      } catch (error) {
+        console.error(error.message)
+      }
       await updateProfile(user, { displayName: login, photoURL: userAvatar })
 
-      const { displayName, uid, photoURL } = await auth.currentUser
+      const { displayName, uid, photoURL } = auth.currentUser
 
       const currentUserData = {
         userId: uid,
         nickName: displayName,
         userPhoto: photoURL,
+        userEmail: email,
       }
 
       dispatch(updateUserProfile(currentUserData))

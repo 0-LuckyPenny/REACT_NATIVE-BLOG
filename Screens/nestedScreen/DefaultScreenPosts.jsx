@@ -34,9 +34,11 @@ export default function DefaultScreenPosts({ route, navigation }) {
   return (
     <View style={styles.container}>
       <View style={styles.profileContainer}>
-        <View style={styles.userImageBox}>
-          {userPhoto && <Image source={{ uri: userPhoto }} />}
-        </View>
+        {userPhoto ? (
+          <Image source={{ uri: userPhoto }} style={styles.userImageBox} />
+        ) : (
+          <View style={styles.userImageBox} />
+        )}
 
         <View style={styles.userData}>
           <Text style={styles.userName}>{nickName}</Text>
@@ -49,10 +51,8 @@ export default function DefaultScreenPosts({ route, navigation }) {
         keyExtractor={item => item.id}
         renderItem={({ item }) => (
           <Post
-            title={item.title}
-            photo={item.photo}
-            commentsValue={item.commentsValue}
-            location={item.location}
+            updatedPosts={updatedPosts}
+            item={item}
             toComment={() => navigation.navigate('Comments', { data: item })}
             toMap={() =>
               navigation.navigate('Map', {
@@ -82,8 +82,8 @@ const styles = StyleSheet.create({
     width: 60,
     height: 60,
     borderRadius: 16,
-    resizeMode: 'contain',
-    // backgroundColor: colors.background,
+    resizeMode: 'cover',
+    backgroundColor: colors.background,
   },
   userData: {
     position: 'absolute',

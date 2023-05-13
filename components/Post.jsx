@@ -1,20 +1,13 @@
 import { View, Text, StyleSheet, Image, TouchableOpacity } from 'react-native'
 import { FontAwesome, SimpleLineIcons, AntDesign } from '@expo/vector-icons'
 import { colors } from '../helpers/colors'
+import { likedPostsHandler } from '../helpers/likedPostsHandler'
 
-export default function Post({
-  photo,
-  title,
-  commentsValue,
-  location,
-  likes,
-  toMap,
-  toComment,
-}) {
+export default function Post({ updatedPosts, item, toMap, toComment }) {
   return (
     <View style={styles.post}>
-      <Image source={{ uri: photo }} style={styles.postImg} />
-      <Text style={styles.postName}>{title}</Text>
+      <Image source={{ uri: item.photo }} style={styles.postImg} />
+      <Text style={styles.postName}>{item.title}</Text>
 
       <View style={styles.description}>
         <View style={styles.commentCont}>
@@ -22,18 +15,23 @@ export default function Post({
             <FontAwesome
               name='comment-o'
               size={24}
-              color={commentsValue > 0 ? colors.orange : colors.textColor}
-              style={[commentsValue > 0 && { backgroundColor: colors.orange }]}
+              color={item.commentsValue > 0 ? colors.orange : colors.textColor}
+              style={[
+                item.commentsValue > 0 && { backgroundColor: colors.orange },
+              ]}
             />
-            <Text style={styles.commentsValue}>{commentsValue}</Text>
+            <Text style={styles.commentsValue}>{item.commentsValue}</Text>
           </TouchableOpacity>
         </View>
 
-        {likes && (
-          <View style={styles.likes}>
+        {item.likes && (
+          <TouchableOpacity
+            style={styles.likes}
+            onPress={() => likedPostsHandler(updatedPosts, item.id)}
+          >
             <AntDesign name='like2' size={24} color={colors.orange} />
-            <Text style={{ marginLeft: 6 }}>{likes}</Text>
-          </View>
+            <Text style={{ marginLeft: 6 }}>{item.likesValue}</Text>
+          </TouchableOpacity>
         )}
 
         <View style={styles.locationCont}>
@@ -43,7 +41,7 @@ export default function Post({
               size={24}
               color={colors.textColor}
             />
-            <Text style={styles.locationName}>{location}</Text>
+            <Text style={styles.locationName}>{item.location}</Text>
           </TouchableOpacity>
         </View>
       </View>

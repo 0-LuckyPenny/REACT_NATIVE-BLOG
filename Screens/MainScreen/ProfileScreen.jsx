@@ -8,6 +8,8 @@ import {
   Platform,
   KeyboardAvoidingView,
   FlatList,
+  SafeAreaView,
+  ScrollView,
 } from 'react-native'
 import { colors } from '../../helpers/colors'
 import Post from '../../components/Post'
@@ -29,8 +31,8 @@ import { AvatarBox } from '../../components/AvatarBox'
 import { getAuth } from 'firebase/auth'
 import { uploadPhotoToServer } from '../../helpers/uploadPhotoToServer'
 
-const auth = getAuth(app)
 const db = getFirestore(app)
+const auth = getAuth(app)
 
 export default function ProfileScreen({ navigation }) {
   const [initPosts, setInitPosts] = useState([])
@@ -68,51 +70,43 @@ export default function ProfileScreen({ navigation }) {
         style={styles.bgImage}
         source={require('../../assets/images/bg_image.jpg')}
       >
-        <KeyboardAvoidingView
-          behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
-          keyboardVerticalOffset={-100}
-        >
-          <View style={styles.profileContainer}>
-            <Ionicons
-              name='exit-outline'
-              size={24}
-              color={colors.textColor}
-              style={styles.logoutIcon}
-              onPress={() => dispatch(authSignOutUser())}
-            />
-            <AvatarBox
-              photoURL={photoURL}
-              getUserPhoto={getUserPhoto}
-              newUserPhoto={newUserPhoto}
-              removeUserPhoto={removeUserPhoto}
-            />
+        <View style={styles.profileContainer}>
+          <Ionicons
+            name='exit-outline'
+            size={24}
+            color={colors.textColor}
+            style={styles.logoutIcon}
+            onPress={() => dispatch(authSignOutUser())}
+          />
+          <AvatarBox
+            photoURL={photoURL}
+            getUserPhoto={getUserPhoto}
+            newUserPhoto={newUserPhoto}
+            removeUserPhoto={removeUserPhoto}
+          />
+          <Text style={styles.nickName}>{nickName}</Text>
 
-            <Text style={styles.nickName}>{nickName}</Text>
-            <FlatList
-              data={updatedPosts}
-              keyExtractor={item => item.id}
-              renderItem={({ item }) => (
-                <Post
-                  photo={item.photo}
-                  title={item.title}
-                  comments={item.commentsValue}
-                  likes={item.likes}
-                  location={item.location}
-                  toComment={() =>
-                    navigation.navigate('Comments', { data: item })
-                  }
-                  toMap={() =>
-                    navigation.navigate('Map', {
-                      location: item.location,
-                      coords: item.coords,
-                      title: item.title,
-                    })
-                  }
-                />
-              )}
-            />
-          </View>
-        </KeyboardAvoidingView>
+          <FlatList
+            data={updatedPosts}
+            keyExtractor={item => item.id}
+            renderItem={({ item }) => (
+              <Post
+                updatedPosts={updatedPosts}
+                item={item}
+                toComment={() =>
+                  navigation.navigate('Comments', { data: item })
+                }
+                toMap={() =>
+                  navigation.navigate('Map', {
+                    location: item.location,
+                    coords: item.coords,
+                    title: item.title,
+                  })
+                }
+              />
+            )}
+          />
+        </View>
       </ImageBackground>
     </View>
   )
@@ -134,8 +128,8 @@ const styles = StyleSheet.create({
     backgroundColor: colors.white,
     borderTopLeftRadius: 25,
     borderTopRightRadius: 25,
-    width: '100%',
-    height: '100%',
+    // width: '100%',
+    // height: '100%',
   },
   logoutIcon: {
     marginTop: 22,
