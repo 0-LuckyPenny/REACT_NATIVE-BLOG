@@ -39,7 +39,7 @@ export default function ProfileScreen({ navigation }) {
   const [updatedPosts, setUpdatedPosts] = useState([])
   const [newUserPhoto, setNewUserPhoto] = useState(null)
   const dispatch = useDispatch()
-  const { uid, displayName, photoURL } = auth.currentUser
+  const { uid, photoURL } = auth.currentUser
   const { nickName, userId } = useSelector(state => state.auth)
 
   useEffect(() => {
@@ -128,8 +128,8 @@ const styles = StyleSheet.create({
     backgroundColor: colors.white,
     borderTopLeftRadius: 25,
     borderTopRightRadius: 25,
-    // width: '100%',
-    // height: '100%',
+    width: '100%',
+    height: '100%',
   },
   logoutIcon: {
     marginTop: 22,

@@ -24,6 +24,8 @@ export const storage = getStorage()
 
 export const db = getFirestore(app)
 
-export const auth = initializeAuth(app, {
+const authAsync = initializeAuth(app, {
   persistence: getReactNativePersistence(AsyncStorage),
 })
+
+export const auth = getAuth(app)

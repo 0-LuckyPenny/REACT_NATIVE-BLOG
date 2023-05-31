@@ -5,11 +5,9 @@ import {
   signInWithEmailAndPassword,
   signOut,
 } from 'firebase/auth'
-import { authSlice } from './authReducer'
 import { auth } from '../../firebase/config'
 import { uploadPhotoToServer } from '../../helpers/uploadPhotoToServer'
-
-const { updateUserProfile, authStateChange, authSignOut } = authSlice.actions
+import { authSignOut, authStateChange, updateUserProfile } from './authSlice'
 
 export const authSignUpUser =
   ({ avatar, login, email, password }) =>
