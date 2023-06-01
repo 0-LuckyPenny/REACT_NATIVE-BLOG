@@ -1,5 +1,5 @@
 import { AntDesign } from '@expo/vector-icons'
-import { View, TouchableOpacity, Image } from 'react-native'
+import { View, Image } from 'react-native'
 import { StyleSheet } from 'react-native'
 import { colors } from '../helpers/colors'
 

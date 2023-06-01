@@ -2,7 +2,7 @@ import { View, Text, StyleSheet, Image } from 'react-native'
 import { colors } from '../helpers/colors'
 
 export default function Comment({
-  isCurrenUser,
+  isCurrentUser,
   userNickName,
   userPhoto,
   userComment,
@@ -10,7 +10,7 @@ export default function Comment({
 }) {
   return (
     <View
-      style={isCurrenUser ? styles.currentUserComment : styles.otherUserComment}
+      style={isCurrentUser ? styles.currentUserComment : styles.otherUserComment}
     >
       <View style={styles.userPhoto}>
         {userPhoto && <Image source={userPhoto} />}
@@ -18,7 +18,7 @@ export default function Comment({
 
       <View
         style={
-          isCurrenUser
+          isCurrentUser
             ? styles.currentUserCommentDescr
             : styles.otherUserCommentDescr
         }

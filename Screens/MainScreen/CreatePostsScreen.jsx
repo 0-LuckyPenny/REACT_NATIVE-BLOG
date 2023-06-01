@@ -80,8 +80,7 @@ export default function CreatePostsScreen({ navigation }) {
         nickName,
         userPhoto,
         userEmail,
-        commentsValue: 0,
-        likesValue: 0,
+        comments: [],
         likes: [],
         isLiked: false,
       })

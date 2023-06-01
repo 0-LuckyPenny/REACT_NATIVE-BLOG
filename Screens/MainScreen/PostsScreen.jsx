@@ -4,10 +4,14 @@ import { colors } from '../../helpers/colors'
 import DefaultScreenPosts from '../NestedScreen/DefaultScreenPosts'
 import CommentsScreen from '../NestedScreen/CommentsScreen'
 import MapScreen from '../NestedScreen/MapScreen'
+import { useDispatch } from 'react-redux'
+import { authSignOutUser } from '../../redux/auth/authOperations'
 
 const NestedScreen = createStackNavigator()
 
 export default function PostsScreen() {
+  const dispatch = useDispatch()
+
   return (
     <NestedScreen.Navigator
       screenOptions={{
@@ -24,7 +28,21 @@ export default function PostsScreen() {
       <NestedScreen.Screen
         name='DefaultScreen'
         component={DefaultScreenPosts}
-        options={{ headerShown: false }}
+        options={{
+          title: 'Posts',
+          tabBarIcon: ({ focused, color, size }) => (
+            <AntDesign name='appstore-o' size={24} color={colors.iconColor} />
+          ),
+          headerRight: () => (
+            <Ionicons
+              onPress={() => dispatch(authSignOutUser())}
+              name='exit-outline'
+              size={24}
+              style={{ marginRight: 16 }}
+              color={colors.textColor}
+            />
+          ),
+        }}
       />
       <NestedScreen.Screen
         name='Comments'

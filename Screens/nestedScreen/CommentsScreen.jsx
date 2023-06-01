@@ -104,7 +104,7 @@ export default function CommentsScreen({ route }) {
           renderItem={({ item }) => (
             <View style={styles.commentList}>
               <Comment
-                isCurrenUser={item.userId === id ? true : false}
+                isCurrentUser={item.userId === id ? true : false}
                 userNickName={item.userNickName}
                 userPhoto={{ uri: item.userPhoto }}
                 userComment={item.newComment}
