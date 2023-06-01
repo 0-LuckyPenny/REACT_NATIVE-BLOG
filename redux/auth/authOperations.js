@@ -19,13 +19,14 @@ export const authSignUpUser =
         password
       )
 
-      let userAvatar = null
-      try {
-        userAvatar = await uploadPhotoToServer(avatar, 'usersAvatars')
-      } catch (error) {
-        console.error(error.message)
+      if (avatar) {
+        const userAvatar = await uploadPhotoToServer(avatar, 'usersAvatars')
+        await updateProfile(user, { displayName: login, photoURL: userAvatar })
+      } else {
+        await updateProfile(user, {
+          displayName: login,
+        })
       }
-      await updateProfile(user, { displayName: login, photoURL: userAvatar })
 
       const { displayName, uid, photoURL } = auth.currentUser
 
