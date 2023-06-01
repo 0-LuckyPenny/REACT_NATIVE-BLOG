@@ -13,14 +13,11 @@ export default function Post({ updatedPosts, item, toMap, toComment }) {
         <View style={styles.commentCont}>
           <TouchableOpacity onPress={toComment} style={styles.descriptionItem}>
             <FontAwesome
-              name='comment-o'
+              name='comment'
               size={24}
-              color={item.commentsValue > 0 ? colors.orange : colors.textColor}
-              style={[
-                item.commentsValue > 0 && { backgroundColor: colors.orange },
-              ]}
+              color={item.commentsNumber > 0 ? colors.orange : colors.textColor}
             />
-            <Text style={styles.commentsValue}>{item.commentsValue}</Text>
+            <Text style={styles.value}>{item.commentsNumber}</Text>
           </TouchableOpacity>
         </View>
 
@@ -30,7 +27,7 @@ export default function Post({ updatedPosts, item, toMap, toComment }) {
             onPress={() => likedPostsHandler(updatedPosts, item.id)}
           >
             <AntDesign name='like2' size={24} color={colors.orange} />
-            <Text style={{ marginLeft: 6 }}>{item.likesValue}</Text>
+            <Text style={styles.value}>{item.likesValue}</Text>
           </TouchableOpacity>
         )}
 
@@ -77,7 +74,7 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
   },
-  commentsValue: {
+  value: {
     marginLeft: 8,
     fontSize: 16,
   },

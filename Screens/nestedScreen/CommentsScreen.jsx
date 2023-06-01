@@ -64,7 +64,7 @@ export default function CommentsScreen({ route }) {
       const docRef = await addDoc(collection(db, 'posts', id, 'comments'), {
         newComment,
         createdAt: new Timestamp.now().toMillis(),
-        userId: userId,
+        userId,
         userPhoto,
         userNickName: nickName,
       })
