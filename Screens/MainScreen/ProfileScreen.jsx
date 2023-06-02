@@ -1,16 +1,6 @@
 import { useEffect, useState } from 'react'
 import { Ionicons } from '@expo/vector-icons'
-import {
-  StyleSheet,
-  Text,
-  View,
-  ImageBackground,
-  Platform,
-  KeyboardAvoidingView,
-  FlatList,
-  SafeAreaView,
-  ScrollView,
-} from 'react-native'
+import { StyleSheet, Text, View, ImageBackground, FlatList } from 'react-native'
 import { colors } from '../../helpers/colors'
 import Post from '../../components/Post'
 import { useDispatch, useSelector } from 'react-redux'

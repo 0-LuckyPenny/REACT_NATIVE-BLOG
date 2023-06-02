@@ -106,7 +106,7 @@ export default function CommentsScreen({ route }) {
               <Comment
                 isCurrentUser={item.userId === id ? true : false}
                 userNickName={item.userNickName}
-                userPhoto={{ uri: item.userPhoto }}
+                userPhoto={item.userPhoto}
                 userComment={item.newComment}
                 currentDate={dayjs(item.createdAt).format(
                   'DD MMMM, YYYY | HH:mm'

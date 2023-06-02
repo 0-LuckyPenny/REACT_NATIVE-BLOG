@@ -8,13 +8,18 @@ export default function Comment({
   userComment,
   currentDate,
 }) {
+  console.log(userPhoto)
   return (
     <View
-      style={isCurrentUser ? styles.currentUserComment : styles.otherUserComment}
+      style={
+        isCurrentUser ? styles.currentUserComment : styles.otherUserComment
+      }
     >
-      <View style={styles.userPhoto}>
-        {userPhoto && <Image source={userPhoto} />}
-      </View>
+      {userPhoto ? (
+        <Image style={styles.userPhoto} source={{ uri: userPhoto }} />
+      ) : (
+        <View style={styles.photoBox} />
+      )}
 
       <View
         style={
@@ -71,10 +76,15 @@ const styles = StyleSheet.create({
     marginBottom: 10,
   },
   userPhoto: {
+    borderRadius: 20,
     height: 40,
     width: 40,
-    borderRadius: 50,
-    // backgroundColor: colors.background,
+  },
+  photoBox: {
+    backgroundColor: colors.background,
+    borderRadius: 20,
+    height: 40,
+    width: 40,
   },
   currentDate: {
     fontSize: 11,
