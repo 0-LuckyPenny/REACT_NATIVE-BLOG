@@ -8,7 +8,6 @@ export default function Comment({
   userComment,
   currentDate,
 }) {
-  console.log(userPhoto)
   return (
     <View
       style={

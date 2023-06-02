@@ -36,7 +36,6 @@ export const authSignUpUser =
         userPhoto: photoURL,
         userEmail: email,
       }
-      console.log(currentUserData)
 
       dispatch(updateUserProfile(currentUserData))
     } catch (error) {
