@@ -8,21 +8,11 @@ import { authSignOutUser } from '../../redux/auth/authOperations'
 import { likedPostsHandler } from '../../helpers/likedPostsHandler'
 import { handleImagePicker } from '../../helpers/handleImagePicker.js'
 import { addUserPhoto } from '../../helpers/addUserPhoto'
-import { app } from '../../firebase/config'
-import {
-  collection,
-  getFirestore,
-  onSnapshot,
-  query,
-  where,
-} from 'firebase/firestore'
+import { auth, db } from '../../firebase/config'
+import { collection, onSnapshot, query, where } from 'firebase/firestore'
 import { removeUserPhoto } from '../../helpers/removeUserPhoto'
 import { AvatarBox } from '../../components/AvatarBox'
-import { getAuth } from 'firebase/auth'
 import { uploadPhotoToServer } from '../../helpers/uploadPhotoToServer'
-
-const db = getFirestore(app)
-const auth = getAuth(app)
 
 export default function ProfileScreen({ navigation }) {
   const [initPosts, setInitPosts] = useState([])

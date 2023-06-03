@@ -7,15 +7,26 @@ import { getFirestore } from 'firebase/firestore/lite'
 import AsyncStorage from '@react-native-async-storage/async-storage'
 import { getStorage } from 'firebase/storage'
 import { getAuth } from 'firebase/auth'
+import Constants from 'expo-constants'
+
+const {
+  FIREBASE_API_KEY,
+  AUTH_DOMAIN,
+  PROJECT_ID,
+  STORAGE_BUCKET,
+  SENDER_ID,
+  APP_ID,
+  MEASUREMENT_ID,
+} = Constants.manifest.extra
 
 const firebaseConfig = {
-  apiKey: 'AIzaSyAGZ788aJJENsR8EMRNNGXJToQCk4CbLWw',
-  authDomain: 'rn-social-52def.firebaseapp.com',
-  projectId: 'rn-social-52def',
-  storageBucket: 'rn-social-52def.appspot.com',
-  messagingSenderId: '32707799653',
-  appId: '1:32707799653:web:8eaabc4884527aa855748c',
-  measurementId: 'G-TNL2YVJ1TS',
+  apiKey: FIREBASE_API_KEY,
+  authDomain: AUTH_DOMAIN,
+  projectId: PROJECT_ID,
+  storageBucket: STORAGE_BUCKET,
+  messagingSenderId: SENDER_ID,
+  appId: APP_ID,
+  measurementId: MEASUREMENT_ID,
 }
 
 export const app = initializeApp(firebaseConfig)

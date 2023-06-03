@@ -238,7 +238,7 @@ const styles = StyleSheet.create({
   },
   locationIcon: {
     position: 'absolute',
-    bottom: 15,
+    bottom: 22,
     left: -5,
   },
   button: {

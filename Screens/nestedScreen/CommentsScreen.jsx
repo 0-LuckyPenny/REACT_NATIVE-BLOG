@@ -6,7 +6,6 @@ import {
   Image,
   TextInput,
   TouchableOpacity,
-  ScrollView,
   SafeAreaView,
 } from 'react-native'
 import { colors } from '../../helpers/colors'
@@ -89,6 +88,7 @@ export default function CommentsScreen({ route }) {
   const submitHandler = async () => {
     await addComment()
     setNewComment('')
+    Keyboard.dismiss()
   }
 
   return (
