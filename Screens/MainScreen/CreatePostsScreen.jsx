@@ -1,6 +1,5 @@
 import { useState, useEffect } from 'react'
 import { SimpleLineIcons, AntDesign } from '@expo/vector-icons'
-import { Input } from 'react-native-elements'
 import { nanoid } from 'nanoid'
 import * as Location from 'expo-location'
 import {
@@ -11,6 +10,7 @@ import {
   TouchableOpacity,
   TouchableWithoutFeedback,
   Keyboard,
+  TextInput,
 } from 'react-native'
 import { colors } from '../../helpers/colors'
 import PhotoCamera from '../../components/PhotoCamera'
@@ -29,10 +29,10 @@ const initialState = {
 
 export default function CreatePostsScreen({ navigation }) {
   const [state, setState] = useState(initialState)
+  const [activeInput, setActiveInput] = useState('')
+  const [isShowKeyboard, setIsShowKeyboard] = useState(false)
   const [cameraRef, setCameraRef] = useState(null)
   const [takenPhoto, setTakenPhoto] = useState(null)
-  // const [isLoadingPhoto, setIsLoadingPhoto] = useState(false)
-
   const { userId, nickName, userPhoto, userEmail } = useSelector(
     state => state.auth
   )
@@ -60,14 +60,6 @@ export default function CreatePostsScreen({ navigation }) {
       coords: coords,
     }))
     setTakenPhoto(uri)
-  }
-
-  const inputValueHandler = (input, value) => {
-    setState(prevState => ({
-      ...prevState,
-      [input]: value,
-      id: nanoid(),
-    }))
   }
 
   const uploadPostToServer = async () => {
@@ -98,8 +90,27 @@ export default function CreatePostsScreen({ navigation }) {
     setTakenPhoto(null)
   }
 
+  const inputValueHandler = (input, value) => {
+    setState(prevState => ({
+      ...prevState,
+      [input]: value,
+      id: nanoid(),
+    }))
+  }
+
+  const activeInputHandler = inputName => {
+    setIsShowKeyboard(true)
+    setActiveInput(inputName)
+  }
+
+  const showKeyboardHandler = () => {
+    setIsShowKeyboard(false)
+    setActiveInput('')
+    Keyboard.dismiss()
+  }
+
   return (
-    <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
+    <TouchableWithoutFeedback onPress={showKeyboardHandler}>
       <View style={styles.container}>
         <View style={styles.photoContainer}>
           {takenPhoto ? (
@@ -124,28 +135,41 @@ export default function CreatePostsScreen({ navigation }) {
         </TouchableOpacity>
 
         <View style={styles.form}>
-          <Input
-            style={{ ...styles.input, fontFamily: 'Roboto-Medium' }}
-            placeholder='Name...'
+          <TextInput
+            style={{
+              ...styles.input,
+              borderColor:
+                activeInput === 'title' ? colors.orange : colors.textColor,
+            }}
+            placeholder='Title...'
             placeholderTextColor={colors.textColor}
             value={state.title}
             onChangeText={value => inputValueHandler('title', value)}
+            onFocus={() => activeInputHandler('title')}
+            onEndEditing={() => showKeyboardHandler()}
           />
-          <Input
-            leftIcon={
-              <SimpleLineIcons
-                name='location-pin'
-                size={24}
-                color={colors.textColor}
-                style={{ marginRight: 4 }}
-              />
-            }
-            style={{ ...styles.input, fontFamily: 'Roboto-Regular' }}
-            placeholder='Location...'
-            placeholderTextColor={colors.textColor}
-            value={state.location}
-            onChangeText={value => inputValueHandler('location', value)}
-          />
+
+          <View>
+            <TextInput
+              style={{
+                ...styles.input,
+                paddingLeft: 24,
+                borderColor:
+                  activeInput === 'location' ? colors.orange : colors.textColor,
+              }}
+              placeholder='Location...'
+              placeholderTextColor={colors.textColor}
+              value={state.location}
+              onChangeText={value => inputValueHandler('location', value)}
+              onFocus={() => activeInputHandler('location')}
+            />
+            <SimpleLineIcons
+              name='location-pin'
+              size={24}
+              color={colors.textColor}
+              style={styles.locationIcon}
+            />
+          </View>
 
           <TouchableOpacity
             style={{
@@ -207,12 +231,15 @@ const styles = StyleSheet.create({
   },
   input: {
     marginTop: 16,
-    paddingTop: 16,
-    paddingLeft: 0,
-    paddingBottom: 15,
+    paddingVertical: 16,
+    borderBottomWidth: 1,
     fontSize: 16,
-    borderBottomColor: colors.textColor,
     color: colors.black,
+  },
+  locationIcon: {
+    position: 'absolute',
+    bottom: 15,
+    left: -5,
   },
   button: {
     borderRadius: 100,
@@ -234,6 +261,6 @@ const styles = StyleSheet.create({
     backgroundColor: colors.background,
     justifyContent: 'center',
     alignItems: 'center',
-    marginTop: 100,
+    marginTop: 120,
   },
 })
