@@ -1,7 +1,8 @@
 {
   "expo": {
-    "name": "react-native-blog",
-    "slug": "react-native-blog",
+    "name": "Awesome blog",
+    "slug": "awesome-blog",
+    "description": "This is an awesome app",
     "version": "1.0.0",
     "orientation": "default",
     "icon": "./assets/icon.png",
