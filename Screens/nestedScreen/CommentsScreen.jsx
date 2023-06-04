@@ -19,14 +19,12 @@ import {
   Timestamp,
   updateDoc,
   doc,
-  getFirestore,
 } from 'firebase/firestore'
 import dayjs from 'dayjs'
-import { app } from '../../firebase/config'
 import { TouchableWithoutFeedback } from 'react-native'
 import { Keyboard } from 'react-native'
-
-const db = getFirestore(app)
+import { selectAuth } from '../../redux/auth/selectors'
+import { firestore } from '../../firebase/config'
 
 export default function CommentsScreen({ route }) {
   const [isShowKeyboard, setIsShowKeyboard] = useState(false)
@@ -34,7 +32,7 @@ export default function CommentsScreen({ route }) {
   const [allComments, setAllComments] = useState([])
   const [commentsNumber, setCommentsNumber] = useState(0)
   const { id, photo } = route.params.data
-  const { userId, nickName, userPhoto } = useSelector(state => state.auth)
+  const { userId, nickName, userPhoto } = useSelector(selectAuth)
 
   useEffect(() => {
     getAllComments()
@@ -49,9 +47,14 @@ export default function CommentsScreen({ route }) {
   }, [commentsNumber])
 
   const getAllComments = async () => {
-    await onSnapshot(collection(db, 'posts', id, 'comments'), snapshot => {
-      setAllComments(snapshot.docs.map(doc => ({ ...doc.data(), id: doc.id })))
-    })
+    await onSnapshot(
+      collection(firestore, 'posts', id, 'comments'),
+      snapshot => {
+        setAllComments(
+          snapshot.docs.map(doc => ({ ...doc.data(), id: doc.id }))
+        )
+      }
+    )
   }
 
   allComments.map(comment => {
@@ -60,13 +63,16 @@ export default function CommentsScreen({ route }) {
 
   const addComment = async () => {
     try {
-      const docRef = await addDoc(collection(db, 'posts', id, 'comments'), {
-        newComment,
-        createdAt: new Timestamp.now().toMillis(),
-        userId,
-        userPhoto,
-        userNickName: nickName,
-      })
+      const docRef = await addDoc(
+        collection(firestore, 'posts', id, 'comments'),
+        {
+          newComment,
+          createdAt: new Timestamp.now().toMillis(),
+          userId,
+          userPhoto,
+          userNickName: nickName,
+        }
+      )
       console.log('Document written with ID: ', docRef.id)
     } catch (e) {
       console.error('Error adding document: ', e)
@@ -79,7 +85,7 @@ export default function CommentsScreen({ route }) {
   }
 
   const updateCommentsNumber = async () => {
-    const postsCollectionRef = doc(db, 'posts', id)
+    const postsCollectionRef = doc(firestore, 'posts', id)
     await updateDoc(postsCollectionRef, {
       commentsNumber,
     })

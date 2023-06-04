@@ -8,11 +8,12 @@ import { authSignOutUser } from '../../redux/auth/authOperations'
 import { likedPostsHandler } from '../../helpers/likedPostsHandler'
 import { handleImagePicker } from '../../helpers/handleImagePicker.js'
 import { addUserPhoto } from '../../helpers/addUserPhoto'
-import { auth, db } from '../../firebase/config'
+import { auth, firestore } from '../../firebase/config'
 import { collection, onSnapshot, query, where } from 'firebase/firestore'
 import { removeUserPhoto } from '../../helpers/removeUserPhoto'
 import { AvatarBox } from '../../components/AvatarBox'
 import { uploadPhotoToServer } from '../../helpers/uploadPhotoToServer'
+import { selectAuth } from '../../redux/auth/selectors'
 
 export default function ProfileScreen({ navigation }) {
   const [initPosts, setInitPosts] = useState([])
@@ -20,7 +21,7 @@ export default function ProfileScreen({ navigation }) {
   const [newUserPhoto, setNewUserPhoto] = useState(null)
   const dispatch = useDispatch()
   const { uid, photoURL } = auth.currentUser
-  const { nickName, userId } = useSelector(state => state.auth)
+  const { nickName, userId } = useSelector(selectAuth)
 
   useEffect(() => {
     getUserPosts()
@@ -31,7 +32,10 @@ export default function ProfileScreen({ navigation }) {
   }, [initPosts])
 
   const getUserPosts = async () => {
-    const q = query(collection(db, 'posts'), where('userId', '==', userId))
+    const q = query(
+      collection(firestore, 'posts'),
+      where('userId', '==', userId)
+    )
     await onSnapshot(q, snapshot => {
       setInitPosts(snapshot.docs.map(doc => ({ ...doc.data(), id: doc.id })))
     })

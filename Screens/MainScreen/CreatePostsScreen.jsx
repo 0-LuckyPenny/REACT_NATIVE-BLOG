@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react'
 import { SimpleLineIcons, AntDesign } from '@expo/vector-icons'
 import { nanoid } from 'nanoid'
+import 'react-native-get-random-values'
 import * as Location from 'expo-location'
 import {
   View,
@@ -15,11 +16,11 @@ import {
 import { colors } from '../../helpers/colors'
 import PhotoCamera from '../../components/PhotoCamera'
 import { useSelector } from 'react-redux'
-import { collection, addDoc, getFirestore } from 'firebase/firestore'
-import { app } from '../../firebase/config.js'
+import { collection, addDoc } from 'firebase/firestore'
 import { uploadPhotoToServer } from '../../helpers/uploadPhotoToServer'
-
-const db = getFirestore(app)
+import { selectAuth } from '../../redux/auth/selectors'
+import { firestore } from '../../firebase/config'
+import Loader from '../../components/Loader'
 
 const initialState = {
   title: '',
@@ -33,9 +34,8 @@ export default function CreatePostsScreen({ navigation }) {
   const [isShowKeyboard, setIsShowKeyboard] = useState(false)
   const [cameraRef, setCameraRef] = useState(null)
   const [takenPhoto, setTakenPhoto] = useState(null)
-  const { userId, nickName, userPhoto, userEmail } = useSelector(
-    state => state.auth
-  )
+  const { userId, nickName, userPhoto, userEmail, isLoading, error } =
+    useSelector(selectAuth)
 
   useEffect(() => {
     ;(async () => {
@@ -65,7 +65,7 @@ export default function CreatePostsScreen({ navigation }) {
   const uploadPostToServer = async () => {
     const photoUrl = await uploadPhotoToServer(takenPhoto, 'postsImages')
     try {
-      const docRef = await addDoc(collection(db, 'posts'), {
+      const docRef = await addDoc(collection(firestore, 'posts'), {
         ...state,
         photo: photoUrl,
         userId,
@@ -83,18 +83,11 @@ export default function CreatePostsScreen({ navigation }) {
     }
   }
 
-  const submitHandler = async () => {
-    uploadPostToServer()
-    navigation.navigate('DefaultScreen')
-    setState(initialState)
-    setTakenPhoto(null)
-  }
-
   const inputValueHandler = (input, value) => {
     setState(prevState => ({
       ...prevState,
       [input]: value,
-      id: nanoid(),
+      id: nanoid(10),
     }))
   }
 
@@ -109,9 +102,18 @@ export default function CreatePostsScreen({ navigation }) {
     Keyboard.dismiss()
   }
 
+  const submitHandler = async () => {
+    uploadPostToServer()
+    navigation.navigate('DefaultScreen')
+    setState(initialState)
+    setTakenPhoto(null)
+  }
+
   return (
     <TouchableWithoutFeedback onPress={showKeyboardHandler}>
       <View style={styles.container}>
+        {isLoading && <Loader />}
+        {error && <Text>{error.message}</Text>}
         <View style={styles.photoContainer}>
           {takenPhoto ? (
             <Image

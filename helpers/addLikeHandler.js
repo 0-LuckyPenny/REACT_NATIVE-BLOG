@@ -4,14 +4,11 @@ import {
   increment,
   arrayUnion,
   arrayRemove,
-  getFirestore,
 } from 'firebase/firestore'
-import { app } from '../firebase/config'
-
-const db = getFirestore(app)
+import { firestore } from '../firebase/config'
 
 export const addLikeHandler = async (initPostsArray, id, userId) => {
-  const postsCollectionRef = doc(db, 'posts', id)
+  const postsCollectionRef = doc(firestore, 'posts', id)
 
   initPostsArray?.map(post => {
     if (!post.likes.includes(userId)) {

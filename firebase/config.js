@@ -1,12 +1,12 @@
 import { initializeApp } from 'firebase/app'
+import { getAuth } from 'firebase/auth'
+import { getStorage } from 'firebase/storage'
+import { getFirestore } from 'firebase/firestore'
 import {
   getReactNativePersistence,
   initializeAuth,
 } from 'firebase/auth/react-native'
-import { getFirestore } from 'firebase/firestore/lite'
 import AsyncStorage from '@react-native-async-storage/async-storage'
-import { getStorage } from 'firebase/storage'
-import { getAuth } from 'firebase/auth'
 import Constants from 'expo-constants'
 
 const {
@@ -29,11 +29,10 @@ const firebaseConfig = {
   measurementId: MEASUREMENT_ID,
 }
 
-export const app = initializeApp(firebaseConfig)
+const app = initializeApp(firebaseConfig)
 
-export const storage = getStorage()
-
-export const db = getFirestore(app)
+export const storage = getStorage(app)
+export const firestore = getFirestore(app)
 
 const authAsync = initializeAuth(app, {
   persistence: getReactNativePersistence(AsyncStorage),

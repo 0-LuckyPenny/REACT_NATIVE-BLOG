@@ -1,5 +1,6 @@
 import { getDownloadURL, ref, uploadBytes } from 'firebase/storage'
 import { nanoid } from 'nanoid'
+import 'react-native-get-random-values'
 import { storage } from '../firebase/config'
 
 export const uploadPhotoToServer = async (photo, folderName) => {

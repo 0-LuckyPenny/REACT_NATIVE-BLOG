@@ -1,17 +1,16 @@
 import {
   updateProfile,
-  onAuthStateChanged,
   createUserWithEmailAndPassword,
   signInWithEmailAndPassword,
   signOut,
 } from 'firebase/auth'
 import { auth } from '../../firebase/config'
 import { uploadPhotoToServer } from '../../helpers/uploadPhotoToServer'
-import { authSignOut, authStateChange, updateUserProfile } from './authSlice'
+import { createAsyncThunk } from '@reduxjs/toolkit'
 
-export const authSignUpUser =
-  ({ avatar, login, email, password }) =>
-  async (dispatch, getState) => {
+export const authSignUpUser = createAsyncThunk(
+  'auth/register',
+  async ({ avatar, login, email, password }, { rejectWithValue, dispatch }) => {
     try {
       const { user } = await createUserWithEmailAndPassword(
         auth,
@@ -29,51 +28,50 @@ export const authSignUpUser =
       }
 
       const { displayName, uid, photoURL } = auth.currentUser
-
-      const currentUserData = {
-        userId: uid,
-        nickName: displayName,
-        userPhoto: photoURL,
-        userEmail: email,
-      }
-
-      dispatch(updateUserProfile(currentUserData))
-    } catch (error) {
-      console.log(error)
+      return { displayName, uid, photoURL, email }
+    } catch (e) {
+      console.log(e)
+      alert(e.message)
+      return rejectWithValue(e.message)
     }
   }
+)
 
-export const authSignInUser =
-  ({ email, password }) =>
-  async (dispatch, getState) => {
+export const authSignInUser = createAsyncThunk(
+  'auth/login',
+  async ({ email, password }, thunkAPI) => {
     try {
-      const user = await signInWithEmailAndPassword(auth, email, password)
-      console.log('loggedIn user', user)
-    } catch (error) {
-      console.log(error)
+      await signInWithEmailAndPassword(auth, email, password)
+    } catch (e) {
+      console.log(e.message)
+      alert(e.message)
+      return thunkAPI.rejectWithValue(e.message)
     }
   }
+)
 
-export const authStateChangeUser = () => async (dispatch, getState) => {
-  await onAuthStateChanged(auth, user => {
-    if (user) {
-      const currentUserData = {
-        userId: user.uid,
-        nickName: user.displayName,
-        userPhoto: user.photoURL,
-        userEmail: user.email,
-      }
-      dispatch(authStateChange({ stateChange: true }))
-      dispatch(updateUserProfile(currentUserData))
+export const authStateChangeUser = createAsyncThunk(
+  'auth/refresh',
+  async (credentials, thunkAPI) => {
+    try {
+      return credentials
+    } catch (e) {
+      console.log(e.message)
+      alert(e.message)
+      return thunkAPI.rejectWithValue(e.message)
     }
-  })
-}
-
-export const authSignOutUser = () => async (dispatch, getState) => {
-  try {
-    await signOut(auth)
-    dispatch(authSignOut())
-  } catch (error) {
-    console.log(error)
   }
-}
+)
+
+export const authSignOutUser = createAsyncThunk(
+  'auth/logout',
+  async (credentials, thunkAPI) => {
+    try {
+      await signOut(auth)
+    } catch (e) {
+      console.log(e.message)
+      alert(e.message)
+      return thunkAPI.rejectWithValue(e.message)
+    }
+  }
+)

@@ -2,23 +2,19 @@ import { useEffect, useState } from 'react'
 import { View, Text, StyleSheet, Image, FlatList } from 'react-native'
 import { colors } from '../../helpers/colors'
 import Post from '../../components/Post'
-import { collection, getFirestore, onSnapshot } from 'firebase/firestore'
+import { collection, onSnapshot } from 'firebase/firestore'
 import { useSelector } from 'react-redux'
 import { likedPostsHandler } from '../../helpers/likedPostsHandler'
-import { app } from '../../firebase/config'
-
-const db = getFirestore(app)
+import { selectAuth } from '../../redux/auth/selectors'
+import { firestore } from '../../firebase/config'
 
 export default function DefaultScreenPosts({ route, navigation }) {
   const [initPosts, setInitPosts] = useState([])
   const [updatedPosts, setUpdatedPosts] = useState([])
-
-  const { userId, nickName, userEmail, userPhoto } = useSelector(
-    state => state.auth
-  )
+  const { userId, nickName, userEmail, userPhoto } = useSelector(selectAuth)
 
   const getAllPosts = async () => {
-    onSnapshot(collection(db, 'posts'), snapshot => {
+    onSnapshot(collection(firestore, 'posts'), snapshot => {
       setInitPosts(snapshot.docs.map(doc => ({ ...doc.data(), id: doc.id })))
     })
   }
