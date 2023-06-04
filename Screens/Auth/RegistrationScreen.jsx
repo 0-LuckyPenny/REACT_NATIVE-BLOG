@@ -17,6 +17,7 @@ import { useDispatch } from 'react-redux'
 import { authSignUpUser } from '../../redux/authOperations'
 import { AvatarBox } from '../../components/AvatarBox'
 import { handleImagePicker } from '../../helpers/handleImagePicker'
+import { CustomInput, ShowHidePassword, SubmitButton } from '../../components'
 
 const initialState = {
   login: '',
@@ -28,6 +29,7 @@ const initialState = {
 export default function RegistrationScreen({ navigation }) {
   const [isShowKeyboard, setIsShowKeyboard] = useState(false)
   const [inputValue, setInputValue] = useState(initialState)
+  const [secureTextEntry, setSecureTextEntry] = useState(true)
 
   const dispatch = useDispatch()
 
@@ -56,7 +58,7 @@ export default function RegistrationScreen({ navigation }) {
         >
           <KeyboardAvoidingView
             behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
-            keyboardVerticalOffset={-100}
+            keyboardVerticalOffset={-120}
           >
             <View style={styles.form}>
               <AvatarBox
@@ -64,48 +66,45 @@ export default function RegistrationScreen({ navigation }) {
                 newUserPhoto={inputValue.avatar}
               />
               <Text style={styles.formTitle}>Sign in</Text>
-              <TextInput
-                style={{ ...styles.input, marginTop: 32 }}
-                placeholder='Login'
-                placeholderTextColor={COLORS.textColor}
-                onFocus={() => setIsShowKeyboard(true)}
-                value={inputValue.login}
-                onChangeText={value =>
-                  setInputValue(prevState => ({ ...prevState, login: value }))
-                }
-              />
-              <TextInput
-                style={styles.input}
-                placeholder='Email'
-                placeholderTextColor={COLORS.textColor}
-                onFocus={() => setIsShowKeyboard(true)}
-                value={inputValue.email}
-                onChangeText={value =>
-                  setInputValue(prevState => ({ ...prevState, email: value }))
-                }
-              />
-              <TextInput
-                style={styles.input}
-                placeholder='Password'
-                placeholderTextColor={COLORS.textColor}
-                maxLength={16}
-                secureTextEntry={true}
-                onFocus={() => setIsShowKeyboard(true)}
-                value={inputValue.password}
-                onChangeText={value =>
-                  setInputValue(prevState => ({
-                    ...prevState,
-                    password: value,
-                  }))
-                }
-              />
-              <TouchableOpacity
-                activeOpacity={0.8}
-                style={styles.btn}
-                onPress={handleSubmit}
-              >
-                <Text style={styles.btnTitle}>Sign in</Text>
-              </TouchableOpacity>
+
+              <View style={styles.inputContainer}>
+                <CustomInput
+                  placeholder={'Login'}
+                  value={inputValue.login}
+                  onChangeText={value =>
+                    setInputValue(prevState => ({ ...prevState, login: value }))
+                  }
+                />
+                <CustomInput
+                  placeholder={'Email'}
+                  value={inputValue.email}
+                  onChangeText={value =>
+                    setInputValue(prevState => ({ ...prevState, email: value }))
+                  }
+                />
+                <View>
+                  <CustomInput
+                    placeholder={'Password'}
+                    secureTextEntry={true}
+                    value={inputValue.password}
+                    onChangeText={value =>
+                      setInputValue(prevState => ({
+                        ...prevState,
+                        password: value,
+                      }))
+                    }
+                  />
+                  <ShowHidePassword
+                    secureTextEntry={secureTextEntry}
+                    onPress={() => {
+                      setSecureTextEntry(state => !state)
+                    }}
+                  />
+                </View>
+              </View>
+
+              <SubmitButton title={'Sign in'} handleSubmit={handleSubmit} />
+
               <View style={styles.signInBox}>
                 <Text>Already have an account?</Text>
                 <Text
@@ -140,38 +139,20 @@ const styles = StyleSheet.create({
     backgroundColor: COLORS.white,
     borderTopLeftRadius: RADII.xlg,
     borderTopRightRadius: RADII.xlg,
-    paddingBottom: 45,
+    paddingTop: 92,
+    paddingBottom: SPACE[7],
   },
   formTitle: {
-    marginTop: 92,
+    marginBottom: SPACE[6],
     textAlign: 'center',
     fontSize: FONTSIZES[8],
     color: COLORS.black,
     alignItems: 'center',
     fontFamily: FONTS.medium,
   },
-  input: {
-    borderWidth: 1,
-    borderColor: COLORS.borderColor,
-    height: 50,
-    padding: 16,
-    borderRadius: 8,
-    backgroundColor: COLORS.background,
-    marginTop: 16,
-    marginHorizontal: 16,
-  },
-  btn: {
-    borderRadius: RADII.xxxxl,
-    marginTop: 43,
-    padding: SPACE[3],
-    justifyContent: 'center',
-    marginHorizontal: SPACE[3],
-    alignItems: 'center',
-    backgroundColor: COLORS.orange,
-  },
-  btnTitle: {
-    color: COLORS.white,
-    fontSize: FONTSIZES[3],
+  inputContainer: {
+    gap: SPACE[3],
+    marginBottom: SPACE[6],
   },
   signInBox: {
     flexDirection: 'row',

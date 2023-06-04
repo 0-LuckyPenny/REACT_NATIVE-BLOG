@@ -11,8 +11,8 @@ const COLORS = {
 }
 
 const FONTS = {
-  regular: 'Roboto-Regular',
-  medium: 'Roboto-Medium',
+  regular: 'Roboto-Regular', //400
+  medium: 'Roboto-Medium', //500
 }
 
 const FONTSIZES = [8, 12, 14, 16, 18, 20, 24, 28, 32, 48, 68]

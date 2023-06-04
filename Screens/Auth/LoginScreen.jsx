@@ -3,8 +3,6 @@ import {
   StyleSheet,
   Text,
   View,
-  TextInput,
-  TouchableOpacity,
   Keyboard,
   ImageBackground,
   Platform,
@@ -15,6 +13,8 @@ import {
 import { COLORS, FONTS, SPACE, FONTSIZES, RADII } from '../../constants/theme'
 import { useDispatch } from 'react-redux'
 import { authSignInUser } from '../../redux/authOperations'
+import SubmitButton from '../../components/SubmitButton'
+import { CustomInput, ShowHidePassword } from '../../components'
 
 const initialState = {
   email: '',
@@ -24,6 +24,7 @@ const initialState = {
 export default function LoginScreen({ navigation }) {
   const [isShowKeyboard, setIsShowKeyboard] = useState(false)
   const [inputValue, setInputValue] = useState(initialState)
+  const [secureTextEntry, setSecureTextEntry] = useState(true)
 
   const dispatch = useDispatch()
 
@@ -47,42 +48,43 @@ export default function LoginScreen({ navigation }) {
         >
           <KeyboardAvoidingView
             behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
-            keyboardVerticalOffset={-70}
+            keyboardVerticalOffset={-90}
           >
             <View style={styles.form}>
               <Text style={styles.formTitle}>Log in</Text>
-              <TextInput
-                style={{ ...styles.input, marginTop: 32 }}
-                placeholder='Email'
-                placeholderTextColor={COLORS.textColor}
-                onFocus={() => setIsShowKeyboard(true)}
-                value={inputValue.email}
-                onChangeText={value =>
-                  setInputValue(prevState => ({ ...prevState, email: value }))
-                }
-              />
-              <TextInput
-                style={styles.input}
-                placeholder='Password'
-                placeholderTextColor={COLORS.textColor}
-                maxLength={16}
-                secureTextEntry={true}
-                onFocus={() => setIsShowKeyboard(true)}
-                value={inputValue.password}
-                onChangeText={value =>
-                  setInputValue(prevState => ({
-                    ...prevState,
-                    password: value,
-                  }))
-                }
-              />
-              <TouchableOpacity
-                activeOpacity={0.8}
-                style={styles.btn}
-                onPress={handleSubmit}
-              >
-                <Text style={styles.btnTitle}>Log in</Text>
-              </TouchableOpacity>
+
+              <View style={styles.inputContainer}>
+                <CustomInput
+                  placeholder={'Email'}
+                  value={inputValue.email}
+                  onChangeText={value =>
+                    setInputValue(prevState => ({ ...prevState, email: value }))
+                  }
+                />
+
+                <View>
+                  <CustomInput
+                    placeholder={'Password'}
+                    secureTextEntry={true}
+                    value={inputValue.password}
+                    onChangeText={value =>
+                      setInputValue(prevState => ({
+                        ...prevState,
+                        password: value,
+                      }))
+                    }
+                  />
+                  <ShowHidePassword
+                    secureTextEntry={secureTextEntry}
+                    onPress={() => {
+                      setSecureTextEntry(state => !state)
+                    }}
+                  />
+                </View>
+              </View>
+
+              <SubmitButton title={'Log in'} handleSubmit={handleSubmit} />
+
               <View style={styles.signInBox}>
                 <Text>Don't have an account?</Text>
                 <Text
@@ -126,29 +128,11 @@ const styles = StyleSheet.create({
     color: COLORS.black,
     alignItems: 'center',
     fontFamily: FONTS.medium,
+    marginBottom: SPACE[6],
   },
-  input: {
-    borderWidth: 1,
-    borderColor: COLORS.borderColor,
-    height: 50,
-    padding: SPACE[3],
-    borderRadius: RADII.md,
-    backgroundColor: COLORS.background,
-    marginTop: SPACE[3],
-    marginHorizontal: SPACE[3],
-  },
-  btn: {
-    borderRadius: 100,
-    marginTop: 43,
-    padding: SPACE[3],
-    justifyContent: 'center',
-    marginHorizontal: SPACE[3],
-    alignItems: 'center',
-    backgroundColor: COLORS.orange,
-  },
-  btnTitle: {
-    color: COLORS.white,
-    fontSize: FONTSIZES[3],
+  inputContainer: {
+    marginBottom: SPACE[6],
+    gap: SPACE[3],
   },
   signInBox: {
     flexDirection: 'row',
@@ -156,7 +140,6 @@ const styles = StyleSheet.create({
     color: COLORS.blue,
     marginTop: SPACE[3],
     fontSize: FONTSIZES[3],
-    lineHeight: 19,
   },
   link: {
     color: COLORS.blue,
