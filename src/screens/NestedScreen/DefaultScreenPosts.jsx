@@ -1,12 +1,12 @@
 import { useEffect, useState } from 'react'
 import { View, Text, StyleSheet, Image, FlatList } from 'react-native'
 import { COLORS, FONTS, SPACE, FONTSIZES, RADII } from '../../constants/theme'
-import Post from '../../components/Post'
 import { collection, onSnapshot } from 'firebase/firestore'
 import { useSelector } from 'react-redux'
-import { likedPostsHandler } from '../../helpers/likedPostsHandler'
-import { selectAuth } from '../../redux/selectors'
+import { likedPostsHandler } from '../../helpers'
+import { Post } from '../../components'
 import { firestore } from '../../firebase/config'
+import { selectAuth } from '../../redux/selectors'
 
 export default function DefaultScreenPosts({ route, navigation }) {
   const [initPosts, setInitPosts] = useState([])

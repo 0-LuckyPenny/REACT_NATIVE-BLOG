@@ -48,7 +48,7 @@ export default function LoginScreen({ navigation }) {
         >
           <KeyboardAvoidingView
             behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
-            keyboardVerticalOffset={-90}
+            keyboardVerticalOffset={-60}
           >
             <View style={styles.form}>
               <Text style={styles.formTitle}>Log in</Text>
@@ -65,7 +65,7 @@ export default function LoginScreen({ navigation }) {
                 <View>
                   <CustomInput
                     placeholder={'Password'}
-                    secureTextEntry={true}
+                    secureTextEntry={secureTextEntry}
                     value={inputValue.password}
                     onChangeText={value =>
                       setInputValue(prevState => ({
@@ -83,7 +83,7 @@ export default function LoginScreen({ navigation }) {
                 </View>
               </View>
 
-              <SubmitButton title={'Log in'} handleSubmit={handleSubmit} />
+              <SubmitButton title={'Log in'} onPress={handleSubmit} />
 
               <View style={styles.signInBox}>
                 <Text>Don't have an account?</Text>

@@ -17,15 +17,6 @@ const FONTS = {
 
 const FONTSIZES = [8, 12, 14, 16, 18, 20, 24, 28, 32, 48, 68]
 
-const FONTWEIGHTS = {
-  light: 300,
-  regular: 400,
-  medium: 500,
-  semiBold: 600,
-  bold: 700,
-  extraBold: 700,
-}
-
 const SPACE = [0, 4, 8, 16, 20, 24, 32, 64, 128, 256, 512]
 
 const RADII = {
@@ -64,4 +55,4 @@ const SHADOWS = {
   },
 }
 
-export { COLORS, FONTS, SHADOWS, SPACE, FONTSIZES, FONTWEIGHTS, RADII }
+export { COLORS, FONTS, SHADOWS, SPACE, FONTSIZES, RADII }

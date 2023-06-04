@@ -1,13 +1,13 @@
 import { useEffect } from 'react'
 import { NavigationContainer } from '@react-navigation/native'
-import { useRoute } from '../router'
+import { useRoute } from './src/router'
 import { useDispatch, useSelector } from 'react-redux'
-import { authStateChangeUser } from '../redux/authOperations'
-import { selectAuth } from '../redux/selectors'
-import { auth } from '../firebase/config'
+import { authStateChangeUser } from './src/redux/authOperations'
+import { selectAuth } from './src/redux/selectors'
+import { auth } from './src/firebase/config'
 import { onAuthStateChanged } from 'firebase/auth'
 
-export const Main = () => {
+const Main = () => {
   const { stateChange } = useSelector(selectAuth)
 
   const routing = useRoute(stateChange)
@@ -33,3 +33,5 @@ export const Main = () => {
 
   return <NavigationContainer>{routing}</NavigationContainer>
 }
+
+export default Main

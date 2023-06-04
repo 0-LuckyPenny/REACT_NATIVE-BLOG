@@ -11,16 +11,14 @@ import {
   TouchableOpacity,
   TouchableWithoutFeedback,
   Keyboard,
-  TextInput,
 } from 'react-native'
 import { COLORS, FONTS, SPACE, FONTSIZES, RADII } from '../../constants/theme'
-import PhotoCamera from '../../components/PhotoCamera'
 import { useSelector } from 'react-redux'
 import { collection, addDoc } from 'firebase/firestore'
-import { uploadPhotoToServer } from '../../helpers/uploadPhotoToServer'
 import { selectAuth } from '../../redux/selectors'
-import { firestore } from '../../firebase/config'
-import Loader from '../../components/Loader'
+import { firestore } from './../../firebase/config'
+import { uploadPhotoToServer } from '../../helpers'
+import { CustomInput, Loader, PhotoCamera } from '../../components'
 
 const initialState = {
   title: '',
@@ -137,40 +135,29 @@ export default function CreatePostsScreen({ navigation }) {
         </TouchableOpacity>
 
         <View style={styles.form}>
-          <TextInput
-            style={{
-              ...styles.input,
-              borderColor:
-                activeInput === 'title' ? COLORS.orange : COLORS.textColor,
-            }}
-            placeholder='Title...'
-            placeholderTextColor={COLORS.textColor}
-            value={state.title}
-            onChangeText={value => inputValueHandler('title', value)}
-            onFocus={() => activeInputHandler('title')}
-            onEndEditing={() => showKeyboardHandler()}
-          />
-
-          <View>
-            <TextInput
-              style={{
-                ...styles.input,
-                paddingLeft: 24,
-                borderColor:
-                  activeInput === 'location' ? COLORS.orange : COLORS.textColor,
-              }}
-              placeholder='Location...'
-              placeholderTextColor={COLORS.textColor}
-              value={state.location}
-              onChangeText={value => inputValueHandler('location', value)}
-              onFocus={() => activeInputHandler('location')}
+          <View style={styles.inputContainer}>
+            <CustomInput
+              isPrimaryInput={false}
+              onChangeText={value => inputValueHandler('title', value)}
+              placeholder={'Title...'}
+              value={state.title}
+              paddingLeft={0}
             />
-            <SimpleLineIcons
-              name='location-pin'
-              size={24}
-              color={COLORS.textColor}
-              style={styles.locationIcon}
-            />
+            <View>
+              <CustomInput
+                isPrimaryInput={false}
+                onChangeText={value => inputValueHandler('location', value)}
+                placeholder={'Location...'}
+                value={state.location}
+                paddingLeft={28}
+              />
+              <SimpleLineIcons
+                name='location-pin'
+                size={24}
+                color={COLORS.textColor}
+                style={styles.locationIcon}
+              />
+            </View>
           </View>
 
           <TouchableOpacity
@@ -190,6 +177,7 @@ export default function CreatePostsScreen({ navigation }) {
             </Text>
           </TouchableOpacity>
         </View>
+
         <TouchableOpacity
           style={styles.deleteBtn}
           onPress={() => {
@@ -231,25 +219,21 @@ const styles = StyleSheet.create({
     marginHorizontal: SPACE[3],
     marginTop: SPACE[3],
   },
-  input: {
-    marginTop: SPACE[3],
-    paddingVertical: SPACE[3],
-    borderBottomWidth: 1,
-    fontSize: FONTSIZES[3],
-    color: COLORS.black,
+  inputContainer: {
+    marginBottom: SPACE[6],
   },
   locationIcon: {
     position: 'absolute',
-    bottom: 22,
-    left: -5,
+    bottom: 32,
+    left: 0,
   },
   button: {
     borderRadius: RADII.xxxxl,
     padding: SPACE[3],
-    marginTop: SPACE[6],
     justifyContent: 'center',
     alignItems: 'center',
     color: COLORS.black,
+    marginBottom: 120,
   },
   buttonText: {
     fontFamily: FONTS.regular,
@@ -263,6 +247,5 @@ const styles = StyleSheet.create({
     backgroundColor: COLORS.background,
     justifyContent: 'center',
     alignItems: 'center',
-    marginTop: 120,
   },
 })

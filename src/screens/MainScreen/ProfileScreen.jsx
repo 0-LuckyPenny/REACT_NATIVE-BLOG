@@ -2,18 +2,17 @@ import { useEffect, useState } from 'react'
 import { Ionicons } from '@expo/vector-icons'
 import { StyleSheet, Text, View, ImageBackground, FlatList } from 'react-native'
 import { COLORS, FONTS, SPACE, FONTSIZES, RADII } from '../../constants/theme'
-import Post from '../../components/Post'
 import { useDispatch, useSelector } from 'react-redux'
 import { authSignOutUser } from '../../redux/authOperations'
-import { likedPostsHandler } from '../../helpers/likedPostsHandler'
-import { handleImagePicker } from '../../helpers/handleImagePicker.js'
-import { addUserPhoto } from '../../helpers/addUserPhoto'
 import { auth, firestore } from '../../firebase/config'
 import { collection, onSnapshot, query, where } from 'firebase/firestore'
-import { removeUserPhoto } from '../../helpers/removeUserPhoto'
-import { AvatarBox } from '../../components/AvatarBox'
-import { uploadPhotoToServer } from '../../helpers/uploadPhotoToServer'
 import { selectAuth } from '../../redux/selectors'
+import { AvatarBox, Post } from '../../components'
+import {
+  likedPostsHandler,
+  removeUserPhoto,
+  uploadPhotoToServer,
+} from '../../helpers'
 
 export default function ProfileScreen({ navigation }) {
   const [initPosts, setInitPosts] = useState([])

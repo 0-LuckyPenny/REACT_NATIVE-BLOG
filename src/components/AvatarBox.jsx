@@ -3,12 +3,12 @@ import { View, Image } from 'react-native'
 import { StyleSheet } from 'react-native'
 import { COLORS, RADII } from '../constants/theme'
 
-export const AvatarBox = ({
+export default function AvatarBox({
   getUserPhoto,
   newUserPhoto,
   photoURL,
   removeUserPhoto,
-}) => {
+}) {
   return (
     <View style={styles.avatarContainer}>
       {photoURL ? (

@@ -3,8 +3,6 @@ import {
   StyleSheet,
   Text,
   View,
-  TextInput,
-  TouchableOpacity,
   Keyboard,
   Dimensions,
   ImageBackground,
@@ -15,9 +13,13 @@ import {
 import { COLORS, FONTS, SPACE, FONTSIZES, RADII } from '../../constants/theme'
 import { useDispatch } from 'react-redux'
 import { authSignUpUser } from '../../redux/authOperations'
-import { AvatarBox } from '../../components/AvatarBox'
-import { handleImagePicker } from '../../helpers/handleImagePicker'
-import { CustomInput, ShowHidePassword, SubmitButton } from '../../components'
+import { handleImagePicker } from '../../helpers'
+import {
+  CustomInput,
+  ShowHidePassword,
+  SubmitButton,
+  AvatarBox,
+} from '../../components'
 
 const initialState = {
   login: '',
@@ -85,7 +87,7 @@ export default function RegistrationScreen({ navigation }) {
                 <View>
                   <CustomInput
                     placeholder={'Password'}
-                    secureTextEntry={true}
+                    secureTextEntry={secureTextEntry}
                     value={inputValue.password}
                     onChangeText={value =>
                       setInputValue(prevState => ({
@@ -103,7 +105,7 @@ export default function RegistrationScreen({ navigation }) {
                 </View>
               </View>
 
-              <SubmitButton title={'Sign in'} handleSubmit={handleSubmit} />
+              <SubmitButton title={'Sign in'} onPress={handleSubmit} />
 
               <View style={styles.signInBox}>
                 <Text>Already have an account?</Text>

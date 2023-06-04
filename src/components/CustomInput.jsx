@@ -8,6 +8,8 @@ export default function CustomInput({
   onChangeText,
   placeholder,
   value,
+  paddingLeft = 16,
+  marginBottom = 16,
 }) {
   const [onInput, setOnInput] = useState(false)
   const { primaryInput, secondaryInput } = styles
@@ -26,11 +28,15 @@ export default function CustomInput({
     ? {
         ...primaryInput,
         ...onFocusBlurPrimaryTextInputStyles,
+        paddingLeft,
       }
     : {
         ...secondaryInput,
         ...onFocusBlurSecondaryTextInputStyles,
+        paddingLeft,
+        marginBottom,
       }
+
   return (
     <TextInput
       placeholder={placeholder}
@@ -56,6 +62,7 @@ const styles = StyleSheet.create({
     backgroundColor: COLORS.background,
     marginTop: SPACE[3],
     marginHorizontal: SPACE[3],
+    paddingVertical: SPACE[3],
     fontFamily: FONTS.regular,
     fontSize: FONTSIZES[3],
     color: COLORS.black,
@@ -75,5 +82,6 @@ const styles = StyleSheet.create({
     fontFamily: FONTS.regular,
     fontSize: FONTSIZES[3],
     color: COLORS.black,
+    paddingVertical: SPACE[3],
   },
 })

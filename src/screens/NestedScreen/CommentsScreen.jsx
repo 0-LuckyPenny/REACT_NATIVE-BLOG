@@ -4,13 +4,20 @@ import {
   FlatList,
   StyleSheet,
   Image,
+  Keyboard,
   TextInput,
   TouchableOpacity,
+  TouchableWithoutFeedback,
   SafeAreaView,
 } from 'react-native'
-import { COLORS, FONTS, SPACE, FONTSIZES, RADII } from '../../constants/theme'
+import {
+  COLORS,
+  FONTS,
+  SPACE,
+  FONTSIZES,
+  RADII,
+} from '../../constants/theme'
 import { AntDesign } from '@expo/vector-icons'
-import Comment from '../../components/Comment'
 import { useSelector } from 'react-redux'
 import {
   collection,
@@ -21,10 +28,9 @@ import {
   doc,
 } from 'firebase/firestore'
 import dayjs from 'dayjs'
-import { TouchableWithoutFeedback } from 'react-native'
-import { Keyboard } from 'react-native'
 import { selectAuth } from '../../redux/selectors'
 import { firestore } from '../../firebase/config'
+import { Comment } from '../../components'
 
 export default function CommentsScreen({ route }) {
   const [isShowKeyboard, setIsShowKeyboard] = useState(false)
