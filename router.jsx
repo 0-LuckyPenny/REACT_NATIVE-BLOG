@@ -1,7 +1,7 @@
 import { createStackNavigator } from '@react-navigation/stack'
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs'
 import { Ionicons, Feather, AntDesign } from '@expo/vector-icons'
-import { colors } from './helpers/colors'
+import { COLORS, SPACE, FONTS, FONTSIZES } from './constants/theme'
 import RegistrationScreen from './screens/Auth/RegistrationScreen'
 import LoginScreen from './screens/Auth/LoginScreen'
 import ProfileScreen from './screens/MainScreen/ProfileScreen'
@@ -35,10 +35,10 @@ export const useRoute = isAuth => {
         tabBarShowLabel: false,
         headerTitleAlign: 'center',
         headerTitleStyle: {
-          fontFamily: 'Roboto-Medium',
-          fontSize: 17,
+          fontFamily: FONTS.medium,
+          fontSize: FONTSIZES[3],
           lineHeight: 22,
-          color: colors.black,
+          color: COLORS.black,
         },
       }}
     >
@@ -48,7 +48,7 @@ export const useRoute = isAuth => {
         options={{
           headerShown: false,
           tabBarIcon: ({ focused, color, size }) => (
-            <AntDesign name='appstore-o' size={24} color={colors.iconColor} />
+            <AntDesign name='appstore-o' size={24} color={COLORS.iconColor} />
           ),
         }}
       />
@@ -59,15 +59,15 @@ export const useRoute = isAuth => {
           title: 'Create post',
           tabBarStyle: { display: 'none' },
           tabBarIcon: ({ focused, color, size }) => (
-            <AntDesign name='plus' size={24} color={colors.iconColor} />
+            <AntDesign name='plus' size={24} color={COLORS.iconColor} />
           ),
           headerLeft: () => (
             <Ionicons
               onPress={() => navigation.navigate('Posts')}
               name='arrow-back'
               size={24}
-              color={colors.iconColor}
-              style={{ marginLeft: 16 }}
+              color={COLORS.iconColor}
+              style={{ marginLeft: SPACE[3] }}
             />
           ),
         })}
@@ -78,7 +78,7 @@ export const useRoute = isAuth => {
         options={{
           headerShown: false,
           tabBarIcon: ({ focused, color, size }) => (
-            <Feather name='user' size={24} color={colors.iconColor} />
+            <Feather name='user' size={24} color={COLORS.iconColor} />
           ),
         }}
       />

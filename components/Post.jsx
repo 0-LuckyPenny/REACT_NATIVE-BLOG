@@ -1,6 +1,12 @@
 import { View, Text, StyleSheet, Image, TouchableOpacity } from 'react-native'
 import { FontAwesome, SimpleLineIcons, AntDesign } from '@expo/vector-icons'
-import { colors } from '../helpers/colors'
+import {
+  COLORS,
+  FONTS,
+  SPACE,
+  FONTSIZES,
+  RADII,
+} from '../constants/theme'
 import { addLikeHandler } from '../helpers/addLikeHandler'
 
 export default function Post({ updatedPosts, item, toMap, toComment }) {
@@ -15,7 +21,7 @@ export default function Post({ updatedPosts, item, toMap, toComment }) {
             <FontAwesome
               name='comment'
               size={24}
-              color={item.commentsNumber > 0 ? colors.orange : colors.textColor}
+              color={item.commentsNumber > 0 ? COLORS.orange : COLORS.textColor}
             />
             <Text style={styles.value}>{item.commentsNumber}</Text>
           </TouchableOpacity>
@@ -26,7 +32,7 @@ export default function Post({ updatedPosts, item, toMap, toComment }) {
             style={styles.likes}
             onPress={() => addLikeHandler(updatedPosts, item.id, item.userId)}
           >
-            <AntDesign name='like2' size={24} color={colors.orange} />
+            <AntDesign name='like2' size={24} color={COLORS.orange} />
             <Text style={styles.value}>{item.likesValue}</Text>
           </TouchableOpacity>
         )}
@@ -36,7 +42,7 @@ export default function Post({ updatedPosts, item, toMap, toComment }) {
             <SimpleLineIcons
               name='location-pin'
               size={24}
-              color={colors.textColor}
+              color={COLORS.textColor}
             />
             <Text style={styles.locationName}>{item.location}</Text>
           </TouchableOpacity>
@@ -48,23 +54,23 @@ export default function Post({ updatedPosts, item, toMap, toComment }) {
 
 const styles = StyleSheet.create({
   post: {
-    marginTop: 32,
-    marginHorizontal: 16,
+    marginTop: SPACE[4],
+    marginHorizontal: SPACE[3],
   },
   postImg: {
     height: 240,
     width: 360,
-    borderRadius: 8,
+    borderRadius: RADII.md,
   },
   postName: {
-    fontSize: 16,
-    fontFamily: 'Roboto-Medium',
+    fontSize: FONTSIZES[3],
+    fontFamily: FONTS.medium,
     marginTop: 8,
-    color: colors.black,
+    color: COLORS.black,
   },
   description: {
     flexDirection: 'row',
-    marginTop: 8,
+    marginTop: SPACE[2],
     justifyContent: 'space-between',
   },
   descriptionItem: {
@@ -75,22 +81,22 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   value: {
-    marginLeft: 8,
-    fontSize: 16,
+    marginLeft: SPACE[2],
+    fontSize: FONTSIZES[3],
   },
   likes: {
     flexDirection: 'row',
     alignItems: 'center',
-    marginLeft: 24,
+    marginLeft: SPACE[5],
   },
   locationCont: {
     flexDirection: 'row',
     alignItems: 'center',
   },
   locationName: {
-    marginLeft: 4,
-    fontSize: 16,
-    color: colors.black,
+    marginLeft: SPACE[1],
+    fontSize: FONTSIZES[3],
+    color: COLORS.black,
     textDecorationLine: 'underline',
   },
 })

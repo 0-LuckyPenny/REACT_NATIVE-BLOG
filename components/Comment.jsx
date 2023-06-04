@@ -1,5 +1,10 @@
 import { View, Text, StyleSheet, Image } from 'react-native'
-import { colors } from '../helpers/colors'
+import {
+  COLORS,
+  SPACE,
+  FONTSIZES,
+  RADII,
+} from '../constants/theme'
 
 export default function Comment({
   isCurrentUser,
@@ -39,53 +44,53 @@ const styles = StyleSheet.create({
   currentUserComment: {
     flexDirection: 'row-reverse',
     flexWrap: 'nowrap',
-    paddingRight: 60,
     width: '100%',
-    marginBottom: 24,
+    paddingRight: SPACE[7],
+    marginBottom: SPACE[5],
   },
   otherUserComment: {
     flexDirection: 'row',
     flexWrap: 'nowrap',
     textAlign: 'right',
-    paddingRight: 60,
+    paddingRight: SPACE[7],
+    marginBottom: SPACE[5],
     width: '100%',
-    marginBottom: 24,
   },
   currentUserCommentDescr: {
     width: '100%',
-    marginRight: 16,
-    backgroundColor: colors.bgWithOpacity,
-    borderRadius: 10,
-    borderTopRightRadius: 0,
-    padding: 10,
+    marginRight: SPACE[3],
+    backgroundColor: COLORS.bgWithOpacity,
+    borderRadius: RADII.l,
+    borderTopRightRadius: RADII.none,
+    padding: SPACE[2],
   },
   otherUserCommentDescr: {
     width: '100%',
-    marginLeft: 16,
-    backgroundColor: colors.bgWithOpacity,
-    borderRadius: 10,
-    borderTopLeftRadius: 0,
-    padding: 10,
+    marginLeft: SPACE[3],
+    backgroundColor: COLORS.bgWithOpacity,
+    borderRadius: RADII.l,
+    borderTopLeftRadius: RADII.none,
+    padding: SPACE[2],
   },
   userNickName: {
     fontWeight: 'bold',
-    marginBottom: 6,
+    marginBottom: SPACE[2],
   },
   userComment: {
-    marginBottom: 10,
+    marginBottom: SPACE[2],
   },
   userPhoto: {
-    borderRadius: 20,
+    borderRadius: RADII.xxl,
     height: 40,
     width: 40,
   },
   photoBox: {
-    backgroundColor: colors.background,
-    borderRadius: 20,
+    backgroundColor: COLORS.background,
+    borderRadius: RADII.xxl,
     height: 40,
     width: 40,
   },
   currentDate: {
-    fontSize: 11,
+    fontSize: FONTSIZES[1],
   },
 })

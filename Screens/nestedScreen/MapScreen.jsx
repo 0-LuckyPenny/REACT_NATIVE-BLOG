@@ -1,6 +1,6 @@
 import { View, StyleSheet, Dimensions } from 'react-native'
 import MapView, { Marker } from 'react-native-maps'
-import { colors } from '../../helpers/colors'
+import { COLORS } from '../../constants/theme'
 
 export default function MapScreen({ route }) {
   const { latitude, longitude } = route.params.coords
@@ -34,7 +34,7 @@ export default function MapScreen({ route }) {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: colors.white,
+    backgroundColor: COLORS.white,
     alignItems: 'center',
     justifyContent: 'center',
   },

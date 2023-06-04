@@ -1,7 +1,7 @@
 import { AntDesign } from '@expo/vector-icons'
 import { View, Image } from 'react-native'
 import { StyleSheet } from 'react-native'
-import { colors } from '../helpers/colors'
+import { COLORS, RADII } from '../constants/theme'
 
 export const AvatarBox = ({
   getUserPhoto,
@@ -15,7 +15,7 @@ export const AvatarBox = ({
         <Image style={styles.userImage} source={{ uri: photoURL }} />
       ) : (
         <View
-          style={[styles.userImage, { backgroundColor: colors.background }]}
+          style={[styles.userImage, { backgroundColor: COLORS.background }]}
         />
       )}
 
@@ -29,7 +29,7 @@ export const AvatarBox = ({
         }}
         name='pluscircleo'
         size={25}
-        color={photoURL ? colors.textColor : colors.orange}
+        color={photoURL ? COLORS.textColor : COLORS.orange}
       />
     </View>
   )
@@ -44,15 +44,15 @@ const styles = StyleSheet.create({
   userImage: {
     width: 120,
     height: 120,
-    borderRadius: 16,
+    borderRadius: RADII.lg,
     resizeMode: 'cover',
-    backgroundColor: colors.background,
+    backgroundColor: COLORS.background,
   },
   btnAddDelUserPhoto: {
     position: 'absolute',
     bottom: 14,
     right: -12.5,
-    borderRadius: 12.5,
-    backgroundColor: colors.white,
+    borderRadius: RADII.l,
+    backgroundColor: COLORS.white,
   },
 })

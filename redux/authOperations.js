@@ -4,8 +4,8 @@ import {
   signInWithEmailAndPassword,
   signOut,
 } from 'firebase/auth'
-import { auth } from '../../firebase/config'
-import { uploadPhotoToServer } from '../../helpers/uploadPhotoToServer'
+import { auth } from '../firebase/config'
+import { uploadPhotoToServer } from '../helpers/uploadPhotoToServer'
 import { createAsyncThunk } from '@reduxjs/toolkit'
 
 export const authSignUpUser = createAsyncThunk(

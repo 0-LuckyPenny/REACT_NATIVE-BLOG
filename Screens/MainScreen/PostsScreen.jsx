@@ -1,11 +1,11 @@
 import { AntDesign, Ionicons } from '@expo/vector-icons'
 import { createStackNavigator } from '@react-navigation/stack'
-import { colors } from '../../helpers/colors'
+import { COLORS, SPACE, FONTS, FONTSIZES } from '../../constants/theme'
 import DefaultScreenPosts from '../NestedScreen/DefaultScreenPosts'
 import CommentsScreen from '../NestedScreen/CommentsScreen'
 import MapScreen from '../NestedScreen/MapScreen'
 import { useDispatch } from 'react-redux'
-import { authSignOutUser } from '../../redux/auth/authOperations'
+import { authSignOutUser } from '../../redux/authOperations'
 
 const NestedScreen = createStackNavigator()
 
@@ -18,10 +18,10 @@ export default function PostsScreen() {
         tabBarShowLabel: false,
         headerTitleAlign: 'center',
         headerTitleStyle: {
-          fontFamily: 'Roboto-Medium',
-          fontSize: 17,
+          fontFamily: FONTS.medium,
+          fontSize: FONTSIZES[3],
           lineHeight: 22,
-          color: colors.black,
+          color: COLORS.black,
         },
       }}
     >
@@ -31,15 +31,15 @@ export default function PostsScreen() {
         options={{
           title: 'Posts',
           tabBarIcon: ({ focused, color, size }) => (
-            <AntDesign name='appstore-o' size={24} color={colors.iconColor} />
+            <AntDesign name='appstore-o' size={24} color={COLORS.iconColor} />
           ),
           headerRight: () => (
             <Ionicons
               onPress={() => dispatch(authSignOutUser())}
               name='exit-outline'
               size={24}
-              style={{ marginRight: 16 }}
-              color={colors.textColor}
+              style={{ marginRight: SPACE[3] }}
+              color={COLORS.textColor}
             />
           ),
         }}
@@ -53,8 +53,8 @@ export default function PostsScreen() {
               onPress={() => navigation.goBack()}
               name='arrow-back'
               size={24}
-              color={colors.iconColor}
-              style={{ marginLeft: 16 }}
+              color={COLORS.iconColor}
+              style={{ marginLeft: SPACE[3] }}
             />
           ),
         })}
@@ -68,8 +68,8 @@ export default function PostsScreen() {
               onPress={() => navigation.goBack()}
               name='arrow-back'
               size={24}
-              color={colors.iconColor}
-              style={{ marginLeft: 16 }}
+              color={COLORS.iconColor}
+              style={{ marginLeft: SPACE[3] }}
             />
           ),
         })}

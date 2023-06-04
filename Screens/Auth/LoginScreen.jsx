@@ -12,9 +12,9 @@ import {
   TouchableWithoutFeedback,
   Dimensions,
 } from 'react-native'
-import { colors } from '../../helpers/colors'
+import { COLORS, FONTS, SPACE, FONTSIZES, RADII } from '../../constants/theme'
 import { useDispatch } from 'react-redux'
-import { authSignInUser } from '../../redux/auth/authOperations'
+import { authSignInUser } from '../../redux/authOperations'
 
 const initialState = {
   email: '',
@@ -54,7 +54,7 @@ export default function LoginScreen({ navigation }) {
               <TextInput
                 style={{ ...styles.input, marginTop: 32 }}
                 placeholder='Email'
-                placeholderTextColor={colors.textColor}
+                placeholderTextColor={COLORS.textColor}
                 onFocus={() => setIsShowKeyboard(true)}
                 value={inputValue.email}
                 onChangeText={value =>
@@ -64,7 +64,7 @@ export default function LoginScreen({ navigation }) {
               <TextInput
                 style={styles.input}
                 placeholder='Password'
-                placeholderTextColor={colors.textColor}
+                placeholderTextColor={COLORS.textColor}
                 maxLength={16}
                 secureTextEntry={true}
                 onFocus={() => setIsShowKeyboard(true)}
@@ -103,7 +103,7 @@ export default function LoginScreen({ navigation }) {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: colors.white,
+    backgroundColor: COLORS.white,
   },
   bgImage: {
     flex: 1,
@@ -114,52 +114,52 @@ const styles = StyleSheet.create({
   },
   form: {
     position: 'relative',
-    backgroundColor: colors.white,
-    borderTopLeftRadius: 25,
-    borderTopRightRadius: 25,
-    paddingTop: 32,
-    paddingBottom: 111,
+    backgroundColor: COLORS.white,
+    borderTopLeftRadius: RADII.xlg,
+    borderTopRightRadius: RADII.xlg,
+    paddingTop: SPACE[6],
+    paddingBottom: SPACE[8],
   },
   formTitle: {
     textAlign: 'center',
-    fontSize: 30,
-    color: colors.black,
+    fontSize: FONTSIZES[8],
+    color: COLORS.black,
     alignItems: 'center',
-    fontFamily: 'Roboto-Medium',
+    fontFamily: FONTS.medium,
   },
   input: {
     borderWidth: 1,
-    borderColor: colors.borderColor,
+    borderColor: COLORS.borderColor,
     height: 50,
-    padding: 16,
-    borderRadius: 8,
-    backgroundColor: colors.background,
-    marginTop: 16,
-    marginHorizontal: 16,
+    padding: SPACE[3],
+    borderRadius: RADII.md,
+    backgroundColor: COLORS.background,
+    marginTop: SPACE[3],
+    marginHorizontal: SPACE[3],
   },
   btn: {
     borderRadius: 100,
     marginTop: 43,
-    padding: 16,
+    padding: SPACE[3],
     justifyContent: 'center',
-    marginHorizontal: 16,
+    marginHorizontal: SPACE[3],
     alignItems: 'center',
-    backgroundColor: colors.orange,
+    backgroundColor: COLORS.orange,
   },
   btnTitle: {
-    color: colors.white,
-    fontSize: 16,
+    color: COLORS.white,
+    fontSize: FONTSIZES[3],
   },
   signInBox: {
     flexDirection: 'row',
     justifyContent: 'center',
-    color: colors.blue,
-    marginTop: 16,
-    fontSize: 16,
+    color: COLORS.blue,
+    marginTop: SPACE[3],
+    fontSize: FONTSIZES[3],
     lineHeight: 19,
   },
   link: {
-    color: colors.blue,
-    marginLeft: 6,
+    color: COLORS.blue,
+    marginLeft: SPACE[2],
   },
 })

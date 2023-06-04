@@ -13,12 +13,12 @@ import {
   Keyboard,
   TextInput,
 } from 'react-native'
-import { colors } from '../../helpers/colors'
+import { COLORS, FONTS, SPACE, FONTSIZES, RADII } from '../../constants/theme'
 import PhotoCamera from '../../components/PhotoCamera'
 import { useSelector } from 'react-redux'
 import { collection, addDoc } from 'firebase/firestore'
 import { uploadPhotoToServer } from '../../helpers/uploadPhotoToServer'
-import { selectAuth } from '../../redux/auth/selectors'
+import { selectAuth } from '../../redux/selectors'
 import { firestore } from '../../firebase/config'
 import Loader from '../../components/Loader'
 
@@ -141,10 +141,10 @@ export default function CreatePostsScreen({ navigation }) {
             style={{
               ...styles.input,
               borderColor:
-                activeInput === 'title' ? colors.orange : colors.textColor,
+                activeInput === 'title' ? COLORS.orange : COLORS.textColor,
             }}
             placeholder='Title...'
-            placeholderTextColor={colors.textColor}
+            placeholderTextColor={COLORS.textColor}
             value={state.title}
             onChangeText={value => inputValueHandler('title', value)}
             onFocus={() => activeInputHandler('title')}
@@ -157,10 +157,10 @@ export default function CreatePostsScreen({ navigation }) {
                 ...styles.input,
                 paddingLeft: 24,
                 borderColor:
-                  activeInput === 'location' ? colors.orange : colors.textColor,
+                  activeInput === 'location' ? COLORS.orange : COLORS.textColor,
               }}
               placeholder='Location...'
-              placeholderTextColor={colors.textColor}
+              placeholderTextColor={COLORS.textColor}
               value={state.location}
               onChangeText={value => inputValueHandler('location', value)}
               onFocus={() => activeInputHandler('location')}
@@ -168,7 +168,7 @@ export default function CreatePostsScreen({ navigation }) {
             <SimpleLineIcons
               name='location-pin'
               size={24}
-              color={colors.textColor}
+              color={COLORS.textColor}
               style={styles.locationIcon}
             />
           </View>
@@ -176,14 +176,14 @@ export default function CreatePostsScreen({ navigation }) {
           <TouchableOpacity
             style={{
               ...styles.button,
-              backgroundColor: takenPhoto ? colors.orange : colors.background,
+              backgroundColor: takenPhoto ? COLORS.orange : COLORS.background,
             }}
             onPress={submitHandler}
           >
             <Text
               style={{
                 ...styles.buttonText,
-                color: takenPhoto ? colors.white : colors.textColor,
+                color: takenPhoto ? COLORS.white : COLORS.textColor,
               }}
             >
               Publish
@@ -197,7 +197,7 @@ export default function CreatePostsScreen({ navigation }) {
             setTakenPhoto(null)
           }}
         >
-          <AntDesign name='delete' size={24} color={colors.textColor} />
+          <AntDesign name='delete' size={24} color={COLORS.textColor} />
         </TouchableOpacity>
       </View>
     </TouchableWithoutFeedback>
@@ -207,36 +207,36 @@ export default function CreatePostsScreen({ navigation }) {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: colors.white,
+    backgroundColor: COLORS.white,
   },
   photoContainer: {
-    marginHorizontal: 16,
+    marginHorizontal: SPACE[3],
     height: 240,
   },
   photo: {
     width: '100%',
     height: '100%',
-    borderColor: colors.borderColor,
-    backgroundColor: colors.background,
+    borderColor: COLORS.borderColor,
+    backgroundColor: COLORS.background,
     borderWidth: 1,
-    borderRadius: 8,
+    borderRadius: RADII.md,
   },
   subTitle: {
-    color: colors.textColor,
-    fontSize: 16,
-    marginHorizontal: 16,
-    marginTop: 8,
+    color: COLORS.textColor,
+    fontSize: FONTSIZES[3],
+    marginHorizontal: SPACE[3],
+    marginTop: SPACE[2],
   },
   form: {
-    marginHorizontal: 16,
-    marginTop: 16,
+    marginHorizontal: SPACE[3],
+    marginTop: SPACE[3],
   },
   input: {
-    marginTop: 16,
-    paddingVertical: 16,
+    marginTop: SPACE[3],
+    paddingVertical: SPACE[3],
     borderBottomWidth: 1,
-    fontSize: 16,
-    color: colors.black,
+    fontSize: FONTSIZES[3],
+    color: COLORS.black,
   },
   locationIcon: {
     position: 'absolute',
@@ -244,23 +244,23 @@ const styles = StyleSheet.create({
     left: -5,
   },
   button: {
-    borderRadius: 100,
-    padding: 16,
-    marginTop: 32,
+    borderRadius: RADII.xxxxl,
+    padding: SPACE[3],
+    marginTop: SPACE[6],
     justifyContent: 'center',
     alignItems: 'center',
-    color: colors.black,
+    color: COLORS.black,
   },
   buttonText: {
-    fontFamily: 'Roboto-Regular',
-    fontSize: 16,
+    fontFamily: FONTS.regular,
+    fontSize: FONTSIZES[3],
   },
   deleteBtn: {
     alignSelf: 'center',
     width: 70,
     height: 40,
-    borderRadius: 20,
-    backgroundColor: colors.background,
+    borderRadius: RADII.xxl,
+    backgroundColor: COLORS.background,
     justifyContent: 'center',
     alignItems: 'center',
     marginTop: 120,

@@ -1,11 +1,11 @@
 import { useEffect, useState } from 'react'
 import { View, Text, StyleSheet, Image, FlatList } from 'react-native'
-import { colors } from '../../helpers/colors'
+import { COLORS, FONTS, SPACE, FONTSIZES, RADII } from '../../constants/theme'
 import Post from '../../components/Post'
 import { collection, onSnapshot } from 'firebase/firestore'
 import { useSelector } from 'react-redux'
 import { likedPostsHandler } from '../../helpers/likedPostsHandler'
-import { selectAuth } from '../../redux/auth/selectors'
+import { selectAuth } from '../../redux/selectors'
 import { firestore } from '../../firebase/config'
 
 export default function DefaultScreenPosts({ route, navigation }) {
@@ -67,33 +67,33 @@ export default function DefaultScreenPosts({ route, navigation }) {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: colors.white,
+    backgroundColor: COLORS.white,
   },
   profileContainer: {
-    marginHorizontal: 16,
-    marginTop: 32,
+    marginHorizontal: SPACE[3],
+    marginTop: SPACE[6],
   },
   userImageBox: {
     position: 'relative',
     width: 60,
     height: 60,
-    borderRadius: 16,
+    borderRadius: RADII.lg,
     resizeMode: 'cover',
-    backgroundColor: colors.background,
+    backgroundColor: COLORS.background,
   },
   userData: {
     position: 'absolute',
     top: 16,
     left: 60,
-    marginLeft: 8,
-    color: colors.black,
+    marginLeft: SPACE[2],
+    color: COLORS.black,
   },
   userName: {
-    fontFamily: 'Roboto-Bold',
-    fontSize: 13,
+    fontFamily: FONTS.medium,
+    fontSize: FONTSIZES[2],
   },
   userEmail: {
-    fontFamily: 'Roboto-Regular',
-    fontSize: 11,
+    fontFamily: FONTS.regular,
+    fontSize: FONTSIZES[1],
   },
 })

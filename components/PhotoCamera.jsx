@@ -1,8 +1,8 @@
 import { Camera, CameraType } from 'expo-camera'
 import { useState } from 'react'
-import { StyleSheet, Text, TouchableOpacity, View, Button } from 'react-native'
+import { StyleSheet, Text, TouchableOpacity, View } from 'react-native'
 import { Fontisto, FontAwesome } from '@expo/vector-icons'
-import { colors } from '../helpers/colors'
+import { COLORS, SPACE, FONTSIZES, RADII } from '../constants/theme'
 
 export default function PhotoCamera({ newPhoto, camera }) {
   const [type, setType] = useState(CameraType.back)
@@ -48,7 +48,7 @@ export default function PhotoCamera({ newPhoto, camera }) {
         style={styles.toggleCameraBtn}
         onPress={toggleCameraType}
       >
-        <FontAwesome name='refresh' size={24} color={colors.white} />
+        <FontAwesome name='refresh' size={24} color={COLORS.white} />
       </TouchableOpacity>
     </View>
   )
@@ -64,14 +64,14 @@ const styles = StyleSheet.create({
   textCamera: {
     textAlign: 'center',
     marginTop: 40,
-    marginBottom: 30,
-    fontSize: 20,
+    marginBottom: SPACE[6],
+    fontSize: FONTSIZES[5],
   },
   cameraBox: {
     height: 240,
     width: '100%',
     overflow: 'hidden',
-    borderRadius: 8,
+    borderRadius: RADII.md,
   },
   camera: {
     flex: 1,
@@ -85,8 +85,8 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     width: 60,
     height: 60,
-    borderRadius: 30,
-    backgroundColor: colors.bgWithOpacity,
+    borderRadius: RADII.xxxl,
+    backgroundColor: COLORS.bgWithOpacity,
   },
   toggleCameraBtn: {
     position: 'absolute',
@@ -99,11 +99,11 @@ const styles = StyleSheet.create({
   },
   permissionBtn: {
     borderWidth: 1,
-    borderRadius: 3,
-    borderColor: colors.borderColor,
-    paddingVertical: 5,
-    paddingHorizontal: 10,
-    color: colors.textColor,
-    backgroundColor: colors.bgWithOpacity,
+    borderRadius: RADII.sm,
+    borderColor: COLORS.borderColor,
+    paddingVertical: SPACE[1],
+    paddingHorizontal: SPACE[2],
+    color: COLORS.textColor,
+    backgroundColor: COLORS.bgWithOpacity,
   },
 })

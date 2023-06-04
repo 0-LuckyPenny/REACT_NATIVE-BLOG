@@ -8,7 +8,7 @@ import {
   TouchableOpacity,
   SafeAreaView,
 } from 'react-native'
-import { colors } from '../../helpers/colors'
+import { COLORS, FONTS, SPACE, FONTSIZES, RADII } from '../../constants/theme'
 import { AntDesign } from '@expo/vector-icons'
 import Comment from '../../components/Comment'
 import { useSelector } from 'react-redux'
@@ -23,7 +23,7 @@ import {
 import dayjs from 'dayjs'
 import { TouchableWithoutFeedback } from 'react-native'
 import { Keyboard } from 'react-native'
-import { selectAuth } from '../../redux/auth/selectors'
+import { selectAuth } from '../../redux/selectors'
 import { firestore } from '../../firebase/config'
 
 export default function CommentsScreen({ route }) {
@@ -127,7 +127,7 @@ export default function CommentsScreen({ route }) {
             value={newComment}
             style={styles.input}
             placeholder={'Comment...'}
-            placeholderTextColor={colors.textColor}
+            placeholderTextColor={COLORS.textColor}
             onChangeText={value => setNewComment(value)}
             onEndEditing={() => showKeyboardHandler()}
             onFocus={() => setIsShowKeyboard(true)}
@@ -137,7 +137,7 @@ export default function CommentsScreen({ route }) {
             activeOpacity={0.6}
             onPress={submitHandler}
           >
-            <AntDesign name='arrowup' size={24} color={colors.white} />
+            <AntDesign name='arrowup' size={24} color={COLORS.white} />
           </TouchableOpacity>
         </View>
       </SafeAreaView>
@@ -149,36 +149,36 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     height: '100%',
-    backgroundColor: colors.white,
+    backgroundColor: COLORS.white,
   },
   commentList: {
-    marginHorizontal: 16,
-    paddingTop: 32,
+    marginHorizontal: SPACE[3],
+    paddingTop: SPACE[6],
   },
   imageBox: {
-    paddingTop: 32,
+    paddingTop: SPACE[6],
     alignItems: 'center',
-    marginHorizontal: 16,
+    marginHorizontal: SPACE[3],
   },
   image: {
     height: 240,
     width: '100%',
-    borderRadius: 8,
+    borderRadius: RADII.md,
   },
   inputBox: {
-    marginBottom: 16,
-    marginHorizontal: 16,
+    marginBottom: SPACE[3],
+    marginHorizontal: SPACE[3],
   },
   input: {
-    paddingLeft: 16,
-    paddingVertical: 16,
+    paddingLeft: SPACE[3],
+    paddingVertical: SPACE[3],
     height: 50,
-    borderRadius: 100,
+    borderRadius: RADII.xxxxl,
     borderWidth: 1,
-    backgroundColor: colors.background,
-    borderColor: colors.borderColor,
-    fontFamily: 'Roboto-Medium',
-    fontSize: 16,
+    backgroundColor: COLORS.background,
+    borderColor: COLORS.borderColor,
+    fontFamily: FONTS.medium,
+    fontSize: FONTSIZES[3],
   },
   sendBtn: {
     position: 'absolute',
@@ -188,7 +188,7 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     width: 34,
     height: 34,
-    backgroundColor: colors.orange,
+    backgroundColor: COLORS.orange,
     borderRadius: 50,
   },
 })
