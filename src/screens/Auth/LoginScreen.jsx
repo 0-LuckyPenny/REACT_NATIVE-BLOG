@@ -4,17 +4,14 @@ import {
   Text,
   View,
   Keyboard,
-  ImageBackground,
   Platform,
   KeyboardAvoidingView,
-  TouchableWithoutFeedback,
-  Dimensions,
 } from 'react-native'
 import { COLORS, FONTS, SPACE, FONTSIZES, RADII } from '../../constants/theme'
 import { useDispatch } from 'react-redux'
 import { authSignInUser } from '../../redux/authOperations'
 import SubmitButton from '../../components/SubmitButton'
-import { CustomInput, ShowHidePassword } from '../../components'
+import { Background, CustomInput, ShowHidePassword } from '../../components'
 
 const initialState = {
   email: '',
@@ -22,98 +19,77 @@ const initialState = {
 }
 
 export default function LoginScreen({ navigation }) {
-  const [isShowKeyboard, setIsShowKeyboard] = useState(false)
   const [inputValue, setInputValue] = useState(initialState)
   const [secureTextEntry, setSecureTextEntry] = useState(true)
 
   const dispatch = useDispatch()
 
-  const keyboardHide = () => {
-    setIsShowKeyboard(false)
+  const handleSubmit = () => {
+    dispatch(authSignInUser(inputValue))
+    setInputValue(inputValue) //set values
     Keyboard.dismiss() //hides the keyboard
   }
 
-  const handleSubmit = () => {
-    dispatch(authSignInUser(inputValue))
-    keyboardHide()
-    setInputValue(inputValue) //set values
-  }
-
   return (
-    <TouchableWithoutFeedback onPress={keyboardHide}>
-      <View style={styles.container}>
-        <ImageBackground
-          style={styles.bgImage}
-          source={require('../../assets/images/bg_image.jpg')}
-        >
-          <KeyboardAvoidingView
-            behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
-            keyboardVerticalOffset={-60}
-          >
-            <View style={styles.form}>
-              <Text style={styles.formTitle}>Log in</Text>
+    <Background>
+      <KeyboardAvoidingView
+        behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
+        keyboardVerticalOffset={-60}
+      >
+        <View style={styles.form}>
+          <Text style={styles.formTitle}>Log in</Text>
 
-              <View style={styles.inputContainer}>
-                <CustomInput
-                  placeholder={'Email'}
-                  value={inputValue.email}
-                  onChangeText={value =>
-                    setInputValue(prevState => ({ ...prevState, email: value }))
-                  }
-                />
+          <View style={styles.inputContainer}>
+            <CustomInput
+              placeholder={'Email'}
+              value={inputValue.email}
+              onChangeText={value =>
+                setInputValue(prevState => ({
+                  ...prevState,
+                  email: value,
+                }))
+              }
+            />
 
-                <View>
-                  <CustomInput
-                    placeholder={'Password'}
-                    secureTextEntry={secureTextEntry}
-                    value={inputValue.password}
-                    onChangeText={value =>
-                      setInputValue(prevState => ({
-                        ...prevState,
-                        password: value,
-                      }))
-                    }
-                  />
-                  <ShowHidePassword
-                    secureTextEntry={secureTextEntry}
-                    onPress={() => {
-                      setSecureTextEntry(state => !state)
-                    }}
-                  />
-                </View>
-              </View>
-
-              <SubmitButton title={'Log in'} onPress={handleSubmit} />
-
-              <View style={styles.signInBox}>
-                <Text>Don't have an account?</Text>
-                <Text
-                  style={styles.link}
-                  onPress={() => navigation.navigate('Register')}
-                >
-                  Sign in
-                </Text>
-              </View>
+            <View>
+              <CustomInput
+                placeholder={'Password'}
+                secureTextEntry={secureTextEntry}
+                value={inputValue.password}
+                onChangeText={value =>
+                  setInputValue(prevState => ({
+                    ...prevState,
+                    password: value,
+                  }))
+                }
+              />
+              <ShowHidePassword
+                secureTextEntry={secureTextEntry}
+                onPress={() => {
+                  setSecureTextEntry(state => !state)
+                }}
+              />
             </View>
-          </KeyboardAvoidingView>
-        </ImageBackground>
-      </View>
-    </TouchableWithoutFeedback>
+          </View>
+
+          <SubmitButton title={'Log in'} onPress={handleSubmit} />
+
+          <View style={styles.signInBox}>
+            <Text>Don't have an account?</Text>
+            <Text
+              style={styles.link}
+              onPress={() => navigation.navigate('Register')}
+            >
+              Sign in
+            </Text>
+          </View>
+        </View>
+      </KeyboardAvoidingView>
+    </Background>
   )
 }
 
 const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: COLORS.white,
-  },
-  bgImage: {
-    flex: 1,
-    resizeMode: 'cover',
-    justifyContent: 'flex-end',
-    width: Dimensions.get('window').width,
-    height: Dimensions.get('window').height,
-  },
   form: {
     position: 'relative',
     backgroundColor: COLORS.white,

@@ -28,8 +28,6 @@ const initialState = {
 
 export default function CreatePostsScreen({ navigation }) {
   const [state, setState] = useState(initialState)
-  const [activeInput, setActiveInput] = useState('')
-  const [isShowKeyboard, setIsShowKeyboard] = useState(false)
   const [cameraRef, setCameraRef] = useState(null)
   const [takenPhoto, setTakenPhoto] = useState(null)
   const { userId, nickName, userPhoto, userEmail, isLoading, error } =
@@ -89,17 +87,6 @@ export default function CreatePostsScreen({ navigation }) {
     }))
   }
 
-  const activeInputHandler = inputName => {
-    setIsShowKeyboard(true)
-    setActiveInput(inputName)
-  }
-
-  const showKeyboardHandler = () => {
-    setIsShowKeyboard(false)
-    setActiveInput('')
-    Keyboard.dismiss()
-  }
-
   const submitHandler = async () => {
     uploadPostToServer()
     navigation.navigate('DefaultScreen')
@@ -108,7 +95,7 @@ export default function CreatePostsScreen({ navigation }) {
   }
 
   return (
-    <TouchableWithoutFeedback onPress={showKeyboardHandler}>
+    <TouchableWithoutFeedback onPress={() => Keyboard.dismiss()}>
       <View style={styles.container}>
         {isLoading && <Loader />}
         {error && <Text>{error.message}</Text>}

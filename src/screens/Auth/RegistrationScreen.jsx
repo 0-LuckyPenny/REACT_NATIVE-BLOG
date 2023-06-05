@@ -4,11 +4,8 @@ import {
   Text,
   View,
   Keyboard,
-  Dimensions,
-  ImageBackground,
   Platform,
   KeyboardAvoidingView,
-  TouchableWithoutFeedback,
 } from 'react-native'
 import { COLORS, FONTS, SPACE, FONTSIZES, RADII } from '../../constants/theme'
 import { useDispatch } from 'react-redux'
@@ -19,6 +16,7 @@ import {
   ShowHidePassword,
   SubmitButton,
   AvatarBox,
+  Background,
 } from '../../components'
 
 const initialState = {
@@ -29,7 +27,6 @@ const initialState = {
 }
 
 export default function RegistrationScreen({ navigation }) {
-  const [isShowKeyboard, setIsShowKeyboard] = useState(false)
   const [inputValue, setInputValue] = useState(initialState)
   const [secureTextEntry, setSecureTextEntry] = useState(true)
 
@@ -40,102 +37,85 @@ export default function RegistrationScreen({ navigation }) {
     setInputValue(prevState => ({ ...prevState, avatar: result }))
   }
 
-  const keyboardHide = () => {
-    setIsShowKeyboard(false)
-    Keyboard.dismiss() //hides the keyboard
-  }
-
   const handleSubmit = () => {
     dispatch(authSignUpUser(inputValue))
     setInputValue(initialState) //set values
-    keyboardHide()
+    Keyboard.dismiss() //hides the keyboard
   }
 
   return (
-    <TouchableWithoutFeedback onPress={keyboardHide}>
-      <View style={styles.container}>
-        <ImageBackground
-          style={styles.bgImage}
-          source={require('../../assets/images/bg_image.jpg')}
-        >
-          <KeyboardAvoidingView
-            behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
-            keyboardVerticalOffset={-120}
-          >
-            <View style={styles.form}>
-              <AvatarBox
-                getUserPhoto={getUserPhoto}
-                newUserPhoto={inputValue.avatar}
+    <Background>
+      <KeyboardAvoidingView
+        behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
+        keyboardVerticalOffset={-120}
+      >
+        <View style={styles.form}>
+          <AvatarBox
+            getUserPhoto={getUserPhoto}
+            userPhoto={inputValue.avatar}
+          />
+          <Text style={styles.formTitle}>Sign in</Text>
+
+          <View style={styles.inputContainer}>
+            <CustomInput
+              placeholder={'Login'}
+              value={inputValue.login}
+              onChangeText={value =>
+                setInputValue(prevState => ({
+                  ...prevState,
+                  login: value,
+                }))
+              }
+            />
+            <CustomInput
+              placeholder={'Email'}
+              value={inputValue.email}
+              onChangeText={value =>
+                setInputValue(prevState => ({
+                  ...prevState,
+                  email: value,
+                }))
+              }
+            />
+            <View>
+              <CustomInput
+                placeholder={'Password'}
+                secureTextEntry={secureTextEntry}
+                value={inputValue.password}
+                onChangeText={value =>
+                  setInputValue(prevState => ({
+                    ...prevState,
+                    password: value,
+                  }))
+                }
               />
-              <Text style={styles.formTitle}>Sign in</Text>
-
-              <View style={styles.inputContainer}>
-                <CustomInput
-                  placeholder={'Login'}
-                  value={inputValue.login}
-                  onChangeText={value =>
-                    setInputValue(prevState => ({ ...prevState, login: value }))
-                  }
-                />
-                <CustomInput
-                  placeholder={'Email'}
-                  value={inputValue.email}
-                  onChangeText={value =>
-                    setInputValue(prevState => ({ ...prevState, email: value }))
-                  }
-                />
-                <View>
-                  <CustomInput
-                    placeholder={'Password'}
-                    secureTextEntry={secureTextEntry}
-                    value={inputValue.password}
-                    onChangeText={value =>
-                      setInputValue(prevState => ({
-                        ...prevState,
-                        password: value,
-                      }))
-                    }
-                  />
-                  <ShowHidePassword
-                    secureTextEntry={secureTextEntry}
-                    onPress={() => {
-                      setSecureTextEntry(state => !state)
-                    }}
-                  />
-                </View>
-              </View>
-
-              <SubmitButton title={'Sign in'} onPress={handleSubmit} />
-
-              <View style={styles.signInBox}>
-                <Text>Already have an account?</Text>
-                <Text
-                  style={styles.link}
-                  onPress={() => navigation.navigate('Login')}
-                >
-                  Log in
-                </Text>
-              </View>
+              <ShowHidePassword
+                secureTextEntry={secureTextEntry}
+                onPress={() => {
+                  setSecureTextEntry(state => !state)
+                }}
+              />
             </View>
-          </KeyboardAvoidingView>
-        </ImageBackground>
-      </View>
-    </TouchableWithoutFeedback>
+          </View>
+
+          <SubmitButton title={'Sign in'} onPress={handleSubmit} />
+
+          <View style={styles.signInBox}>
+            <Text>Already have an account?</Text>
+            <Text
+              style={styles.link}
+              onPress={() => navigation.navigate('Login')}
+            >
+              Log in
+            </Text>
+          </View>
+        </View>
+      </KeyboardAvoidingView>
+    </Background>
   )
 }
 
 const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: COLORS.white,
-  },
-  bgImage: {
-    flex: 1,
-    resizeMode: 'cover',
-    justifyContent: 'flex-end',
-    width: Dimensions.get('window').width,
-    height: Dimensions.get('window').height,
-  },
   form: {
     position: 'relative',
     backgroundColor: COLORS.white,

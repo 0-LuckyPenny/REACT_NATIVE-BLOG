@@ -68,10 +68,11 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: COLORS.white,
+    paddingTop: SPACE[6],
   },
   profileContainer: {
     marginHorizontal: SPACE[3],
-    marginTop: SPACE[6],
+    marginBottom: SPACE[6],
   },
   userImageBox: {
     position: 'relative',

@@ -11,15 +11,14 @@ import {
 import { auth, firestore } from '../../firebase/config'
 import { collection, onSnapshot, query, where } from 'firebase/firestore'
 import { selectAuth } from '../../redux/selectors'
-import { AvatarBox, Post } from '../../components'
+import { AvatarBox, Background, Post } from '../../components'
 import { handleImagePicker, likedPostsHandler } from '../../helpers'
 
 export default function ProfileScreen({ navigation }) {
   const [initPosts, setInitPosts] = useState([])
   const [updatedPosts, setUpdatedPosts] = useState([])
-  const [newUserPhoto, setNewUserPhoto] = useState(null)
   const dispatch = useDispatch()
-  const { uid, photoURL } = auth.currentUser
+  const { uid } = auth.currentUser
   const { nickName, userId, userPhoto } = useSelector(selectAuth)
 
   useEffect(() => {
@@ -50,81 +49,65 @@ export default function ProfileScreen({ navigation }) {
   }
 
   return (
-    <View style={styles.container}>
-      <ImageBackground
-        style={styles.bgImage}
-        source={require('../../assets/images/bg_image.jpg')}
-      >
-        <View style={styles.profileContainer}>
-          <Ionicons
-            name='exit-outline'
-            size={24}
-            color={COLORS.textColor}
-            style={styles.logoutIcon}
-            onPress={() => dispatch(authSignOutUser())}
-          />
-          <AvatarBox
-            userPhoto={userPhoto}
-            getUserPhoto={getUserPhoto}
-            removeUserPhoto={removeUserAvatar}
-          />
-          <Text style={styles.nickName}>{nickName}</Text>
+    <Background isProfileScreen={true}>
+      <View style={styles.profileContainer}>
+        <Ionicons
+          name='exit-outline'
+          size={24}
+          color={COLORS.textColor}
+          style={styles.logoutIcon}
+          onPress={() => dispatch(authSignOutUser())}
+        />
+        <AvatarBox
+          userPhoto={userPhoto}
+          getUserPhoto={getUserPhoto}
+          removeUserPhoto={removeUserAvatar}
+        />
+        <Text style={styles.nickName}>{nickName}</Text>
 
-          <FlatList
-            data={updatedPosts}
-            keyExtractor={item => item.id}
-            renderItem={({ item }) => (
-              <Post
-                updatedPosts={updatedPosts}
-                item={item}
-                toComment={() =>
-                  navigation.navigate('Comments', { data: item })
-                }
-                toMap={() =>
-                  navigation.navigate('Map', {
-                    location: item.location,
-                    coords: item.coords,
-                    title: item.title,
-                  })
-                }
-              />
-            )}
-          />
-        </View>
-      </ImageBackground>
-    </View>
+        <FlatList
+          data={updatedPosts}
+          keyExtractor={item => item.id}
+          renderItem={({ item }) => (
+            <Post
+              updatedPosts={updatedPosts}
+              item={item}
+              toComment={() => navigation.navigate('Comments', { data: item })}
+              toMap={() =>
+                navigation.navigate('Map', {
+                  location: item.location,
+                  coords: item.coords,
+                  title: item.title,
+                })
+              }
+            />
+          )}
+        />
+      </View>
+    </Background>
   )
 }
 
 const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: COLORS.white,
-  },
-  bgImage: {
-    flex: 1,
-    resizeMode: 'cover',
-  },
   profileContainer: {
     position: 'relative',
-    alignItems: 'flex-end',
-    marginTop: 103,
+    alignItems: 'center',
     backgroundColor: COLORS.white,
     borderTopLeftRadius: RADII.xlg,
     borderTopRightRadius: RADII.xlg,
-    width: '100%',
-    height: '100%',
+    paddingTop: 92,
+    marginTop: 103,
   },
   logoutIcon: {
-    marginTop: SPACE[4],
-    marginHorizontal: SPACE[3],
+    position: 'absolute',
+    top: 22,
+    right: 16,
   },
   nickName: {
-    marginTop: SPACE[6],
+    marginBottom: SPACE[5],
     fontSize: FONTSIZES[8],
     color: COLORS.black,
     fontFamily: FONTS.medium,
     lineHeight: 35,
-    alignSelf: 'center',
   },
 })
