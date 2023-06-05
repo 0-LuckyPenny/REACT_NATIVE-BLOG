@@ -7,6 +7,10 @@ import {
 import { auth } from '../firebase/config'
 import { uploadPhotoToServer } from '../helpers/uploadPhotoToServer'
 import { createAsyncThunk } from '@reduxjs/toolkit'
+import { getDownloadURL, ref, uploadBytes } from 'firebase/storage'
+import { nanoid } from 'nanoid'
+import 'react-native-get-random-values'
+import { storage } from '../firebase/config'
 
 export const authSignUpUser = createAsyncThunk(
   'auth/register',
@@ -72,6 +76,54 @@ export const authSignOutUser = createAsyncThunk(
       console.log(e.message)
       alert(e.message)
       return thunkAPI.rejectWithValue(e.message)
+    }
+  }
+)
+
+export const uploadAvatarToServer = createAsyncThunk(
+  'auth/uploadAvatar',
+  async (photo, { rejectWithValue }) => {
+    try {
+      const uniqueId = nanoid(5)
+      //waiting photo
+      const response = await fetch(photo)
+      //create file blob-format
+      const uploadedFile = await response.blob()
+      //create link on file
+      const storageRef = ref(storage, `usersAvatars/${uniqueId}.jpg`)
+      //upload file in storage
+      await uploadBytes(storageRef, uploadedFile)
+      // get the download URL
+      const photoUrl = await getDownloadURL(
+        ref(storage, `usersAvatars/${uniqueId}.jpg`)
+      )
+
+      const user = await auth.currentUser
+      if (user) {
+        await updateProfile(user, {
+          photoURL: photoUrl,
+        })
+        return photoUrl
+      }
+
+      return photoUrl
+    } catch (error) {
+      alert(error.message)
+      return rejectWithValue(error.message)
+    }
+  }
+)
+
+export const removeAvatarFromServer = createAsyncThunk(
+  'auth/removeAvatar',
+  async (_, { rejectWithValue }) => {
+    try {
+      await updateProfile(auth.currentUser, {
+        photoURL: '',
+      })
+    } catch (error) {
+      alert(error.message)
+      return rejectWithValue(error.message)
     }
   }
 )

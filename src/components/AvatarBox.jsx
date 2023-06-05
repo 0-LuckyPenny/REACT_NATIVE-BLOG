@@ -4,15 +4,14 @@ import { StyleSheet } from 'react-native'
 import { COLORS, RADII } from '../constants/theme'
 
 export default function AvatarBox({
+  userPhoto,
   getUserPhoto,
-  newUserPhoto,
-  photoURL,
   removeUserPhoto,
 }) {
   return (
     <View style={styles.avatarContainer}>
-      {photoURL ? (
-        <Image style={styles.userImage} source={{ uri: photoURL }} />
+      {userPhoto ? (
+        <Image style={styles.userImage} source={{ uri: userPhoto }} />
       ) : (
         <View
           style={[styles.userImage, { backgroundColor: COLORS.background }]}
@@ -22,14 +21,14 @@ export default function AvatarBox({
       <AntDesign
         style={[
           styles.btnAddDelUserPhoto,
-          photoURL && { transform: [{ rotate: '-45deg' }] },
+          userPhoto && { transform: [{ rotate: '-45deg' }] },
         ]}
         onPress={() => {
-          photoURL ? removeUserPhoto() : getUserPhoto()
+          userPhoto ? removeUserPhoto() : getUserPhoto()
         }}
         name='pluscircleo'
         size={25}
-        color={photoURL ? COLORS.textColor : COLORS.orange}
+        color={userPhoto ? COLORS.textColor : COLORS.orange}
       />
     </View>
   )

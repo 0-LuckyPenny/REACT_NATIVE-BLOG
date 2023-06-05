@@ -4,6 +4,8 @@ import {
   authSignOutUser,
   authSignUpUser,
   authStateChangeUser,
+  removeAvatarFromServer,
+  uploadAvatarToServer,
 } from './authOperations'
 
 const initialState = {
@@ -68,7 +70,6 @@ export const authSlice = createSlice({
       // Auth state change/refresh
       .addCase(authStateChangeUser.pending, (state, action) => {
         state.isLoading = true
-        // state.stateChange = true
       })
       .addCase(
         authStateChangeUser.fulfilled,
@@ -83,6 +84,34 @@ export const authSlice = createSlice({
         }
       )
       .addCase(authStateChangeUser.rejected, (state, { payload }) => {
+        state.error = payload
+        state.isLoading = false
+      })
+
+      // Upload avatar
+      .addCase(uploadAvatarToServer.pending, (state, _) => {
+        state.isLoading = true
+      })
+      .addCase(uploadAvatarToServer.fulfilled, (state, { payload }) => {
+        state.isLoading = false
+        state.error = null
+        state.userPhoto = payload
+      })
+      .addCase(uploadAvatarToServer.rejected, (state, { payload }) => {
+        state.error = payload
+        state.isLoading = false
+      })
+
+      // Remove avatar
+      .addCase(removeAvatarFromServer.pending, (state, _) => {
+        state.isLoading = true
+      })
+      .addCase(removeAvatarFromServer.fulfilled, (state, { payload }) => {
+        state.isLoading = false
+        state.error = null
+        state.userPhoto = null
+      })
+      .addCase(removeAvatarFromServer.rejected, (state, { payload }) => {
         state.error = payload
         state.isLoading = false
       })

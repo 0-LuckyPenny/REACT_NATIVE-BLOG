@@ -3,16 +3,16 @@ import { Ionicons } from '@expo/vector-icons'
 import { StyleSheet, Text, View, ImageBackground, FlatList } from 'react-native'
 import { COLORS, FONTS, SPACE, FONTSIZES, RADII } from '../../constants/theme'
 import { useDispatch, useSelector } from 'react-redux'
-import { authSignOutUser } from '../../redux/authOperations'
+import {
+  authSignOutUser,
+  removeAvatarFromServer,
+  uploadAvatarToServer,
+} from '../../redux/authOperations'
 import { auth, firestore } from '../../firebase/config'
 import { collection, onSnapshot, query, where } from 'firebase/firestore'
 import { selectAuth } from '../../redux/selectors'
 import { AvatarBox, Post } from '../../components'
-import {
-  likedPostsHandler,
-  removeUserPhoto,
-  uploadPhotoToServer,
-} from '../../helpers'
+import { handleImagePicker, likedPostsHandler } from '../../helpers'
 
 export default function ProfileScreen({ navigation }) {
   const [initPosts, setInitPosts] = useState([])
@@ -20,7 +20,7 @@ export default function ProfileScreen({ navigation }) {
   const [newUserPhoto, setNewUserPhoto] = useState(null)
   const dispatch = useDispatch()
   const { uid, photoURL } = auth.currentUser
-  const { nickName, userId } = useSelector(selectAuth)
+  const { nickName, userId, userPhoto } = useSelector(selectAuth)
 
   useEffect(() => {
     getUserPosts()
@@ -40,11 +40,13 @@ export default function ProfileScreen({ navigation }) {
     })
   }
 
+  const removeUserAvatar = () => {
+    dispatch(removeAvatarFromServer())
+  }
+
   const getUserPhoto = async () => {
     const result = await handleImagePicker()
-    setNewUserPhoto(result)
-    const photoForDownload = await uploadPhotoToServer(result, 'usersAvatars')
-    addUserPhoto(photoForDownload)
+    dispatch(uploadAvatarToServer(result))
   }
 
   return (
@@ -62,10 +64,9 @@ export default function ProfileScreen({ navigation }) {
             onPress={() => dispatch(authSignOutUser())}
           />
           <AvatarBox
-            photoURL={photoURL}
+            userPhoto={userPhoto}
             getUserPhoto={getUserPhoto}
-            newUserPhoto={newUserPhoto}
-            removeUserPhoto={removeUserPhoto}
+            removeUserPhoto={removeUserAvatar}
           />
           <Text style={styles.nickName}>{nickName}</Text>
 
