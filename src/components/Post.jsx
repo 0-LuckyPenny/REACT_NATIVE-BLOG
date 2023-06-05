@@ -79,6 +79,7 @@ const styles = StyleSheet.create({
   },
   descriptionItem: {
     flexDirection: 'row',
+    alignItems: 'baseline',
   },
   commentCont: {
     flexDirection: 'row',

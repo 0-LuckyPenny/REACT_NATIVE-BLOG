@@ -19,7 +19,7 @@ export default function PostsScreen() {
         headerTitleAlign: 'center',
         headerTitleStyle: {
           fontFamily: FONTS.medium,
-          fontSize: FONTSIZES[3],
+          fontSize: FONTSIZES[5],
           lineHeight: 22,
           color: COLORS.black,
         },

@@ -34,12 +34,6 @@ export const useRoute = isAuth => {
       screenOptions={{
         tabBarShowLabel: false,
         headerTitleAlign: 'center',
-        headerTitleStyle: {
-          fontFamily: FONTS.medium,
-          fontSize: FONTSIZES[3],
-          lineHeight: 22,
-          color: COLORS.black,
-        },
       }}
     >
       <MainTab.Screen

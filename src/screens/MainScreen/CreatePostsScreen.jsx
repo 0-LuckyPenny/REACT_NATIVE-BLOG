@@ -41,20 +41,21 @@ export default function CreatePostsScreen({ navigation }) {
         console.log('Permission to access location was denied')
         return
       }
+
+      const location = await Location.getCurrentPositionAsync()
+      const coords = {
+        latitude: location.coords.latitude,
+        longitude: location.coords.longitude,
+      }
+      setState(prevState => ({
+        ...prevState,
+        coords: coords,
+      }))
     })()
   }, [])
 
   const takePhoto = async () => {
     const { uri } = await cameraRef.takePictureAsync()
-    const location = await Location.getCurrentPositionAsync()
-    const coords = {
-      latitude: location.coords.latitude,
-      longitude: location.coords.longitude,
-    }
-    setState(prevState => ({
-      ...prevState,
-      coords: coords,
-    }))
     setTakenPhoto(uri)
   }
 

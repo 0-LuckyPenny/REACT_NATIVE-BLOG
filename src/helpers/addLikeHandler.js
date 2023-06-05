@@ -7,8 +7,8 @@ import {
 } from 'firebase/firestore'
 import { firestore } from '../firebase/config'
 
-export const addLikeHandler = async (initPostsArray, id, userId) => {
-  const postsCollectionRef = doc(firestore, 'posts', id)
+export const addLikeHandler = async (initPostsArray, postId, userId) => {
+  const postsCollectionRef = doc(firestore, 'posts', postId)
 
   initPostsArray?.map(post => {
     if (!post.likes.includes(userId)) {
