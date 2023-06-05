@@ -44,6 +44,7 @@ export default function DefaultScreenPosts({ route, navigation }) {
 
       <FlatList
         data={updatedPosts}
+        showsVerticalScrollIndicator={false}
         keyExtractor={item => item.id}
         renderItem={({ item }) => (
           <Post

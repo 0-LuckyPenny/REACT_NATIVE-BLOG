@@ -67,6 +67,7 @@ export default function ProfileScreen({ navigation }) {
 
         <FlatList
           data={updatedPosts}
+          showsVerticalScrollIndicator={false}
           keyExtractor={item => item.id}
           renderItem={({ item }) => (
             <Post
@@ -95,6 +96,8 @@ const styles = StyleSheet.create({
     backgroundColor: COLORS.white,
     borderTopLeftRadius: RADII.xlg,
     borderTopRightRadius: RADII.xlg,
+    width: '100%',
+    height: '100%',
     paddingTop: 92,
     marginTop: 103,
   },
