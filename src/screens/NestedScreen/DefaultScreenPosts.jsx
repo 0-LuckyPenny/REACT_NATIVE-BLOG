@@ -4,14 +4,15 @@ import { COLORS, FONTS, SPACE, FONTSIZES, RADII } from '../../constants/theme'
 import { collection, onSnapshot } from 'firebase/firestore'
 import { useSelector } from 'react-redux'
 import { likedPostsHandler } from '../../helpers'
-import { Post } from '../../components'
+import { Loader, Post } from '../../components'
 import { firestore } from '../../firebase/config'
 import { selectAuth } from '../../redux/selectors'
 
 export default function DefaultScreenPosts({ route, navigation }) {
   const [initPosts, setInitPosts] = useState([])
   const [updatedPosts, setUpdatedPosts] = useState([])
-  const { userId, nickName, userEmail, userPhoto } = useSelector(selectAuth)
+  const { isLoading, userId, nickName, userEmail, userPhoto } =
+    useSelector(selectAuth)
 
   const getAllPosts = async () => {
     onSnapshot(collection(firestore, 'posts'), snapshot => {
@@ -26,6 +27,10 @@ export default function DefaultScreenPosts({ route, navigation }) {
   useEffect(() => {
     setUpdatedPosts(likedPostsHandler(initPosts, userId))
   }, [initPosts])
+
+  if (isLoading) {
+    return <Loader />
+  }
 
   return (
     <View style={styles.container}>

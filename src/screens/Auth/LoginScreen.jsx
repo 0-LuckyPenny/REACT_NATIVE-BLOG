@@ -8,10 +8,16 @@ import {
   KeyboardAvoidingView,
 } from 'react-native'
 import { COLORS, FONTS, SPACE, FONTSIZES, RADII } from '../../constants/theme'
-import { useDispatch } from 'react-redux'
+import { useDispatch, useSelector } from 'react-redux'
 import { authSignInUser } from '../../redux/authOperations'
 import SubmitButton from '../../components/SubmitButton'
-import { Background, CustomInput, ShowHidePassword } from '../../components'
+import {
+  Background,
+  CustomInput,
+  Loader,
+  ShowHidePassword,
+} from '../../components'
+import { selectAuth } from '../../redux/selectors'
 
 const initialState = {
   email: '',
@@ -21,6 +27,7 @@ const initialState = {
 export default function LoginScreen({ navigation }) {
   const [inputValue, setInputValue] = useState(initialState)
   const [secureTextEntry, setSecureTextEntry] = useState(true)
+  const { isLoading } = useSelector(selectAuth)
 
   const dispatch = useDispatch()
 
@@ -28,6 +35,10 @@ export default function LoginScreen({ navigation }) {
     dispatch(authSignInUser(inputValue))
     setInputValue(inputValue) //set values
     Keyboard.dismiss() //hides the keyboard
+  }
+
+  if (isLoading) {
+    return <Loader />
   }
 
   return (

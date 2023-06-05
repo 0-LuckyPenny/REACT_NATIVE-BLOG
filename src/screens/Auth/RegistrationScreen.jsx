@@ -8,7 +8,7 @@ import {
   KeyboardAvoidingView,
 } from 'react-native'
 import { COLORS, FONTS, SPACE, FONTSIZES, RADII } from '../../constants/theme'
-import { useDispatch } from 'react-redux'
+import { useDispatch, useSelector } from 'react-redux'
 import { authSignUpUser } from '../../redux/authOperations'
 import { handleImagePicker } from '../../helpers'
 import {
@@ -17,7 +17,9 @@ import {
   SubmitButton,
   AvatarBox,
   Background,
+  Loader,
 } from '../../components'
+import { selectAuth } from '../../redux/selectors'
 
 const initialState = {
   login: '',
@@ -29,6 +31,7 @@ const initialState = {
 export default function RegistrationScreen({ navigation }) {
   const [inputValue, setInputValue] = useState(initialState)
   const [secureTextEntry, setSecureTextEntry] = useState(true)
+  const { isLoading } = useSelector(selectAuth)
 
   const dispatch = useDispatch()
 
@@ -41,6 +44,10 @@ export default function RegistrationScreen({ navigation }) {
     dispatch(authSignUpUser(inputValue))
     setInputValue(initialState) //set values
     Keyboard.dismiss() //hides the keyboard
+  }
+
+  if (isLoading) {
+    return <Loader />
   }
 
   return (

@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react'
 import { Ionicons } from '@expo/vector-icons'
-import { StyleSheet, Text, View, ImageBackground, FlatList } from 'react-native'
+import { StyleSheet, Text, View, FlatList } from 'react-native'
 import { COLORS, FONTS, SPACE, FONTSIZES, RADII } from '../../constants/theme'
 import { useDispatch, useSelector } from 'react-redux'
 import {
@@ -11,7 +11,7 @@ import {
 import { auth, firestore } from '../../firebase/config'
 import { collection, onSnapshot, query, where } from 'firebase/firestore'
 import { selectAuth } from '../../redux/selectors'
-import { AvatarBox, Background, Post } from '../../components'
+import { AvatarBox, Background, Loader, Post } from '../../components'
 import { handleImagePicker, likedPostsHandler } from '../../helpers'
 
 export default function ProfileScreen({ navigation }) {
@@ -19,7 +19,7 @@ export default function ProfileScreen({ navigation }) {
   const [updatedPosts, setUpdatedPosts] = useState([])
   const dispatch = useDispatch()
   const { uid } = auth.currentUser
-  const { nickName, userId, userPhoto } = useSelector(selectAuth)
+  const { isLoading, nickName, userId, userPhoto } = useSelector(selectAuth)
 
   useEffect(() => {
     getUserPosts()
@@ -46,6 +46,10 @@ export default function ProfileScreen({ navigation }) {
   const getUserPhoto = async () => {
     const result = await handleImagePicker()
     dispatch(uploadAvatarToServer(result))
+  }
+
+  if (isLoading) {
+    return <Loader />
   }
 
   return (
