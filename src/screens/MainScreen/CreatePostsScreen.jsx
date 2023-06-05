@@ -69,7 +69,7 @@ export default function CreatePostsScreen({ navigation }) {
         userPhoto,
         userEmail,
         commentsNumber: 0,
-        likesValue: 0,
+        likesNumber: 0,
         likes: [],
         isLiked: false,
       })

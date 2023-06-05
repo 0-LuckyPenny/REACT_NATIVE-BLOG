@@ -48,6 +48,7 @@ export default function DefaultScreenPosts({ route, navigation }) {
         keyExtractor={item => item.id}
         renderItem={({ item }) => (
           <Post
+            isLike={true}
             updatedPosts={updatedPosts}
             item={item}
             toComment={() => navigation.navigate('Comments', { data: item })}

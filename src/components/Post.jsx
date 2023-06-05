@@ -1,15 +1,15 @@
 import { View, Text, StyleSheet, Image, TouchableOpacity } from 'react-native'
 import { FontAwesome, SimpleLineIcons, AntDesign } from '@expo/vector-icons'
-import {
-  COLORS,
-  FONTS,
-  SPACE,
-  FONTSIZES,
-  RADII,
-} from '../constants/theme'
+import { COLORS, FONTS, SPACE, FONTSIZES, RADII } from '../constants/theme'
 import { addLikeHandler } from '../helpers/addLikeHandler'
 
-export default function Post({ updatedPosts, item, toMap, toComment }) {
+export default function Post({
+  updatedPosts,
+  item,
+  toMap,
+  toComment,
+  isLike = false,
+}) {
   return (
     <View style={styles.post}>
       <Image source={{ uri: item.photo }} style={styles.postImg} />
@@ -27,13 +27,17 @@ export default function Post({ updatedPosts, item, toMap, toComment }) {
           </TouchableOpacity>
         </View>
 
-        {item.likes && (
+        {isLike && (
           <TouchableOpacity
             style={styles.likes}
             onPress={() => addLikeHandler(updatedPosts, item.id, item.userId)}
           >
-            <AntDesign name='like2' size={24} color={COLORS.orange} />
-            <Text style={styles.value}>{item.likesValue}</Text>
+            <AntDesign
+              name='like2'
+              size={24}
+              color={item.likesNumber > 0 ? COLORS.orange : COLORS.textColor}
+            />
+            <Text style={styles.value}>{item.likesNumber}</Text>
           </TouchableOpacity>
         )}
 
