@@ -11,6 +11,7 @@
   "dependencies": {
     "@expo/vector-icons": "^13.0.0",
     "@expo/webpack-config": "^0.17.2",
+    "@hookform/resolvers": "^3.1.0",
     "@react-native-async-storage/async-storage": "~1.17.3",
     "@react-native-community/masked-view": "^0.1.11",
     "@react-navigation/bottom-tabs": "^6.5.7",
@@ -32,6 +33,7 @@
     "react": "18.1.0",
     "react-devtools": "^4.27.2",
     "react-dom": "18.1.0",
+    "react-hook-form": "^7.44.3",
     "react-native": "0.70.8",
     "react-native-dotenv": "^3.4.8",
     "react-native-gesture-handler": "~2.8.0",
@@ -42,7 +44,8 @@
     "react-native-screens": "~3.18.0",
     "react-native-web": "~0.18.9",
     "react-redux": "^8.0.5",
-    "redux-persist": "^6.0.0"
+    "redux-persist": "^6.0.0",
+    "yup": "^1.2.0"
   },
   "devDependencies": {
     "@babel/core": "^7.20.0",

@@ -17,21 +17,25 @@ import { useSelector } from 'react-redux'
 import { collection, addDoc } from 'firebase/firestore'
 import { selectAuth } from '../../redux/selectors'
 import { firestore } from './../../firebase/config'
-import { uploadPhotoToServer } from '../../helpers'
+import { addPostValidationSchema, uploadPhotoToServer } from '../../helpers'
 import { CustomInput, Loader, PhotoCamera } from '../../components'
-
-const initialState = {
-  title: '',
-  location: '',
-  coords: null,
-}
+import { useForm } from 'react-hook-form'
+import { yupResolver } from '@hookform/resolvers/yup'
 
 export default function CreatePostsScreen({ navigation }) {
-  const [state, setState] = useState(initialState)
+  const [coords, setCoords] = useState(null)
   const [cameraRef, setCameraRef] = useState(null)
   const [takenPhoto, setTakenPhoto] = useState(null)
   const { userId, nickName, userPhoto, userEmail, isLoading, error } =
     useSelector(selectAuth)
+
+  const { control, handleSubmit, reset } = useForm({
+    defaultValues: {
+      title: '',
+      location: '',
+    },
+    resolver: yupResolver(addPostValidationSchema),
+  })
 
   useEffect(() => {
     ;(async () => {
@@ -41,16 +45,12 @@ export default function CreatePostsScreen({ navigation }) {
         console.log('Permission to access location was denied')
         return
       }
-
       const location = await Location.getCurrentPositionAsync()
       const coords = {
         latitude: location.coords.latitude,
         longitude: location.coords.longitude,
       }
-      setState(prevState => ({
-        ...prevState,
-        coords: coords,
-      }))
+      setCoords(coords)
     })()
   }, [])
 
@@ -59,12 +59,14 @@ export default function CreatePostsScreen({ navigation }) {
     setTakenPhoto(uri)
   }
 
-  const uploadPostToServer = async () => {
+  const uploadPostToServer = async data => {
     const photoUrl = await uploadPhotoToServer(takenPhoto, 'postsImages')
     try {
       const docRef = await addDoc(collection(firestore, 'posts'), {
-        ...state,
+        ...data,
+        id: nanoid(10),
         photo: photoUrl,
+        coords,
         userId,
         nickName,
         userPhoto,
@@ -80,18 +82,11 @@ export default function CreatePostsScreen({ navigation }) {
     }
   }
 
-  const inputValueHandler = (input, value) => {
-    setState(prevState => ({
-      ...prevState,
-      [input]: value,
-      id: nanoid(10),
-    }))
-  }
-
-  const submitHandler = async () => {
-    uploadPostToServer()
+  const onSubmit = async data => {
+    uploadPostToServer(data)
     navigation.navigate('DefaultScreen')
-    setState(initialState)
+
+    reset()
     setTakenPhoto(null)
   }
 
@@ -125,18 +120,19 @@ export default function CreatePostsScreen({ navigation }) {
         <View style={styles.form}>
           <View style={styles.inputContainer}>
             <CustomInput
+              name='title'
+              control={control}
               isPrimaryInput={false}
-              onChangeText={value => inputValueHandler('title', value)}
               placeholder={'Title...'}
-              value={state.title}
               paddingLeft={0}
             />
+
             <View>
               <CustomInput
+                name='location'
+                control={control}
                 isPrimaryInput={false}
-                onChangeText={value => inputValueHandler('location', value)}
                 placeholder={'Location...'}
-                value={state.location}
                 paddingLeft={28}
               />
               <SimpleLineIcons
@@ -153,7 +149,7 @@ export default function CreatePostsScreen({ navigation }) {
               ...styles.button,
               backgroundColor: takenPhoto ? COLORS.orange : COLORS.background,
             }}
-            onPress={submitHandler}
+            onPress={handleSubmit(onSubmit)}
           >
             <Text
               style={{

@@ -1,15 +1,16 @@
 import { useState } from 'react'
-import { StyleSheet, TextInput } from 'react-native'
+import { StyleSheet, Text, TextInput } from 'react-native'
 import { COLORS, FONTS, FONTSIZES, RADII, SPACE } from '../constants/theme'
+import { Controller } from 'react-hook-form'
 
 export default function CustomInput({
   isPrimaryInput = true,
   secureTextEntry = false,
-  onChangeText,
   placeholder,
-  value,
   paddingLeft = 16,
   marginBottom = 16,
+  name,
+  control,
 }) {
   const [onInput, setOnInput] = useState(false)
   const { primaryInput, secondaryInput } = styles
@@ -38,34 +39,50 @@ export default function CustomInput({
       }
 
   return (
-    <TextInput
-      placeholder={placeholder}
-      style={inputStyles}
-      placeholderTextColor={COLORS.textColor}
-      onChangeText={onChangeText}
-      value={value}
-      onFocus={() => setOnInput(true)}
-      onBlur={() => setOnInput(false)}
-      secureTextEntry={secureTextEntry}
+    <Controller
+      control={control}
+      name={name}
+      render={({
+        field: { onChange, onBlur, value },
+        fieldState: { error },
+      }) => (
+        <>
+          <TextInput
+            placeholder={placeholder}
+            style={[styles.input, inputStyles]}
+            placeholderTextColor={COLORS.textColor}
+            onChangeText={onChange}
+            value={value}
+            onFocus={() => setOnInput(true)}
+            onBlur={() => setOnInput(false)}
+            secureTextEntry={secureTextEntry}
+          />
+
+          {error && (
+            <Text style={styles.errorMessage}>{error.message || 'Error'}</Text>
+          )}
+        </>
+      )}
     />
   )
 }
 
 const styles = StyleSheet.create({
-  primaryInput: {
+  input: {
     position: 'relative',
-    borderWidth: 1,
-    borderColor: COLORS.borderColor,
     height: 50,
-    padding: SPACE[3],
-    borderRadius: RADII.md,
-    backgroundColor: COLORS.background,
-    marginTop: SPACE[3],
-    marginHorizontal: SPACE[3],
-    paddingVertical: SPACE[3],
-    fontFamily: FONTS.regular,
-    fontSize: FONTSIZES[3],
     color: COLORS.black,
+    padding: SPACE[3],
+    fontSize: FONTSIZES[3],
+    fontFamily: FONTS.regular,
+    marginTop: SPACE[3],
+  },
+  primaryInput: {
+    borderWidth: 1,
+    borderRadius: RADII.md,
+    marginHorizontal: SPACE[3],
+    backgroundColor: COLORS.background,
+    borderColor: COLORS.borderColor,
     shadowColor: COLORS.iconColor,
     shadowOffset: {
       width: 0,
@@ -76,12 +93,13 @@ const styles = StyleSheet.create({
     elevation: 4,
   },
   secondaryInput: {
-    position: 'relative',
-    height: 50,
     borderBottomWidth: 1,
-    fontFamily: FONTS.regular,
-    fontSize: FONTSIZES[3],
-    color: COLORS.black,
-    paddingVertical: SPACE[3],
+  },
+  errorMessage: {
+    position: 'absolute',
+    top: 65,
+    left: 22,
+    fontSize: FONTSIZES[1],
+    color: COLORS.error,
   },
 })

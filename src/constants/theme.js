@@ -8,6 +8,7 @@ const COLORS = {
   borderColor: '#E8E8E8',
   bgWithOpacity: '#FFFFFF4D',
   iconColor: '#212121CC',
+  error: `#ff0000`,
 }
 
 const FONTS = {

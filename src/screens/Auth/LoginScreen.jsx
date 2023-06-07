@@ -18,22 +18,27 @@ import {
   ShowHidePassword,
 } from '../../components'
 import { selectAuth } from '../../redux/selectors'
-
-const initialState = {
-  email: '',
-  password: '',
-}
+import { useForm } from 'react-hook-form'
+import { yupResolver } from '@hookform/resolvers/yup'
+import { loginValidationSchema } from '../../helpers'
 
 export default function LoginScreen({ navigation }) {
-  const [inputValue, setInputValue] = useState(initialState)
   const [secureTextEntry, setSecureTextEntry] = useState(true)
   const { isLoading } = useSelector(selectAuth)
 
+  const { control, handleSubmit, reset } = useForm({
+    defaultValues: {
+      email: '',
+      password: '',
+    },
+    resolver: yupResolver(loginValidationSchema),
+  })
+
   const dispatch = useDispatch()
 
-  const handleSubmit = () => {
-    dispatch(authSignInUser(inputValue))
-    setInputValue(inputValue) //set values
+  const onSubmit = data => {
+    dispatch(authSignInUser(data))
+    reset()
     Keyboard.dismiss() //hides the keyboard
   }
 
@@ -51,28 +56,14 @@ export default function LoginScreen({ navigation }) {
           <Text style={styles.formTitle}>Log in</Text>
 
           <View style={styles.inputContainer}>
-            <CustomInput
-              placeholder={'Email'}
-              value={inputValue.email}
-              onChangeText={value =>
-                setInputValue(prevState => ({
-                  ...prevState,
-                  email: value,
-                }))
-              }
-            />
+            <CustomInput name='email' control={control} placeholder={'Email'} />
 
             <View>
               <CustomInput
+                name='password'
+                control={control}
                 placeholder={'Password'}
                 secureTextEntry={secureTextEntry}
-                value={inputValue.password}
-                onChangeText={value =>
-                  setInputValue(prevState => ({
-                    ...prevState,
-                    password: value,
-                  }))
-                }
               />
               <ShowHidePassword
                 secureTextEntry={secureTextEntry}
@@ -83,7 +74,7 @@ export default function LoginScreen({ navigation }) {
             </View>
           </View>
 
-          <SubmitButton title={'Log in'} onPress={handleSubmit} />
+          <SubmitButton title={'Log in'} onPress={handleSubmit(onSubmit)} />
 
           <View style={styles.signInBox}>
             <Text>Don't have an account?</Text>

@@ -10,7 +10,7 @@ import {
 import { COLORS, FONTS, SPACE, FONTSIZES, RADII } from '../../constants/theme'
 import { useDispatch, useSelector } from 'react-redux'
 import { authSignUpUser } from '../../redux/authOperations'
-import { handleImagePicker } from '../../helpers'
+import { handleImagePicker, registerValidationSchema } from '../../helpers'
 import {
   CustomInput,
   ShowHidePassword,
@@ -20,29 +20,32 @@ import {
   Loader,
 } from '../../components'
 import { selectAuth } from '../../redux/selectors'
-
-const initialState = {
-  login: '',
-  email: '',
-  password: '',
-  avatar: null,
-}
+import { useForm} from 'react-hook-form'
+import { yupResolver } from '@hookform/resolvers/yup'
 
 export default function RegistrationScreen({ navigation }) {
-  const [inputValue, setInputValue] = useState(initialState)
+  const [avatar, setAvatar] = useState(null)
   const [secureTextEntry, setSecureTextEntry] = useState(true)
   const { isLoading } = useSelector(selectAuth)
-
   const dispatch = useDispatch()
+  const { control, handleSubmit, reset } = useForm({
+    defaultValues: {
+      login: '',
+      email: '',
+      password: '',
+    },
+    resolver: yupResolver(registerValidationSchema),
+  })
 
   const getUserPhoto = async () => {
     const result = await handleImagePicker()
-    setInputValue(prevState => ({ ...prevState, avatar: result }))
+
+    setAvatar(result)
   }
 
-  const handleSubmit = () => {
-    dispatch(authSignUpUser(inputValue))
-    setInputValue(initialState) //set values
+  const onSubmit = data => {
+    dispatch(authSignUpUser({ ...data, avatar }))
+    reset()
     Keyboard.dismiss() //hides the keyboard
   }
 
@@ -59,42 +62,28 @@ export default function RegistrationScreen({ navigation }) {
         <View style={styles.form}>
           <AvatarBox
             getUserPhoto={getUserPhoto}
-            userPhoto={inputValue.avatar}
+            userPhoto={avatar}
+            removeUserPhoto={() => setAvatar(null)}
           />
           <Text style={styles.formTitle}>Sign in</Text>
 
           <View style={styles.inputContainer}>
-            <CustomInput
-              placeholder={'Login'}
-              value={inputValue.login}
-              onChangeText={value =>
-                setInputValue(prevState => ({
-                  ...prevState,
-                  login: value,
-                }))
-              }
-            />
-            <CustomInput
-              placeholder={'Email'}
-              value={inputValue.email}
-              onChangeText={value =>
-                setInputValue(prevState => ({
-                  ...prevState,
-                  email: value,
-                }))
-              }
-            />
+            <CustomInput name='login' control={control} placeholder={'Login'} />
+
+            <View style={{ position: 'relative' }}>
+              <CustomInput
+                name='email'
+                control={control}
+                placeholder={'Email'}
+              />
+            </View>
+
             <View>
               <CustomInput
+                name='password'
+                control={control}
                 placeholder={'Password'}
                 secureTextEntry={secureTextEntry}
-                value={inputValue.password}
-                onChangeText={value =>
-                  setInputValue(prevState => ({
-                    ...prevState,
-                    password: value,
-                  }))
-                }
               />
               <ShowHidePassword
                 secureTextEntry={secureTextEntry}
@@ -105,7 +94,7 @@ export default function RegistrationScreen({ navigation }) {
             </View>
           </View>
 
-          <SubmitButton title={'Sign in'} onPress={handleSubmit} />
+          <SubmitButton title={'Sign in'} onPress={handleSubmit(onSubmit)} />
 
           <View style={styles.signInBox}>
             <Text>Already have an account?</Text>
@@ -140,7 +129,6 @@ const styles = StyleSheet.create({
     fontFamily: FONTS.medium,
   },
   inputContainer: {
-    gap: SPACE[3],
     marginBottom: SPACE[6],
   },
   signInBox: {

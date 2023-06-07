@@ -39,10 +39,6 @@ export default function ProfileScreen({ navigation }) {
     })
   }
 
-  const removeUserAvatar = () => {
-    dispatch(removeAvatarFromServer())
-  }
-
   const getUserPhoto = async () => {
     const result = await handleImagePicker()
     dispatch(uploadAvatarToServer(result))
@@ -65,7 +61,7 @@ export default function ProfileScreen({ navigation }) {
         <AvatarBox
           userPhoto={userPhoto}
           getUserPhoto={getUserPhoto}
-          removeUserPhoto={removeUserAvatar}
+          removeUserPhoto={() => dispatch(removeAvatarFromServer())}
         />
         <Text style={styles.nickName}>{nickName}</Text>
 
