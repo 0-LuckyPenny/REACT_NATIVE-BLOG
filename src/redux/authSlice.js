@@ -48,10 +48,17 @@ export const authSlice = createSlice({
       .addCase(authSignInUser.pending, (state, action) => {
         state.isLoading = true
       })
-      .addCase(authSignInUser.fulfilled, (state, { payload }) => {
-        state.isLoading = false
-        state.error = null
-      })
+      .addCase(
+        authSignInUser.fulfilled,
+        (state, { payload: { displayName, uid, email, photoURL } }) => {
+          state.isLoading = false
+          state.error = null
+          state.userId = uid
+          state.nickName = displayName
+          state.userPhoto = photoURL
+          state.userEmail = email
+        }
+      )
       .addCase(authSignInUser.rejected, (state, { payload }) => {
         state.error = payload
         state.isLoading = false

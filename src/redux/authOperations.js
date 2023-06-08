@@ -46,6 +46,8 @@ export const authSignInUser = createAsyncThunk(
   async ({ email, password }, thunkAPI) => {
     try {
       await signInWithEmailAndPassword(auth, email, password)
+      const { displayName, uid, photoURL } = auth.currentUser
+      return { displayName, uid, photoURL, email }
     } catch (e) {
       console.log(e.message)
       alert(e.message)
