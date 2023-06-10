@@ -1,16 +1,15 @@
+import 'react-native-get-random-values'
 import {
   updateProfile,
   createUserWithEmailAndPassword,
   signInWithEmailAndPassword,
   signOut,
 } from 'firebase/auth'
-import { auth } from '../firebase/config'
+import { auth, storage } from '../firebase/config'
 import { uploadPhotoToServer } from '../helpers/uploadPhotoToServer'
 import { createAsyncThunk } from '@reduxjs/toolkit'
 import { getDownloadURL, ref, uploadBytes } from 'firebase/storage'
 import { nanoid } from 'nanoid'
-import 'react-native-get-random-values'
-import { storage } from '../firebase/config'
 
 export const authSignUpUser = createAsyncThunk(
   'auth/register',
