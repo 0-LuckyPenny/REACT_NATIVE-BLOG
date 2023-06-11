@@ -19,6 +19,16 @@ export default function PostList({ initPosts, navigation, userId }) {
     setUpdatedPosts(likedPostsHandler(initPosts, userId))
   }, [initPosts])
 
+  function handleToMap(post) {
+    if (post.coords) {
+      navigation.navigate('Map', {
+        coords: item.coords,
+        location: item.location,
+        title: item.title,
+      })
+    }
+  }
+
   return (
     <FlatList
       data={updatedPosts}
@@ -60,13 +70,7 @@ export default function PostList({ initPosts, navigation, userId }) {
 
             <View style={styles.locationCont}>
               <TouchableOpacity
-                onPress={() =>
-                  navigation.navigate('Map', {
-                    location: item.location,
-                    coords: item.coords,
-                    title: item.title,
-                  })
-                }
+                onPress={handleToMap(item)}
                 style={styles.descriptionItem}
               >
                 <SimpleLineIcons

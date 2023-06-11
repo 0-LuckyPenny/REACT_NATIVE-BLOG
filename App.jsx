@@ -2,7 +2,7 @@ import { useFonts } from 'expo-font'
 import { Provider } from 'react-redux'
 import { persistor, store } from './src/redux/store'
 import { PersistGate } from 'redux-persist/integration/react'
-import { Router } from './src/router'
+import { Router } from './Router'
 
 export default function App() {
   const [fontsLoaded] = useFonts({
