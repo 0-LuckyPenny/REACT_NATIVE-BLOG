@@ -1,17 +1,15 @@
 import { useEffect, useState } from 'react'
-import { View, Text, StyleSheet, Image, FlatList } from 'react-native'
-import { COLORS, FONTS, SPACE, FONTSIZES, RADII } from '../../constants/theme'
+import { View, Text, StyleSheet, Image } from 'react-native'
 import { collection, onSnapshot } from 'firebase/firestore'
 import { useSelector } from 'react-redux'
-import { likedPostsHandler } from '../../helpers'
-import { Loader, Post } from '../../components'
+import { COLORS, FONTS, SPACE, FONTSIZES, RADII } from '../../constants/theme'
+import { Loader, PostList } from '../../components'
 import { firestore } from '../../firebase/config'
 import { selectAuth } from '../../redux/selectors'
 
-export default function DefaultScreenPosts({ route, navigation }) {
+export default function DefaultScreenPosts({ navigation }) {
   const [initPosts, setInitPosts] = useState([])
-  const [updatedPosts, setUpdatedPosts] = useState([])
-  const { isLoading, userId, nickName, userEmail, userPhoto } =
+  const { isLoading, nickName, userEmail, userId, userPhoto } =
     useSelector(selectAuth)
 
   const getAllPosts = async () => {
@@ -23,10 +21,6 @@ export default function DefaultScreenPosts({ route, navigation }) {
   useEffect(() => {
     getAllPosts()
   }, [])
-
-  useEffect(() => {
-    setUpdatedPosts(likedPostsHandler(initPosts, userId))
-  }, [initPosts])
 
   if (isLoading) {
     return <Loader />
@@ -47,26 +41,7 @@ export default function DefaultScreenPosts({ route, navigation }) {
         </View>
       </View>
 
-      <FlatList
-        data={updatedPosts}
-        showsVerticalScrollIndicator={false}
-        keyExtractor={item => item.id}
-        renderItem={({ item }) => (
-          <Post
-            isLike={true}
-            updatedPosts={updatedPosts}
-            item={item}
-            toComment={() => navigation.navigate('Comments', { data: item })}
-            toMap={() =>
-              navigation.navigate('Map', {
-                location: item.location,
-                coords: item.coords,
-                title: item.title,
-              })
-            }
-          />
-        )}
-      />
+      <PostList initPosts={initPosts} navigation={navigation} userId={userId} />
     </View>
   )
 }

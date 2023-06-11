@@ -74,7 +74,6 @@ export default function CreatePostsScreen({ navigation }) {
         commentsNumber: 0,
         likesNumber: 0,
         likes: [],
-        isLiked: false,
       })
       console.log('document id: ', docRef.id)
     } catch (e) {

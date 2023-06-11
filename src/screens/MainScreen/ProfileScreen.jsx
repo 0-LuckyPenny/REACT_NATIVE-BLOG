@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react'
 import { Ionicons } from '@expo/vector-icons'
-import { StyleSheet, Text, View, FlatList } from 'react-native'
+import { StyleSheet, Text, View } from 'react-native'
+import { collection, onSnapshot, query, where } from 'firebase/firestore'
 import { COLORS, FONTS, SPACE, FONTSIZES, RADII } from '../../constants/theme'
 import { useDispatch, useSelector } from 'react-redux'
 import {
@@ -8,33 +9,27 @@ import {
   removeAvatarFromServer,
   uploadAvatarToServer,
 } from '../../redux/authOperations'
-import { auth, firestore } from '../../firebase/config'
-import { collection, onSnapshot, query, where } from 'firebase/firestore'
+import { firestore } from '../../firebase/config'
 import { selectAuth } from '../../redux/selectors'
-import { AvatarBox, Background, Loader, Post } from '../../components'
-import { handleImagePicker, likedPostsHandler } from '../../helpers'
+import { AvatarBox, Background, Loader, PostList } from '../../components'
+import { handleImagePicker } from '../../helpers'
 
 export default function ProfileScreen({ navigation }) {
   const [initPosts, setInitPosts] = useState([])
-  const [updatedPosts, setUpdatedPosts] = useState([])
+
   const dispatch = useDispatch()
-  const { uid } = auth.currentUser
   const { isLoading, nickName, userId, userPhoto } = useSelector(selectAuth)
 
   useEffect(() => {
     getUserPosts()
   }, [])
 
-  useEffect(() => {
-    setUpdatedPosts(likedPostsHandler(initPosts, uid))
-  }, [initPosts])
-
   const getUserPosts = async () => {
     const q = query(
       collection(firestore, 'posts'),
       where('userId', '==', userId)
     )
-    await onSnapshot(q, snapshot => {
+    onSnapshot(q, snapshot => {
       setInitPosts(snapshot.docs.map(doc => ({ ...doc.data(), id: doc.id })))
     })
   }
@@ -65,24 +60,10 @@ export default function ProfileScreen({ navigation }) {
         />
         <Text style={styles.nickName}>{nickName}</Text>
 
-        <FlatList
-          data={updatedPosts}
-          showsVerticalScrollIndicator={false}
-          keyExtractor={item => item.id}
-          renderItem={({ item }) => (
-            <Post
-              updatedPosts={updatedPosts}
-              item={item}
-              toComment={() => navigation.navigate('Comments', { data: item })}
-              toMap={() =>
-                navigation.navigate('Map', {
-                  location: item.location,
-                  coords: item.coords,
-                  title: item.title,
-                })
-              }
-            />
-          )}
+        <PostList
+          initPosts={initPosts}
+          navigation={navigation}
+          userId={userId}
         />
       </View>
     </Background>
@@ -99,7 +80,6 @@ const styles = StyleSheet.create({
     width: '100%',
     height: '100%',
     paddingTop: 92,
-    marginTop: 103,
   },
   logoutIcon: {
     position: 'absolute',

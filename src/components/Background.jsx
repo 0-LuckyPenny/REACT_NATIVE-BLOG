@@ -25,5 +25,6 @@ const styles = StyleSheet.create({
   image: {
     flex: 1,
     resizeMode: 'cover',
+    paddingTop: 103,
   },
 })
