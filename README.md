@@ -14,7 +14,8 @@ Check out the version here: [Blog-App](https://expo.dev/@ruslan_b/react-native-b
 - Expo
 - React Navigation
 - Redux Toolkit
-- Firebase (Authentication, Storage, Cloud Firestore )
+- Firebase (Authentication, Storage, Cloud Firestore)
+- React-hook-form + Yup(for validaton)
 
 ### Sign up Screen
 - You need to register to enter your profile: nickname, email, password and add a profile photo (optional)
