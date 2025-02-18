@@ -4,9 +4,6 @@ Welcome to Awesome Blog
 
 Built with React Navite
 
-## 🌐 Live Link
-
-Check out the version here: [Blog-App](https://expo.dev/@ruslan_b/react-native-blog)
 
 ## 🛠️ Technologies
 
